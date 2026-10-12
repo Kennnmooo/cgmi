@@ -1,0 +1,204 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGMI.IMS — Incident Reports</title>
+  <meta name="description" content="Hardware & Construction Supply Incident Reports Panel">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- ═══════════════════════════════════════════════════════
+       CSS FILE ORDER:
+       1. main.css      — base variables, reset, layout, sidebar, shared components
+       2. responsive.css — all breakpoints / media queries
+       3. incident-reports.css — page-specific styles for the reports panel
+       ═══════════════════════════════════════════════════════ -->
+  <link rel="stylesheet" href="/assets/css/admin/main.css">
+  <link rel="stylesheet" href="/assets/css/admin/responsive.css">
+  <link rel="stylesheet" href="/assets/css/admin/incident-reports.css">
+
+  <link rel="stylesheet" href="/assets/css/root.css">
+</head>
+
+<body>
+  <div class="app-wrapper">
+
+    <!-- ═══════════════ SIDEBAR ═══════════════
+         DO NOT MODIFY — sidebar layout is locked.
+    ════════════════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main Navigation">
+      <div class="sidebar-logo">
+        <div class="logo-icon">CG</div>
+        <div class="logo-text">Calamba General Merchandise Inc.<span>Hardware &amp; Supply</span></div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">main</div>
+        <a class="nav-item" href="/pages/admin/dashboard.html"><span class="nav-icon">CH</span>Dashboard</a>
+
+        <!-- Reports Dropdown -->
+        <div class="nav-item nav-dropdown-toggle" id="reports-toggle">
+          <span class="nav-icon">RP</span>
+          Reports
+          <span class="nav-dropdown-arrow" id="reports-arrow">▾</span>
+        </div>
+        <div class="nav-dropdown-menu" id="reports-menu">
+          <a class="nav-item nav-sub-item" href="/pages/admin/inventory-report.html">
+            <span class="nav-icon">IN</span>Inventory Report
+          </a>
+          <a class="nav-item nav-sub-item" href="/pages/admin/sales-report.html">
+            <span class="nav-icon">SA</span>Sales Report
+          </a>
+        </div>
+
+        <div class="nav-section-label">inventory</div>
+        <a class="nav-item" href="/pages/admin/inventory-admin.html"><span class="nav-icon">IN</span>Inventory</a>
+        <a class="nav-item" href="/pages/admin/shelves-admin.html"><span class="nav-icon">SH</span>Shelves</a>
+        
+        <div class="nav-section-label">management</div>
+        <a class="nav-item active" href="/pages/admin/incident-report.html"><span class="nav-icon">!</span>Incident Reports</a>
+        <a class="nav-item" href="/pages/admin/user-management.html"><span class="nav-icon">US</span>User Management</a>
+        <div class="nav-section-label">Settings</div>
+        <a class="nav-item" href="/index.html"><span class="nav-icon">LO</span>Log-out</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">JD</div>
+          <div class="user-info">
+            <div class="user-name">John Dela Cruz</div>
+            <div class="user-role">Inventory Manager</div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
+
+    <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+    <main class="main-content">
+
+      <!-- ── Top Header ── -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle sidebar">Menu</button>
+          <div>
+            <div class="page-title">Incident Reports</div>
+            <div class="page-breadcrumb"><span>Management > Incident Reports</span></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ══════════════════════════════════════════════════════
+           PAGE CONTENT — all modifications are within this div
+           ═══════════════════════════════════════════════════ -->
+      <div class="page-content">
+
+        <!-- ① STATISTICS ROW ─────────────────────────────── -->
+        <div class="reports-stats-row" role="region" aria-label="Report Status Summary">
+
+          <div class="stat-card" style="--stat-accent:#1F3F74;--stat-bg:rgba(31,63,116,0.1)">
+            <div class="stat-icon">RP</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-total">0</div>
+              <div class="stat-label">Total Reports</div>
+              <div class="stat-change neutral">All Reports</div>
+            </div>
+          </div>
+
+          <div class="stat-card" style="--stat-accent:#16a34a;--stat-bg:rgba(22,163,74,0.1)">
+            <div class="stat-icon">OK</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-approved">0</div>
+              <div class="stat-label">Approved Reports</div>
+              <div class="stat-change up">Resolved</div>
+            </div>
+          </div>
+
+          <div class="stat-card" style="--stat-accent:#d97706;--stat-bg:rgba(217,119,6,0.1)">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-pending">0</div>
+              <div class="stat-label">Pending Reports</div>
+              <div class="stat-change down">Awaiting Review</div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /STATISTICS ROW -->
+
+        <!-- ② REPORTS DISPLAY PANEL ──────────────────────── -->
+        <div class="panel-card" role="region" aria-label="Incident Reports Panel">
+
+          <!-- Panel Header -->
+          <div class="panel-header">
+            <div class="panel-title">
+              ! Incident Reports
+              <span class="panel-title-badge" id="reports-count-badge">0</span>
+            </div>
+            <div class="panel-actions">
+              <!-- ③ SORT DROPDOWN ─────────────────────────── -->
+              <div class="sort-wrapper" role="group" aria-label="Sort options">
+                <button class="sort-btn" id="sort-btn" aria-haspopup="listbox" aria-expanded="false">
+                  Sort <span id="sort-label">Latest First</span> ▾
+                </button>
+                <div class="sort-dropdown" id="sort-dropdown" role="listbox" aria-label="Sort by">
+                  <button class="sort-option active" role="option" data-sort="latest">
+                    <span class="sort-option-icon">NEW</span> Latest Reports
+                  </button>
+                  <button class="sort-option" role="option" data-sort="oldest">
+                    <span class="sort-option-icon">OLD</span> Oldest Reports
+                  </button>
+                  <button class="sort-option" role="option" data-sort="pending-first">
+                    <span class="sort-option-icon">⏳</span> Pending First
+                  </button>
+                  <button class="sort-option" role="option" data-sort="approved-first">
+                    <span class="sort-option-icon">OK</span> Approved First
+                  </button>
+                </div>
+              </div>
+              <!-- /SORT DROPDOWN -->
+            </div>
+          </div>
+
+          <!-- Report Cards Grid — populated by JS -->
+          <div class="reports-grid" id="reports-grid" aria-label="Report cards list"></div>
+
+        </div>
+        <!-- /REPORTS DISPLAY PANEL -->
+
+      </div>
+      <!-- /PAGE CONTENT -->
+
+    </main>
+    <!-- /MAIN CONTENT -->
+
+  </div>
+  <!-- /APP WRAPPER -->
+
+  <!-- ④ DETAIL MODAL ────────────────────────────────────────
+       aria-modal + role="dialog" for accessibility.
+       Inner content is injected by JS (openModal function).
+  ─────────────────────────────────────────────────────────── -->
+  <div class="modal-backdrop" id="modal-backdrop" role="dialog"
+       aria-modal="true" aria-label="Incident Report Details" aria-hidden="true">
+    <div id="modal-content"><!-- JS-rendered --></div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       JS FILE ORDER:
+       1. sidebar.js          — sidebar toggle & dropdown (shared component)
+       2. incident-reports.js — page-specific logic
+       ═══════════════════════════════════════════════════════ -->
+  <script src="/assets/js/components/sidebar.js"></script>
+  <script src="/assets/js/modules/incident-report-admin/incident-reports.js"></script>
+
+</body>
+</html>

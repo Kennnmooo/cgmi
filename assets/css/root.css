@@ -1,0 +1,544 @@
+﻿
+/* ── Custom Properties ────────────────────────────────────── */
+/* root css in the inventory */
+:root {
+  /* Brand palette */
+  --navy-deepest: #081F44;
+  --navy-dark:    #0D0058;
+  --navy-mid:     #1F3F74;
+  --blue-medium:  #4569AD;
+  --blue-light:   #8EA2D7;
+  --blue-pale:    #B7C3E8;
+  --blue-white:   #E8EDF7;
+  --white:        #FFFFFF;
+
+/* Neutral grays */
+  --gray-50:   #F8F9FC;
+  --gray-100:  #EEF0F6;
+  --gray-200:  #D8DCE8;
+  --gray-400:  #9AA3BC;
+  --gray-600:  #5C6480;
+  --gray-800:  #2C3148;
+
+/* Semantic */
+  --bg-primary:   #eef2fb;
+  --bg-card:      var(--white);
+  --bg-elevated:  #e2e9f7;
+  --bg-input:     var(--white);
+
+/* Accents */
+  --accent-primary:  var(--blue-medium);
+  --accent-hover:    var(--navy-mid);
+  --accent-glow:     rgba(69,105,173,0.18);
+  --accent-success:  #16a34a;
+  --accent-danger:   #dc2626;
+  --accent-warning:  #d97706;
+
+/* Text */
+  --text-primary:    var(--navy-deepest);
+  --text-secondary:  var(--navy-mid);
+  --text-muted:      var(--blue-medium);
+  --text-on-dark:    var(--white);
+  --text-on-dark-sub:var(--blue-pale);
+
+/* Borders */
+  --border-color:  #cdd7ef;
+  --border-accent: rgba(69,105,173,0.3);
+  --border-dark:   rgba(255,255,255,0.08);
+
+/* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+/* Shadows */
+  --shadow-sm:       0 1px 4px rgba(8,31,68,0.07);
+  --shadow-card:     0 2px 14px rgba(8,31,68,0.09);
+  --shadow-elevated: 0 8px 36px rgba(8,31,68,0.18);
+
+/* Transitions */
+  --transition:      all 0.18s cubic-bezier(0.4,0,0.2,1);
+  --transition-slow: all 0.32s cubic-bezier(0.4,0,0.2,1);
+
+/* Layout */
+  --sidebar-width:  256px;
+  --header-height:  64px;
+
+/* Fluid font scale (clamp: min, preferred, max) */
+  --fs-xs:   clamp(0.65rem,  1.2vw,  0.75rem);
+  --fs-sm:   clamp(0.75rem,  1.4vw,  0.875rem);
+  --fs-base: clamp(0.8125rem,1.6vw,  0.9375rem);
+  --fs-md:   clamp(0.875rem, 1.8vw,  1rem);
+  --fs-lg:   clamp(1rem,     2.2vw,  1.25rem);
+  --fs-xl:   clamp(1.125rem, 2.6vw,  1.5rem);
+  --fs-2xl:  clamp(1.375rem, 3.2vw,  1.875rem);
+  --fs-3xl:  clamp(1.625rem, 4vw,    2.25rem);
+
+/* Fonts */
+  /* --font: 'Syne', sans-serif; */
+  /* --font:    'DM Sans', sans-serif;   */
+  --font: 'Montserrat', sans-serif;
+
+
+/* root for the POS */
+
+  /* Semantic colours */
+  --danger:  #D63E3E;
+  --success: #2A9D5C;
+  --warning: #E8A020;
+
+  /* Typography */
+  --font: 'Montserrat', sans-serif;
+  --font-base: clamp(13px, 1vw + 11px, 15px);  /* 13 px → 15 px fluid */
+
+  /* Shape & depth */
+  --radius:    10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 4px  rgba(8, 31, 68, .10);
+  --shadow-md: 0 4px 16px rgba(8, 31, 68, .14);
+  --shadow-lg: 0 8px 32px rgba(8, 31, 68, .18);
+
+  /* Layout */
+  --cart-width: clamp(260px, 26vw, 360px);
+  --header-h:   clamp(50px, 6vh, 64px);
+
+  /* Animation */
+  --transition: .18s ease;
+}
+
+/* ===== CGMI Inline SVG Icon System (no emoji / no external icon dependency) ===== */
+.ui-icon{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;color:inherit;font-size:0;line-height:1;flex-shrink:0;letter-spacing:0;text-indent:0;overflow:hidden;}
+.ui-icon::before{content:"";display:block;width:1.12em;height:1.12em;background:currentColor;-webkit-mask:var(--icon-mask) center/contain no-repeat;mask:var(--icon-mask) center/contain no-repeat;}
+.logo-icon.ui-icon,.logo-icon-sm.ui-icon{font-size:24px;color:inherit;}
+.logo-icon.ui-icon::before,.logo-icon-sm.ui-icon::before{width:1.2em;height:1.2em;}
+.nav-icon.ui-icon{width:20px;height:20px;font-size:18px;}
+.section-icon.ui-icon,.panel-title-icon.ui-icon{font-size:1.1rem;margin-right:6px;}
+.stat-icon.ui-icon,.metric-icon.ui-icon,.modal-icon.ui-icon,.empty-state-icon.ui-icon,.toast-icon.ui-icon,.confirm-icon.ui-icon{font-size:24px;}
+.metric-icon.ui-icon{font-size:22px;}
+.empty-state-icon.ui-icon{font-size:46px;opacity:.55;}
+.btn-inline-icon.ui-icon,.item-inline-icon.ui-icon,.mini-inline-icon.ui-icon{font-size:1em;margin-right:6px;}
+.item-inline-icon.ui-icon{color:var(--accent-primary, #4569AD);}
+.product-img-wrap .ui-icon,.item-img-placeholder .ui-icon,.qm-emoji.ui-icon,.dp-emoji.ui-icon{font-size:44px;color:var(--blue-medium, #4569AD);}
+.cart-row-name .ui-icon,.checkout-fulfillment-badge .ui-icon{font-size:1rem;}
+.shelf-card-location .ui-icon{font-size:14px;margin-right:4px;color:currentColor;}
+.icon-store{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M3%209h18l-1.5-5h-15L3%209Z%27/%3E%3Cpath%20d=%27M5%209v11h14V9%27/%3E%3Cpath%20d=%27M9%2020v-6h6v6%27/%3E%3Cpath%20d=%27M7%2013h2%27/%3E%3Cpath%20d=%27M15%2013h2%27/%3E%3C/svg%3E");}
+.icon-dashboard{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Crect%20x=%273%27%20y=%273%27%20width=%277%27%20height=%277%27%20rx=%271.5%27/%3E%3Crect%20x=%2714%27%20y=%273%27%20width=%277%27%20height=%277%27%20rx=%271.5%27/%3E%3Crect%20x=%273%27%20y=%2714%27%20width=%277%27%20height=%277%27%20rx=%271.5%27/%3E%3Crect%20x=%2714%27%20y=%2714%27%20width=%277%27%20height=%277%27%20rx=%271.5%27/%3E%3C/svg%3E");}
+.icon-reports{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M4%2019V5%27/%3E%3Cpath%20d=%27M4%2019h17%27/%3E%3Crect%20x=%277%27%20y=%2711%27%20width=%273%27%20height=%275%27/%3E%3Crect%20x=%2712%27%20y=%277%27%20width=%273%27%20height=%279%27/%3E%3Crect%20x=%2717%27%20y=%273%27%20width=%273%27%20height=%2713%27/%3E%3C/svg%3E");}
+.icon-inventory{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M21%208l-9-5-9%205%209%205%209-5Z%27/%3E%3Cpath%20d=%27M3%208v8l9%205%209-5V8%27/%3E%3Cpath%20d=%27M12%2013v8%27/%3E%3C/svg%3E");}
+.icon-sales{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M4%2019h16%27/%3E%3Cpath%20d=%27M7%2016l4-4%203%203%205-7%27/%3E%3Cpath%20d=%27M15%208h4v4%27/%3E%3C/svg%3E");}
+.icon-shelves{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M4%206h16%27/%3E%3Cpath%20d=%27M4%2012h16%27/%3E%3Cpath%20d=%27M4%2018h16%27/%3E%3Cpath%20d=%27M7%206v12%27/%3E%3Cpath%20d=%27M17%206v12%27/%3E%3C/svg%3E");}
+.icon-incident{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M12%203%202%2021h20L12%203Z%27/%3E%3Cpath%20d=%27M12%209v5%27/%3E%3Cpath%20d=%27M12%2017h.01%27/%3E%3C/svg%3E");}
+.icon-users{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M16%2021v-2a4%204%200%200%200-4-4H6a4%204%200%200%200-4%204v2%27/%3E%3Ccircle%20cx=%279%27%20cy=%277%27%20r=%274%27/%3E%3Cpath%20d=%27M22%2021v-2a4%204%200%200%200-3-3.87%27/%3E%3Cpath%20d=%27M16%203.13a4%204%200%200%201%200%207.75%27/%3E%3C/svg%3E");}
+.icon-logout{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M10%2017l5-5-5-5%27/%3E%3Cpath%20d=%27M15%2012H3%27/%3E%3Cpath%20d=%27M21%203v18h-8%27/%3E%3C/svg%3E");}
+.icon-check{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%279%27/%3E%3Cpath%20d=%27m8%2012%202.5%202.5L16%209%27/%3E%3C/svg%3E");}
+.icon-incoming{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M12%203v12%27/%3E%3Cpath%20d=%27m7%2010%205%205%205-5%27/%3E%3Cpath%20d=%27M4%2019h16%27/%3E%3C/svg%3E");}
+.icon-outgoing{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M12%2021V9%27/%3E%3Cpath%20d=%27m7%2014%205-5%205%205%27/%3E%3Cpath%20d=%27M4%205h16%27/%3E%3C/svg%3E");}
+.icon-form{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Crect%20x=%276%27%20y=%273%27%20width=%2712%27%20height=%2718%27%20rx=%272%27/%3E%3Cpath%20d=%27M9%207h6%27/%3E%3Cpath%20d=%27M9%2011h6%27/%3E%3Cpath%20d=%27M9%2015h4%27/%3E%3C/svg%3E");}
+.icon-active{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%279%27/%3E%3Cpath%20d=%27m8%2012%202.5%202.5L16%209%27/%3E%3C/svg%3E");}
+.icon-off{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%279%27/%3E%3Cpath%20d=%27M5%205l14%2014%27/%3E%3C/svg%3E");}
+.icon-empty{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M4%207h16v13H4z%27/%3E%3Cpath%20d=%27M4%207l3-4h10l3%204%27/%3E%3Cpath%20d=%27M9%2013h6%27/%3E%3C/svg%3E");}
+.icon-pending{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%279%27/%3E%3Cpath%20d=%27M12%207v5l3%203%27/%3E%3C/svg%3E");}
+.icon-info{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%279%27/%3E%3Cpath%20d=%27M12%2010v6%27/%3E%3Cpath%20d=%27M12%207h.01%27/%3E%3C/svg%3E");}
+.icon-add{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%279%27/%3E%3Cpath%20d=%27M12%208v8%27/%3E%3Cpath%20d=%27M8%2012h8%27/%3E%3C/svg%3E");}
+.icon-edit{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M12%2020h9%27/%3E%3Cpath%20d=%27M16.5%203.5a2.1%202.1%200%200%201%203%203L7%2019l-4%201%201-4%2012.5-12.5Z%27/%3E%3C/svg%3E");}
+.icon-question{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%2712%27%20cy=%2712%27%20r=%279%27/%3E%3Cpath%20d=%27M9.5%209a2.5%202.5%200%200%201%205%200c0%202-2.5%202-2.5%204%27/%3E%3Cpath%20d=%27M12%2017h.01%27/%3E%3C/svg%3E");}
+.icon-search{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%2711%27%20cy=%2711%27%20r=%277%27/%3E%3Cpath%20d=%27m20%2020-3.5-3.5%27/%3E%3C/svg%3E");}
+.icon-cart{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Ccircle%20cx=%279%27%20cy=%2720%27%20r=%271%27/%3E%3Ccircle%20cx=%2718%27%20cy=%2720%27%20r=%271%27/%3E%3Cpath%20d=%27M2%203h3l3%2012h10l3-8H6%27/%3E%3C/svg%3E");}
+.icon-delivery{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M3%207h11v10H3z%27/%3E%3Cpath%20d=%27M14%2010h4l3%203v4h-7%27/%3E%3Ccircle%20cx=%277%27%20cy=%2718%27%20r=%272%27/%3E%3Ccircle%20cx=%2717%27%20cy=%2718%27%20r=%272%27/%3E%3C/svg%3E");}
+.icon-pickup{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M21%208l-9-5-9%205%209%205%209-5Z%27/%3E%3Cpath%20d=%27M3%208v8l9%205%209-5V8%27/%3E%3Cpath%20d=%27M12%2013v8%27/%3E%3C/svg%3E");}
+.icon-location{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M12%2021s7-4.5%207-11a7%207%200%200%200-14%200c0%206.5%207%2011%207%2011Z%27/%3E%3Ccircle%20cx=%2712%27%20cy=%2710%27%20r=%272.5%27/%3E%3C/svg%3E");}
+.icon-tag{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M20%2012%2012%2020%204%2012V4h8l8%208Z%27/%3E%3Cpath%20d=%27M8%208h.01%27/%3E%3C/svg%3E");}
+.icon-box{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M21%208l-9-5-9%205%209%205%209-5Z%27/%3E%3Cpath%20d=%27M3%208v8l9%205%209-5V8%27/%3E%3Cpath%20d=%27M12%2013v8%27/%3E%3C/svg%3E");}
+.icon-weight{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M7%209h10l2%2011H5L7%209Z%27/%3E%3Cpath%20d=%27M9%209a3%203%200%200%201%206%200%27/%3E%3C/svg%3E");}
+.icon-document{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M14%202H6a2%202%200%200%200-2%202v16a2%202%200%200%200%202%202h12a2%202%200%200%200%202-2V8Z%27/%3E%3Cpath%20d=%27M14%202v6h6%27/%3E%3Cpath%20d=%27M8%2013h8%27/%3E%3Cpath%20d=%27M8%2017h5%27/%3E%3C/svg%3E");}
+.icon-menu{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M4%206h16%27/%3E%3Cpath%20d=%27M4%2012h16%27/%3E%3Cpath%20d=%27M4%2018h16%27/%3E%3C/svg%3E");}
+.icon-archive{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M3%207h18%27/%3E%3Cpath%20d=%27M5%207v13h14V7%27/%3E%3Cpath%20d=%27M9%2011h6%27/%3E%3Cpath%20d=%27M4%203h16v4H4z%27/%3E%3C/svg%3E");}
+.icon-camera{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M4%207h3l2-3h6l2%203h3v13H4z%27/%3E%3Ccircle%20cx=%2712%27%20cy=%2713%27%20r=%274%27/%3E%3C/svg%3E");}
+
+
+/* ============================================================
+   GLOBAL TOAST STACKS (type-based positioning)
+   ------------------------------------------------------------
+   System-wide rule: error / warning / rejected toasts appear at
+   the BOTTOM-LEFT, success (and neutral info) toasts appear at
+   the BOTTOM-RIGHT — for a consistent UI/UX across every module.
+
+   The JS toast helpers append each toast into one of these two
+   fixed stacks based on its type. Both stacks are position:fixed
+   so they escape whatever `#toast-container` positioning a module
+   stylesheet may define — keeping placement consistent everywhere.
+   Loaded via root.css on every page.
+   ============================================================ */
+.toast-stack {
+  position: fixed;
+  bottom: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column-reverse; /* newest toast nearest the corner */
+  gap: 10px;
+  max-width: 340px;
+  width: calc(100vw - 48px);
+  pointer-events: none;
+}
+.toast-stack-left  { left: 24px;  align-items: flex-start; }
+.toast-stack-right { right: 24px; align-items: flex-end; }
+
+/* Toasts inside a stack are laid out by the stack, not fixed-positioned
+   individually. Neutralize any inherited fixed positioning from module CSS. */
+.toast-stack > .toast {
+  position: static;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  transform: none;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  pointer-events: all;
+}
+
+/* Slide-in direction matches the corner the stack lives in. */
+.toast-stack-left  > .toast { animation: slideInToastLeft  0.28s cubic-bezier(0.34,1.4,0.64,1); }
+.toast-stack-right > .toast { animation: slideInToastRight 0.28s cubic-bezier(0.34,1.4,0.64,1); }
+.toast-stack-left  > .toast.hide { animation: slideOutToastLeft  0.25s ease forwards; }
+.toast-stack-right > .toast.hide { animation: slideOutToastRight 0.25s ease forwards; }
+
+@keyframes slideInToastLeft  { from { opacity:0; transform:translateX(-80px); } to { opacity:1; transform:translateX(0); } }
+@keyframes slideOutToastLeft { to   { opacity:0; transform:translateX(-80px); } }
+@keyframes slideInToastRight { from { opacity:0; transform:translateX(80px);  } to { opacity:1; transform:translateX(0); } }
+@keyframes slideOutToastRight{ to   { opacity:0; transform:translateX(80px);  } }
+
+/* Plain-text (Style A-lite) pills use the .show class rather than animations. */
+.toast-stack > .toast.show { opacity: 1; transform: translateY(0); }
+
+/* Responsive: stacks shrink but keep their left / right corners. */
+@media (max-width: 768px) {
+  .toast-stack { bottom: 14px; max-width: none; width: calc(100vw - 28px); }
+  .toast-stack-left  { left: 14px;  right: auto; }
+  .toast-stack-right { right: 14px; left: auto; }
+  .toast-stack > .toast { width: 100%; }
+}
+@media (max-width: 480px) {
+  /* On very small screens the two corners would overlap, so both
+     stacks collapse to a single full-width column at the bottom. */
+  .toast-stack {
+    left: max(10px, env(safe-area-inset-left));
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: auto;
+    max-width: none;
+  }
+  .toast-stack-left  { align-items: stretch; }
+  .toast-stack-right { align-items: stretch; }
+}
+@media print {
+  .toast-stack { display: none !important; }
+}
+
+/* ============================================================
+   NOTIFICATION BELL + DROPDOWN  (shared across all panels)
+   ------------------------------------------------------------
+   Self-contained so it renders identically regardless of the
+   per-module .top-header background (navy or white). Injected
+   into each view's header via app/Views/shared/notification-bell.php
+   and driven by assets/js/components/notifications.js.
+   ============================================================ */
+
+/* ── Burger menu icon rotation (open = vertical, closed = horizontal) ── */
+.menu-toggle .ui-icon { transition: transform 0.26s cubic-bezier(0.4,0,0.2,1); }
+.menu-toggle[aria-expanded="true"] .ui-icon { transform: rotate(90deg); }
+
+/* ── Sidebar smooth animation (shared across all modules) ──── */
+/* Sidebar slide — dedicated property transitions for performance */
+.sidebar {
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* Desktop: main content expands/contracts in sync */
+.main-content {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile overlay — fade in on open, fade out on close */
+@keyframes sidebarOverlayIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sidebarOverlayOut { from { opacity: 1; } to { opacity: 0; } }
+
+.sidebar-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.sidebar-overlay.active {
+  display: block !important;
+  opacity: 1;
+  pointer-events: auto;
+  animation: sidebarOverlayIn 0.25s ease forwards;
+}
+.sidebar-overlay.is-closing {
+  animation: sidebarOverlayOut 0.22s ease forwards;
+  pointer-events: none;
+}
+
+/* Bell icon glyph (matches the existing .ui-icon mask system) */
+.icon-bell{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M18%208a6%206%200%200%200-12%200c0%207-3%209-3%209h18s-3-2-3-9%27/%3E%3Cpath%20d=%27M13.73%2021a2%202%200%200%201-3.46%200%27/%3E%3C/svg%3E");}
+.icon-bell-off{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M13.73%2021a2%202%200%200%201-3.46%200%27/%3E%3Cpath%20d=%27M18.63%2013A17.9%2017.9%200%200%201%2018%208%27/%3E%3Cpath%20d=%27M6.26%206.26A5.86%205.86%200%200%200%206%208c0%207-3%209-3%209h14%27/%3E%3Cpath%20d=%27M18%208a6%206%200%200%200-9.33-5%27/%3E%3Cpath%20d=%27m2%202%2020%2020%27/%3E%3C/svg%3E");}
+.icon-check-double{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27m2%2012%205%205L18%206%27/%3E%3Cpath%20d=%27m13%2016%201.5%201.5L22%2010%27/%3E%3C/svg%3E");}
+
+/* Anchor that pins the bell to the right of the header. The header markup
+   places .header-right (or the bell directly) after .header-left; this uses
+   margin-left:auto so it floats right even when the header has no flex setup
+   dedicated to it. */
+.header-right{display:flex;align-items:center;gap:12px;margin-left:auto;}
+.top-header{gap:12px;}
+.top-header .header-left{margin-right:auto;}
+
+/* Bell button */
+.notif-bell{position:relative;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border:none;border-radius:var(--radius-md);background:var(--bg-card);color:var(--text-secondary);cursor:pointer;transition:var(--transition);flex-shrink:0;}
+.notif-bell:hover{background:var(--blue-white);color:var(--accent-hover);border-color:var(--border-accent);}
+.notif-bell:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px;}
+.notif-bell .ui-icon{font-size:20px;}
+.notif-bell.is-open{background:var(--blue-white);color:var(--accent-hover);border-color:var(--accent-primary);}
+
+/* Unread badge */
+.notif-badge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent-danger);color:#fff;font-family:var(--font);font-size:11px;font-weight:700;line-height:18px;text-align:center;box-shadow:0 0 0 2px var(--bg-card);display:none;}
+.notif-badge.show{display:block;}
+
+/* Dropdown panel anchored below the bell */
+.notif-panel-wrap{position:relative;}
+.notif-panel{position:absolute;top:calc(100% + 10px);right:0;width:min(380px,calc(100vw - 32px));max-height:min(72vh,540px);background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevated);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(-8px) scale(0.98);transform-origin:top right;pointer-events:none;transition:opacity .16s ease,transform .16s ease;z-index:1200;}
+.notif-panel.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+
+/* Panel header */
+.notif-panel-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border-color);background:var(--bg-card);}
+.notif-panel-title{font-family:var(--font);font-size:var(--fs-md);font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:8px;}
+.notif-panel-title .notif-title-count{font-size:11px;font-weight:700;color:#fff;background:var(--accent-primary);border-radius:10px;padding:1px 8px;}
+.notif-markall{border:none;background:transparent;color:var(--accent-primary);font-family:var(--font);font-size:var(--fs-xs);font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:var(--radius-sm);transition:var(--transition);}
+.notif-markall:hover{background:var(--blue-white);color:var(--accent-hover);}
+.notif-markall[disabled]{opacity:.45;cursor:default;}
+.notif-markall .ui-icon{font-size:15px;}
+
+/* Scrollable list */
+.notif-list{list-style:none;margin:0;padding:6px;overflow-y:auto;flex:1;}
+.notif-item{display:flex;gap:12px;padding:11px 12px;border-radius:var(--radius-md);cursor:pointer;position:relative;transition:background .14s ease;text-decoration:none;}
+.notif-item:hover{background:var(--gray-50);}
+.notif-item + .notif-item{margin-top:2px;}
+.notif-item.is-unread{background:var(--blue-white);}
+.notif-item.is-unread:hover{background:var(--blue-pale);}
+
+/* Unread dot */
+.notif-item .notif-dot{position:absolute;left:4px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--accent-primary);opacity:0;}
+.notif-item.is-unread .notif-dot{opacity:1;}
+
+/* Type icon chip */
+.notif-icon{flex-shrink:0;width:38px;height:38px;border-radius:var(--radius-sm);display:inline-flex;align-items:center;justify-content:center;background:var(--blue-white);color:var(--accent-primary);}
+.notif-icon .ui-icon{font-size:19px;}
+.notif-item[data-type="low-stock"] .notif-icon,
+.notif-item[data-type="incident"] .notif-icon,
+.notif-item[data-type="security"] .notif-icon{background:rgba(220,38,38,0.10);color:var(--accent-danger);}
+.notif-item[data-type="incoming"] .notif-icon,
+.notif-item[data-type="sales"] .notif-icon{background:rgba(22,163,74,0.10);color:var(--accent-success);}
+.notif-item[data-type="outgoing"] .notif-icon{background:rgba(217,119,6,0.10);color:var(--accent-warning);}
+
+/* Body */
+.notif-body{flex:1;min-width:0;}
+.notif-row-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.notif-item-title{font-family:var(--font);font-size:var(--fs-sm);font-weight:700;color:var(--text-primary);margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.notif-item.is-unread .notif-item-title{color:var(--navy-deepest);}
+.notif-time{flex-shrink:0;font-family:var(--font);font-size:10px;color:var(--text-muted);white-space:nowrap;}
+.notif-item-msg{font-family:var(--font);font-size:var(--fs-xs);color:var(--gray-600);margin:2px 0 0;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.notif-type-tag{display:inline-block;margin-top:6px;font-family:var(--font);font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);background:var(--gray-100);border-radius:var(--radius-xs);padding:2px 6px;}
+
+/* Empty + loading + error states */
+.notif-empty,.notif-status{padding:40px 20px;text-align:center;color:var(--text-muted);font-family:var(--font);font-size:var(--fs-sm);}
+.notif-empty .ui-icon{font-size:44px;opacity:.5;display:block;margin:0 auto 10px;color:var(--blue-light);}
+.notif-empty-title{font-weight:700;color:var(--text-secondary);margin-bottom:2px;}
+
+/* Footer */
+.notif-panel-footer{border-top:1px solid var(--border-color);padding:9px;text-align:center;}
+.notif-refresh{border:none;background:transparent;color:var(--text-muted);font-family:var(--font);font-size:var(--fs-xs);font-weight:600;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm);transition:var(--transition);}
+.notif-refresh:hover{background:var(--gray-50);color:var(--accent-primary);}
+
+/* Responsive: on small screens dock the panel to a comfortable width */
+@media (max-width:520px){
+  .notif-panel{position:fixed;top:auto;left:16px;right:16px;width:auto;max-height:70vh;transform-origin:top center;}
+  .notif-bell{width:38px;height:38px;}
+}
+
+/* ============================================================
+   NOTIFICATION WELCOME POPUP
+   Shown once per session on the main panel when there are
+   unread notifications. Triggered by notifications.js.
+   ============================================================ */
+
+.notif-welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(8, 31, 68, 0.50);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.notif-welcome-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.notif-welcome-modal {
+  width: 100%;
+  max-width: 360px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated);
+  padding: 2rem 1.75rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
+  transform: scale(0.93) translateY(12px);
+  transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.notif-welcome-overlay.show .notif-welcome-modal {
+  transform: scale(1) translateY(0);
+}
+
+/* Bell icon circle */
+.notif-welcome-icon {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--blue-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  flex-shrink: 0;
+  margin-bottom: 0.1rem;
+}
+
+.notif-welcome-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.notif-welcome-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: var(--accent-danger);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--bg-card);
+}
+
+.notif-welcome-title {
+  font-family: var(--font);
+  font-size: var(--fs-md);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.notif-welcome-body {
+  font-family: var(--font);
+  font-size: var(--fs-sm);
+  color: var(--gray-600);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.notif-welcome-body strong {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+/* Action buttons */
+.notif-welcome-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.notif-welcome-btn-primary {
+  width: 100%;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(69, 105, 173, 0.32);
+  transition: var(--transition);
+}
+
+.notif-welcome-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(69, 105, 173, 0.42);
+}
+
+.notif-welcome-btn-secondary {
+  width: 100%;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.notif-welcome-btn-secondary:hover {
+  background: var(--gray-50);
+  border-color: var(--gray-400);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 480px) {
+  .notif-welcome-modal {
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+}
+
+/* ── Desktop Collapsed State ──────────────────────────────── */
+body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
+body.sidebar-collapsed .main-content { margin-left: 0; }

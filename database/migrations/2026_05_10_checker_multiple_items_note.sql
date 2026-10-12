@@ -1,0 +1,3 @@
+-- Checker multiple-item update
+-- No new table is required. The system still saves each listed item as one row in checker_records.
+-- This migration file is only included as a note for this update.

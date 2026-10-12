@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGMI.IMS — User Management</title>
+  <meta name="description" content="Hardware & Construction Supply User Management Panel">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/assets/css/root.css">
+  <link rel="stylesheet" href="/assets/css/admin/main.css">
+  <link rel="stylesheet" href="/assets/css/admin/modal.css">
+  <link rel="stylesheet" href="/assets/css/admin/user-management.css">
+  <link rel="stylesheet" href="/assets/css/admin/responsive.css">
+</head>
+
+<body>
+  <div class="app-wrapper">
+
+    <!-- ═══════════════ SIDEBAR ═══════════════ -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main Navigation">
+      <div class="sidebar-logo">
+        <div class="logo-icon">CG</div>
+        <div class="logo-text">Calamba General Merchandise Inc.<span>Hardware &amp; Supply</span></div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">main</div>
+        <a class="nav-item" href="/pages/admin/dashboard.html"><span class="nav-icon">CH</span>Dashboard</a>
+
+        <!-- Reports Dropdown -->
+        <div class="nav-item nav-dropdown-toggle" id="reports-toggle">
+          <span class="nav-icon">RP</span>
+          Reports
+          <span class="nav-dropdown-arrow" id="reports-arrow">▾</span>
+        </div>
+        <div class="nav-dropdown-menu" id="reports-menu">
+          <a class="nav-item nav-sub-item" href="/pages/admin/inventory-report.html">
+            <span class="nav-icon">IN</span>Inventory Report
+          </a>
+          <a class="nav-item nav-sub-item" href="/pages/admin/sales-report.html">
+            <span class="nav-icon">SA</span>Sales Report
+          </a>
+        </div>
+
+        <div class="nav-section-label">inventory</div>
+        <a class="nav-item" href="/pages/admin/inventory-admin.html"><span class="nav-icon">IN</span>Inventory</a>
+        <a class="nav-item" href="/pages/admin/shelves-admin.html"><span class="nav-icon">SH</span>Shelves</a>
+        
+        <div class="nav-section-label">management</div>
+        <a class="nav-item" href="/pages/admin/incident-report.html"><span class="nav-icon">!</span>Incident Reports</a>
+        <a class="nav-item active" href="/pages/admin/user-management.html"><span class="nav-icon">US</span>User Management</a>
+        <div class="nav-section-label">Settings</div>
+        <a class="nav-item" href="/index.html"><span class="nav-icon">LO</span>Log-out</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">JD</div>
+          <div class="user-info">
+            <div class="user-name">John Dela Cruz</div>
+            <div class="user-role">Inventory Manager</div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
+
+    <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+    <main class="main-content">
+
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle sidebar">Menu</button>
+          <div>
+            <div class="page-title">User Management</div>
+            <div class="page-breadcrumb"><span>Management > User Management</span></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="page-content">
+
+        <!-- ══ STATS ROW ══ -->
+        <div class="stats-row" role="region" aria-label="User Account Summary">
+          <div class="stat-card" style="--stat-accent:#1F3F74;--stat-bg:rgba(31,63,116,0.1)">
+            <div class="stat-icon">US</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-total">0</div>
+              <div class="stat-label">Total User Accounts</div>
+              <div class="stat-change neutral">All Accounts</div>
+            </div>
+          </div>
+          <div class="stat-card" style="--stat-accent:#16a34a;--stat-bg:rgba(22,163,74,0.1)">
+            <div class="stat-icon">OK</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-active">0</div>
+              <div class="stat-label">Active Accounts</div>
+              <div class="stat-change up">Online</div>
+            </div>
+          </div>
+          <div class="stat-card" style="--stat-accent:#dc2626;--stat-bg:rgba(220,38,38,0.1)">
+            <div class="stat-icon">OFF</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-deactivated">0</div>
+              <div class="stat-label">Deactivated Accounts</div>
+              <div class="stat-change down">Inactive</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ USER PANEL ══ -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-title">
+              U User Accounts
+              <span class="panel-title-badge" id="user-count-badge">0 users</span>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-primary" id="add-user-btn">
+                ＋ Add User
+              </button>
+            </div>
+          </div>
+
+          <!-- User Cards Grid -->
+          <div class="user-cards-grid" id="user-cards-grid">
+            <!-- Cards rendered by JS -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="empty-state" style="display:none;">
+            <div class="empty-state-icon">US</div>
+            <div class="empty-state-title">No Users Found</div>
+            <div class="empty-state-desc">Click "Add User" to create the first account.</div>
+          </div>
+        </div>
+
+      </div><!-- /page-content -->
+    </main>
+  </div><!-- /app-wrapper -->
+
+  <!-- ═══════════════ ADD / EDIT USER MODAL ═══════════════ -->
+  <div class="modal-backdrop" id="user-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon" id="modal-icon">U</div>
+          <div>
+            <div class="modal-title" id="modal-title-text">Add User</div>
+            <div class="modal-subtitle" id="modal-subtitle">Fill in the details to create a new account.</div>
+          </div>
+        </div>
+        <button class="modal-close" id="modal-close-btn" aria-label="Close modal">x</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-section-label">Account Information</div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label required" for="input-firstname">First Name</label>
+            <input class="form-control" type="text" id="input-firstname" placeholder="e.g. Juan" autocomplete="given-name">
+            <span class="field-error" id="err-firstname"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label required" for="input-lastname">Last Name</label>
+            <input class="form-control" type="text" id="input-lastname" placeholder="e.g. Dela Cruz" autocomplete="family-name">
+            <span class="field-error" id="err-lastname"></span>
+          </div>
+          <div class="form-group span-2">
+            <label class="form-label required" for="input-username">Username</label>
+            <input class="form-control" type="text" id="input-username" placeholder="e.g. jdelacruz" autocomplete="username">
+            <span class="field-error" id="err-username"></span>
+          </div>
+          <div class="form-group span-2">
+            <label class="form-label required" for="input-password">Password</label>
+            <div class="password-wrap">
+              <input class="form-control" type="password" id="input-password" placeholder="Enter password" autocomplete="new-password">
+              <button type="button" class="pw-toggle" id="pw-toggle" aria-label="Toggle password visibility">Show</button>
+            </div>
+            <span class="field-error" id="err-password"></span>
+          </div>
+          <div class="form-group span-2">
+            <label class="form-label required" for="input-role">Role</label>
+            <select class="form-control" id="input-role">
+              <option value="">— Select Role —</option>
+              <option value="Inventory Manager">Inventory Manager</option>
+              <option value="Cashier">Cashier</option>
+            </select>
+            <span class="field-error" id="err-role"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <span class="save-hint">Fields marked with <strong>*</strong> are required.</span>
+        <button class="btn btn-ghost" id="modal-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="modal-save-btn">Save Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ CONFIRM DIALOG ═══════════════ -->
+  <div class="confirm-overlay" id="confirm-overlay" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="confirm-box">
+      <div class="confirm-icon" id="confirm-icon">?</div>
+      <div class="confirm-title" id="confirm-title">Are you sure?</div>
+      <div class="confirm-msg" id="confirm-msg"></div>
+      <div class="confirm-actions">
+        <button class="btn btn-ghost" id="confirm-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="confirm-ok-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TOASTS ═══════════════ -->
+  <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- JS -->
+  <script src="/assets/js/components/sidebar.js"></script>
+  <script src="/assets/js/modules/user-management/user-management.js"></script>
+</body>
+</html>

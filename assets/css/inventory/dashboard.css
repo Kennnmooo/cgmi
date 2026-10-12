@@ -1,0 +1,103 @@
+﻿/* ============================================================
+   INVENTORY DASHBOARD — supplemental styles
+   Loaded alongside root.css + admin/dashboard.css. Only defines
+   the deltas the inventory dashboard markup needs on top of the
+   shared dashboard design system.
+   ============================================================ */
+
+/* Metric badge/icon variant used by the inventory KPI cards. Kept on the
+   brand palette (matches the shared sheet's blue-based neutral accent). */
+.metric-badge.teal { background: var(--blue-white); color: var(--blue-medium); }
+.metric-icon.teal  { background: var(--blue-white); color: var(--blue-medium); }
+
+/* Recent-incident rows (this dashboard uses .incident-row, distinct
+   from the admin .inc-item layout). */
+.incident-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+.incident-row:hover { background: var(--bg-card); box-shadow: var(--shadow-sm); }
+.incident-icon { font-size: 1.05rem; flex-shrink: 0; color: var(--accent-danger); }
+.incident-main { flex: 1; min-width: 0; }
+.incident-title {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.incident-meta { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; }
+
+/* Two-up chart row for evenly splitting analytics cards. */
+.chart-duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 900px) {
+  .chart-duo { grid-template-columns: 1fr; }
+}
+
+/* Slightly tighter list spacing for the shelf alert list reuse. */
+#shelf-alert-list.refill-list { gap: 8px; }
+
+/* ============================================================
+   FULL-WIDTH LAYOUT
+   Maximize the usable width of the inventory dashboard so content
+   spans the entire main-content area edge to edge.
+   ============================================================ */
+
+/* Let the content area fill all available width with tighter side
+   insets instead of the default 24px padding + implicit max width. */
+.dashboard-page {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 20px 24px;
+}
+
+/* KPI cards: auto-fit so they expand to consume the full row on wide
+   screens and never leave a sparse trailing row (11 cards on this board). */
+.dashboard-page .metrics-grid {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Analytics rows stretch the full width. */
+.dashboard-page .f-body,
+.dashboard-page .chart-duo,
+.dashboard-page > .card {
+  width: 100%;
+}
+
+/* On very wide monitors, give the main chart column more room. */
+@media (min-width: 1600px) {
+  .dashboard-page .f-body {
+    grid-template-columns: minmax(0, 2.4fr) minmax(360px, 1fr);
+  }
+}
+
+@media (max-width: 1280px) {
+  .dashboard-page .metrics-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 1024px) {
+  .dashboard-page .metrics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+  .dashboard-page { padding: 16px; }
+  .dashboard-page .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .dashboard-page .metrics-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Desktop Collapsed State ──────────────────────────────── */
+body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
+body.sidebar-collapsed .main-content { margin-left: 0; }

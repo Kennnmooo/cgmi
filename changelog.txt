@@ -1,0 +1,186 @@
+[2026-09-28 00:00] - Added CGMI_USERS_CONTEXT to superadmin user-management view so Super Admin can manage all roles.
+[2026-09-28 12:00] - Enforced role-based inventory permissions in app/Api/inventory/save.php: only super-admin can activate/deactivate items and only super-admin/admin can change stock quantities.
+[2026-09-28 12:00] - Gated Deactivate/Reactivate action buttons to super-admin in inventory datatable-init.js and added shared role helper functions.
+[2026-09-28 12:00] - Locked warehouse/store/IoT quantity inputs for the inventory role in inventory modal.js so they can edit item info but not stock.
+[2026-09-28 12:00] - Added defensive super-admin checks to deactivate/reactivate handlers in inventory app.js.
+[2026-09-28 12:30] - Fixed inventory modal showing "No shelf assigned" under locked Warehouse/Store quantity fields by switching the permission lock to a dedicated qty-field-locked class with a "Read only" hint, keeping "No shelf assigned" for the IoT shelf case only.
+[2026-09-28 12:45] - Made the disabled IoT shelf quantity field match the referenced "Read only" design (neutral gray label/hint instead of red "No shelf assigned") for consistent styling across all locked quantity fields in both inventory CSS files.
+[2026-09-28 13:00] - Unified qty-field-locked and qty-field-disabled styling in both inventory CSS files so all read-only quantity fields (Warehouse/Store/IoT) share identical dimming, hatched input, gray label, and "Read only" hint; fixes locked Warehouse/Store fields missing the hint due to absent position:relative/opacity rules.
+[2026-09-28 00:00] - Inventory save now zeroes warehouse, store, and IoT shelf quantities when an item is deactivated, so deactivated items reflect 0 stock everywhere.
+[2026-09-28 00:00] - Hid the inventory Update/Edit button for inactive items (full and compact tables) so deactivated items can't be edited until reactivated.
+[2026-09-29 20:44] - Added a Report Category dropdown to the inventory incident report form, wired it through report.js/submit.php into the report_category column, and surfaced the category on admin cards/modal.
+[2026-09-29 14:50] - Rewrote dashboard/summary.php against the live cgmi_ims schema (sale/sale_item tables, warehouse+store+shelf stock split, unit_price-based stock value) so admin/super-admin KPI cards load correctly.
+[2026-09-29 14:52] - Rewrote reports/sales_summary.php against the live schema (sale/sale_item, computed quantity*unit_price line totals, fulfillment sales mix) to power dashboard sales KPIs and charts.
+[2026-09-29 14:54] - Rewrote reports/inventory_summary.php against the live schema (derived overall stock from warehouse+store+shelf, category via sub_categories, movement analytics from ingoing_items/outgoing_items since stock_movements does not exist).
+[2026-09-29 15:02] - Made sales_summary.php resilient to the corrupted cgmi_ims.sale_item table (caught in a try/catch so top-item/line analytics degrade to empty instead of returning a 500 and breaking the whole dashboard).
+[2026-09-29 15:20] - Maximized dashboard panel width in assets/css/admin/dashboard.css: removed the 2400px centered cap at >=1920px and made the .f-body right rail fluid (fr-based minmax) so charts fill the full available width on all screen sizes.
+[2026-09-29 15:30] - Added an "Incidents by Category" pie chart to the admin and super-admin dashboards (new ch-incident-category card in both views + Highcharts pie in dashboard.js grouping incident reports by report_category); no backend change needed since category already ships in the incidents list payload.
+[2026-09-29 00:00] - Removed overflow-x:hidden from .main-content across all module CSS so the sticky top-header stays fixed at the top when scrolling.
+[2026-09-29 00:00] - Added position:sticky to the checker panel .top-header so it stays at the top on scroll, matching the other panels.
+[2026-09-29 00:00] - Fixed incoming-confirmation responsive CSS by removing .main-content from the overflow-x:hidden group so its sticky header stays at the top.
+[2026-09-29 00:00] - Fixed sticky top-header not sticking: changed overflow-x:hidden to overflow-x:clip on html/body/.app-wrapper across all admin/inventory-staff/module CSS (hidden created a scroll container that trapped position:sticky); .page-content/.panel-card kept as hidden.
+[2026-09-29 00:00] - Added app/Api/dashboard/inventory_summary.php returning inventory, shelf, incoming-confirmation, and incident KPIs for the new inventory-role dashboard.
+[2026-09-29 00:00] - Added api/dashboard/inventory_summary.php public stub proxying to the inventory dashboard API implementation.
+[2026-09-29 00:00] - Added assets/js/modules/dashboard/inventory-dashboard.js rendering KPI cards and Highcharts for inventory, shelves, incoming confirmation, and incidents with 30s polling.
+[2026-09-29 00:00] - Added assets/css/inventory/dashboard.css with supplemental styles (teal badge, incident rows, chart-duo grid) layered over the shared dashboard CSS.
+[2026-09-29 00:00] - Added inventory dashboard view (app/Views/inventory/dashboard.php) and page stub (pages/inventory/dashboard.php) with sections for inventory, shelves, incoming confirmation, and incidents.
+[2026-09-29 00:00] - Added Dashboard nav link to all inventory-role sidebars (inventory, incident-report, shelves views, shared incoming-confirmation and sidebar component) and set inventory role home to the dashboard in app/Core/Auth.php.
+[2026-09-29 00:00] - Verified inventory dashboard endpoint: all 12 queries run cleanly against cgmi_ims and PHP files pass php -l; removed temporary verification harness.
+[2026-09-29 00:00] - Maximized inventory dashboard width via a scoped .dashboard-page class (full-width layout, 5-column KPI grid, wide-monitor chart split) in assets/css/inventory/dashboard.css.
+[2026-09-29 15:45] - Added a report-category button row below the KPI grid on the admin and super-admin dashboards (report-nav in both views, .report-nav CSS, and bindReportNav() in dashboard.js) that smooth-scrolls to each analytics section and highlights the active one via IntersectionObserver.
+[2026-09-29 16:05] - Restyled the dashboard report-category nav as a segmented pill (solid blue track, text-only buttons) with a white active indicator that slides to the clicked button, per the provided reference (updated both dashboard views, .report-nav CSS, and bindReportNav() slider logic in dashboard.js).
+[2026-09-29 16:30] - Converted the dashboard report-category pill into real tabs: each of the five sections is now a .report-panel and only the selected category shows (others hidden), wrapping sections in both dashboard views, adding .report-panel CSS, and updating bindReportNav() to toggle panels + reflow Highcharts (also reflow after each 30s refresh so charts in the active tab size correctly).
+[2026-09-29 16:40] - Smoothed the dashboard tab indicator slide by lengthening the .report-nav-slider transition to 0.45s with a spring easing (cubic-bezier .34,1.56,.64,1) and easing the button text color over 0.35s so the white pill glides with a gentle settle when switching tabs.
+[2026-09-29 16:50] - Made the dashboard report-tab pill compact and centered: switched .report-nav to inline-flex with align-self:center and tighter padding, and set buttons to flex:0 0 auto with smaller padding/font so the container hugs its content in the middle of the page.
+[2026-09-29 16:58] - Enlarged the active dashboard tab's text (font-size --fs-sm, weight 800) so the selected category is clearly distinct from the smaller inactive tabs; the JS slider re-measures after the class toggle so the white pill still fits the grown button.
+[2026-09-29 17:20] - Modernized the admin/super-admin dashboard visual design in dashboard.css: tightened spacing and card radii to the design tokens, replaced off-palette KPI icon accents (purple/teal) and the report-nav track/toast colors with brand palette values, added subtle hover elevation, and made the page-content a full-width flex column — no markup, data, or functionality changed.
+[2026-09-29 17:40] - Applied the modernized tabbed dashboard design to the inventory-role dashboard: wrapped its four sections (Inventory, Shelves, Incoming, Incidents) into report-panels behind the segmented pill navigator, added matching bindReportNav() slider/panel-toggle + Highcharts reflow logic to inventory-dashboard.js, and moved the inventory CSS's teal accents onto the brand palette.
+[2026-09-30 00:00] - Extended reports/inventory_summary.php with IoT shelf health/weight, warehouse-store-shelf distribution, supplier quality, outgoing-by-purpose, and net stock change to power inventory-focused dashboard analytics.
+[2026-09-30 00:01] - Extended dashboard/inventory_summary.php with warehouse-store-shelf distribution, IoT shelf weight breaches/occupancy, per-shelf weight utilization, supplier quality, and outgoing-by-purpose for the inventory role dashboard.
+[2026-09-30 00:02] - Added app/Api/dashboard/superadmin_summary.php governance endpoint (user/security KPIs, role distribution, supplier health, stock-change audit trail, data-quality flags) for the super-admin dashboard.
+[2026-09-30 00:03] - Added api/dashboard/superadmin_summary.php public route stub proxying to the super-admin governance endpoint.
+[2026-09-30 00:04] - Updated inventory dashboard view + inventory-dashboard.js with location-distribution donut, outgoing-by-purpose column, supplier-quality stacked bar, IoT shelf weight-utilization chart, shelf-health bars, and occupancy/weight-alert KPI cards.
+[2026-09-30 00:05] - Updated admin + super-admin dashboard views and shared dashboard.js: added location-distribution donut, supplier-quality chart, real IoT shelf weight-utilization chart, stock-change audit trail, and (super-admin only) governance endpoint wiring with data-quality flags and account-security watch.
+[2026-09-30 00:06] - Reworked dashboard KPI cards to lead with inventory/IoT metrics (total units with WH/Store/Shelf split, stock value, low/out of stock, net stock change, shelf occupancy, shelf weight alerts, low-stock shelves) and demoted sales to a single supporting card on admin/super-admin; added WH/Store/Shelf split to the inventory dashboard's stock-units card.
+[2026-09-30 00:07] - Maximized dashboard space: added full-width .dashboard-page treatment to admin + super-admin views (edge-to-edge content, auto-fit KPI grid so 9-10 cards fill each row, full-width report nav, wider chart column and taller charts on large screens) and switched the inventory dashboard KPI grid to auto-fit for consistency.
+[2026-09-30 00:00] - Added data-incoming-trash-enabled flag to super-admin incoming-confirmation view to scope the new UI-only delete/Trash feature to that page.
+[2026-09-30 00:00] - Added a "Trash" tab button to the super-admin incoming-confirmation view for the new UI-only delete feature.
+[2026-09-30 00:00] - Added the Trash tab panel/table markup to the super-admin incoming-confirmation view to hold UI-only deleted deliveries.
+[2026-09-30 00:00] - Added localStorage-backed trashedIds state to incoming-confirmation.js to track UI-only deleted deliveries without touching the database.
+[2026-09-30 00:00] - Updated setCounts in incoming-confirmation.js to exclude trashed deliveries from stats and populate the Trash tab count.
+[2026-09-30 00:00] - Implemented UI-only Trash in incoming-confirmation.js: Delete button on reviewed deliveries, Trash tab render, Restore/Delete-Permanently actions, and startup load of trashed IDs (no database deletion).
+[2026-09-30 00:00] - Replaced the Archived tab with a Trash tab (with count) in the super-admin incident-report view for the new UI-only delete feature.
+[2026-09-30 00:00] - Added window.CGMI_INCIDENTS_TRASH flag to the super-admin incident-report view to scope the Delete/Trash flow to that page only.
+[2026-09-30 00:00] - Added trash state and visible/trashed helpers to incident-reports.js so trashed reports are excluded from stats/tabs and counted in the Trash tab (super-admin only).
+[2026-09-30 00:00] - Implemented UI-only Trash in incident-reports.js: Delete replaces Archive on reviewed reports (super-admin), Trash tab with Restore/Delete-Permanently, localStorage-backed trashedIds, click+modal wiring, and empty-state; admin/inventory keep Archive when the flag is off. No database deletion.
+[2026-09-30 00:00] - Replaced native window.confirm in incoming-confirmation.js Delete-Permanently with a styled in-app confirm modal, and added confirm-modal CSS to incoming-confirmation main.css.
+[2026-09-30 00:00] - Replaced native window.confirm in incident-reports.js Delete-Permanently with a styled in-app confirm modal reusing the existing .confirm-overlay/.confirm-box styles.
+[2026-09-30 00:00] - Restyled the incident-report delete confirm modal to match the incoming-confirmation modal (left-aligned header with X, footer buttons) via new confirm-modal-* markup in incident-reports.js and matching CSS in incidents.css.
+[2026-09-30 00:00] - Fixed Delete Permanently reappearing after refresh: added a persistent purgedIds localStorage set in both incoming-confirmation.js and incident-reports.js, filtered purged items out of all tabs (including Trash), so permanently-removed items stay hidden without deleting from the database.
+[2026-09-30 00:00] - Fixed blank white toast on incident report actions: toast() now renders the structured icon/title/message markup the active .toast (white card) style expects, instead of plain white-on-white text.
+[2026-09-30 00:00] - Restyled incident report toasts to match the incoming-confirmation reference: typed success/error/warning/info toasts with colored icon, left border, and title; success on approve/reject/delete/restore/purge, error on failures.
+[2026-09-30 00:00] - Added global .toast-stack-left/.toast-stack-right CSS in root.css so error/warning toasts anchor bottom-left and success/info bottom-right for consistent UI/UX.
+[2026-09-30 00:00] - inventory/app.js showToast now routes toasts to the left/right stack by type via new _toastStackFor helper.
+[2026-09-30 00:00] - checker/checker.js showToast now routes toasts to left/right stack by type via new toastStackFor helper.
+[2026-09-30 00:00] - checker/incoming-confirmation.js showToast now routes toasts to left/right stack by type via new toastStackFor helper.
+[2026-09-30 00:00] - incident-report-admin/incident-reports.js toast() now routes toasts to left/right stack by type via new toastStackFor helper.
+[2026-09-30 00:00] - incident-report-inventory/toast.js showToast now routes to left/right stack, inferring alert side from the accent color.
+[2026-09-30 00:00] - admin/suppliers.js toast() gained a type param (default success->right), error catch sites now pass 'error'->left.
+[2026-09-30 00:00] - user-management.js toast() gained a type param (default success->right); its three error catch sites now pass 'error'->left.
+[2026-09-30 00:00] - shelves/shelves-admin.js toast() gained a type param (default success->right); its two error catch sites now pass 'error'->left.
+[2026-09-30 00:00] - POS toast CSS (cashier/pos.css + modules/pos/base.css) now anchors success/info bottom-right and error/warning bottom-left instead of bottom-center.
+[2026-09-30 00:00] - Verified all 8 modified toast JS files pass node --check and confirmed stack class names match root.css; toast repositioning task complete.
+[2026-09-30 00:00] - Added database/notifications.sql schema for the role-based in-app notification system.
+[2026-09-30 00:00] - Added migration script for the notifications table.
+[2026-09-30 00:00] - Added app/Api/notifications/common.php with self-healing DDL, notify_user/notify_role helpers, dedupe, and role-based link resolution.
+[2026-09-30 00:00] - Added notifications API endpoints (list, unread-count, mark-read, mark-all-read) in app/Api/notifications and their public stubs in api/notifications.
+[2026-09-30 00:00] - Added notification bell + dropdown design-system styles and bell icons to assets/css/root.css.
+[2026-09-30 00:00] - Added assets/js/components/notifications.js driving the bell (polling, dropdown, mark read/all, navigation, empty state).
+[2026-09-30 00:00] - Added app/Views/shared/notification-bell.php partial (role-guarded bell markup + API config + script include).
+[2026-09-30 00:00] - Injected the notification-bell partial into all admin, inventory, checker, and superadmin panel headers (including the shared incoming-confirmation view) and stripped accidental UTF-8 BOMs.
+[2026-09-30 00:00] - Hooked notification generation into events: incident submit/review, checker save (incoming/outgoing), incoming & outgoing confirmation, POS checkout, low-stock in stock movements, user creation, and account lock.
+[2026-09-30 00:00] - Verified the notification system: linted 141 PHP files (0 errors, 0 BOMs) and ran a DB smoke test confirming create/dedupe/list/count/transform work end-to-end.[2026-10-09 00:00] - Removed cashier role routing from get_home_for_role() in Auth.php as part of sales feature removal.
+
+[2026-10-09 00:01] - Removed cashier role from user_role_db_to_label() in users/common.php as part of sales feature removal.
+
+[2026-10-09 00:02] - Removed cashier role label from sidebar.php role label match as part of sales feature removal.
+
+[2026-10-09 00:03] - Removed sales KPIs, recentSales query, and sales fields from dashboard summary.php as part of sales feature removal.
+
+[2026-10-09 00:04] - Removed Sales Report nav link, Sales tab, Sales panel, and sales endpoint from admin dashboard view as part of sales feature removal.
+
+[2026-10-09 00:05] - Removed Sales tab, Sales panel, and sales endpoint from superadmin dashboard view as part of sales feature removal.
+
+[2026-10-09 00:06] - Removed all sales-related state, functions, charts, and fetch calls from dashboard.js as part of sales feature removal.
+
+[2026-10-09 00:07] - Removed Cashier role option and Sales Report nav link from admin user-management view as part of sales feature removal.
+
+[2026-10-09 00:08] - Removed Sales Report nav links from hardcoded sidebars in all admin view files (suppliers, inventory-admin, inventory-report, incident-report, shelves-admin, shared/incoming-confirmation).
+
+[2026-10-09 00:09] - Removed Cashier from manageableRoles in superadmin user-management view; all sales-related nav panels now fully removed across all views.
+[2026-10-09 00:00] - Replaced Reports dropdown in admin/dashboard.php sidebar with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in admin/inventory-report.php sidebar with a direct active Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in admin/shelves-admin.php sidebar with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in admin/user-management.php sidebar with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in admin/suppliers.php sidebar with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in admin/inventory-admin.php sidebar with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in admin/incident-report.php sidebar with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in shared/incoming-confirmation.php sidebar with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in shared/sidebar.php (admin branch) with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Replaced Reports dropdown in shared/sidebar.php (super-admin branch) with a direct Inventory Report nav link.
+[2026-10-09 00:00] - Removed unused $reportsOpen variable from super-admin branch in shared/sidebar.php.
+[2026-10-09 00:00] - Removed unused $reportsOpen variable from admin branch in shared/sidebar.php.
+[2026-10-09 00:00] - Removed Reports dropdown JS (toggle/open/close logic) from assets/js/components/sidebar.js as the dropdown no longer exists.
+[2026-10-09 00:00] - Appended changelog entries for Reports dropdown removal across all sidebar files.
+[2026-10-09 00:00] - Modified app/Api/auth/login.php to include unread notification count in the login success response so the frontend can show a popup before redirecting.
+[2026-10-09 00:01] - Added notification popup modal markup to index.php to display unread notification count after a successful login.
+[2026-10-09 00:02] - Updated assets/js/index.js to show a notification popup with unread count after login before redirecting, with a 5-second auto-redirect progress bar.
+[2026-10-09 00:03] - Reverted app/Api/auth/login.php to remove unread count from login response; notification popup will now trigger on the main panel pages instead.
+[2026-10-09 00:10] - Updated notifications.js popup logic to re-trigger whenever unread count grows, and reset the seen counter when all notifications are marked read.
+[2026-10-09 00:00] - Rewrote sidebar.js to support toggle on all screen sizes with localStorage persistence for desktop state.
+[2026-10-09 00:01] - Updated .menu-toggle in main.css to display:flex on all screen sizes so the sidebar toggle button is visible on desktop too.
+[2026-10-09 00:02] - Added body.sidebar-collapsed CSS rules to main.css to support desktop sidebar hide/show via JS class toggle.
+[2026-10-09 00:03] - Removed redundant .menu-toggle display:flex override from responsive.css since it is now always visible via main.css.
+
+[2026-10-09 00:00] - Removed Archive button from admin incident report panel (actionButtons, modal listener, and card grid handler).
+[2026-10-09 00:01] - Removed Archived tab button from admin incident report PHP view.
+[2026-10-09 00:02] - Removed archivedReports variable from admin incident reports JS.
+[2026-10-09 00:03] - Removed loadArchivedReports function from admin incident reports JS.
+[2026-10-09 00:04] - Removed archived branch from currentReports function in admin incident reports JS.
+[2026-10-09 00:05] - Removed archived tab logic from openModal in admin incident reports JS.
+[2026-10-09 00:06] - Removed archive action branch from updateIncident in admin incident reports JS.
+[2026-10-09 00:07] - Removed archiveReport function from admin incident reports JS.
+[2026-10-09 00:08] - Removed archived branch from setActiveTab in admin incident reports JS.
+[2026-10-09 00:09] - Removed archived empty-state message from renderReports in admin incident reports JS.
+[2026-10-09 00:10] - Removed archive card grid event handler from admin incident reports JS.
+
+[2026-10-09 00:11] - Restyled approve/reject buttons in admin incident reports to match green/red outlined pill design from reference image.
+[2026-10-09 00:12] - Renamed "Approve" button label to "Confirm" in admin incident reports to match reference image.
+
+[2026-10-09 00:13] - Added action button styles to admin/incidents.css (correct file loaded by both admin and superadmin incident report views).
+
+[2026-10-09 00:14] - Removed icons from Confirm and Reject buttons in admin incident reports.
+[2026-10-10 00:00] - Removed border from .notif-bell in root.css to eliminate the notification icon border across all panels.
+[2026-10-10 00:00] - Removed border from .menu-toggle in admin/main.css to eliminate the burger navigation icon border.
+[2026-10-10 00:01] - Removed border from .menu-toggle across all module CSS files (admin, inventory-staff, modules) and removed border from .notif-bell in root.css to clean up the burger nav and notification icon borders.
+[2026-10-10 00:02] - Added CSS rotation to .menu-toggle icon in root.css so it rotates 90deg (vertical) when sidebar is open and resets (horizontal) when closed, using the existing aria-expanded attribute.
+[2026-10-10 00:03] - Added smooth sidebar open/close animations in root.css (slide + shadow transition, overlay fade-in/out keyframes) and updated sidebar.js to fade out the mobile overlay using an is-closing class before removing it.
+[2026-10-10 00:04] - Applied smooth sidebar open/close transitions across all 19 module CSS files: replaced generic --transition-slow with explicit transform+box-shadow 0.3s easing and upgraded overlay from fadeIn-only to sidebarOverlayIn/Out keyframes with fade-out support.
+
+[2026-10-10 00:05] - Rewrote sidebar.js to apply inline style transitions (transform, margin-left, opacity) directly via JS so they override any CSS cascade conflicts and ensure smooth open/close animation across all pages.
+[2026-10-10 00:00] - Added missing responsive --sidebar-width breakpoints (1920px, 1400px, 1200px, 1024px) to assets/css/admin/suppliers.css to match sidebar width behavior of other admin panels.
+[2026-10-10 00:01] - Replaced inline sidebar HTML in app/Views/admin/suppliers.php with shared sidebar partial to match all other admin panels.
+[2026-10-10 00:00] - Fixed incident reports date filter in incident-reports.js to slice the date directly from the server's offset-aware ISO string instead of converting to UTC via toISOString(), which was causing Manila-timezone records to appear as the previous calendar day.
+[2026-10-11 00:00] - Removed the icon span from the Delete button in the super-admin incident report panel (incident-reports.js).
+[2026-10-11 00:00] - Added soft-delete columns (deleted_at, deleted_by) to ingoing table via ensure_ingoing_tables() auto-migration in common.php to support server-side delete for incoming transactions.
+[2026-10-11 00:01] - Replaced localStorage-only trash with server-backed delete API (trash/restore/purge) for incoming confirmations so deletions are visible to all roles immediately.
+[2026-10-11 00:00] - Restyled the DataTables search bar in suppliers.css to a pill-shaped input with an embedded search icon, matching the new design reference.
+[2026-10-11 00:01] - Updated suppliers.css search bar styles to match inventory-admin design using shared CSS variables (bg-input, border-color, radius-md, blue-pale placeholder).
+[2026-10-11 00:02] - Removed DataTables built-in search from suppliers.js layout to replace it with a custom search-wrapper matching inventory-admin design.
+[2026-10-11 00:03] - Replaced DataTables built-in search on supplier pages with a custom search-wrapper (HTML + CSS + JS) matching the inventory-admin design.
+[2026-10-12 00:00] - Removed "Add User" button from admin user management view since only super-admin is allowed to create users.
+[2026-10-12 00:01] - Updated empty state message in admin user management view to remove reference to the now-hidden "Add User" button.
+[2026-10-12 00:02] - Renamed "Approved" tab to "Checked" in admin incident report view.
+[2026-10-12 00:03] - Renamed "Approved" tab to "Checked" in superadmin incident report view.
+[2026-10-12 00:00] - Added notification to admin/super-admin/inventory in recheck-submit.php when a checker re-checks an item and marks it as "Accepted / Good", so they know it is back in Pending and awaiting confirmation.
+[2026-10-12 00:00] - Added 'outgoing-confirmation' page key for admin and inventory roles in notification_link_for_role() so outgoing approval notifications can link to the confirmation hub.
+[2026-10-12 00:01] - Updated notify_outgoing_confirmation() in confirm-outgoing.php to broadcast approval notifications to admin, super-admin, and inventory roles when an outgoing item is approved and stock is deducted.
+[2026-10-12 00:02] - Changed 'outgoing-confirmation' link for admin role to point to inventory-admin.php so clicking the notification redirects to the inventory page.
+[2026-10-12 00:03] - Changed 'outgoing-confirmation' link for inventory role to point to inventory.php so clicking the notification redirects to the inventory page.
+[2026-10-12 00:04] - Added 'outgoing-confirmation' link for super-admin role in notification_link_for_role() pointing to inventory-admin.php so clicking the notification redirects to inventory.
+[2026-10-12 00:00] - Created debug_notif.php to query outgoing notifications and inspect stored links for debugging wrong redirect issue.
+[2026-10-12 00:01] - Updated debug_notif.php into a DB fix script to patch outgoing notifications that had incorrect incoming-confirmation links.
+[2026-10-12 00:02] - Added missing 'checker' page key to admin and inventory role maps in notification_link_for_role() so outgoing-pending notifications have valid redirect links.
+[2026-10-12 00:03] - Removed invalid 'checker' entries from admin and inventory role maps in notification_link_for_role() since those page stubs don't exist for those roles.
+
+[2026-10-12 00:00] - Added $isDeduction flag to notify_outgoing_confirmation() call site to skip admin/inventory broadcast for internal stock transfers (Store/IoT Shelves Replenishment).
+[2026-10-12 00:00] - Updated notify_outgoing_confirmation() signature with $isDeduction bool param to control whether admin/inventory broadcast fires.
+[2026-10-12 00:00] - Gated admin/super-admin/inventory outgoing approval broadcast behind $isDeduction flag so internal transfers do not generate spurious notifications.
+
+[2026-10-12 00:01] - Skipped admin/inventory/super-admin outgoing notifications in save.php for non-deduction purposes (Store/IoT Shelves Replenishment).
+[2026-10-12 00:00] - Fixed re-checking notification bug in confirm-incoming.php by using a timestamp-based dedupe key for items returning to "For Re-checking", ensuring the checker always receives a notification on each re-checking cycle regardless of whether the previous one was read.
+[2026-10-12 00:01] - Fixed recheck-submit.php to notify admin/inventory/super-admin even when a re-checked item's condition stays Damaged or Incomplete/Missing, and switched to a timestamp-based dedupe key so repeated re-check cycles always fire a fresh notification.
+[2026-10-12 00:02] - Fixed save.php outgoing notification link to use outgoing-confirmation page instead of the checker page, so admin/inventory/super-admin land on the correct review page when clicking the notification.
+[2026-10-12 00:03] - Fixed save.php to send outgoing pending notifications for Store Replenishment and IoT Shelves Replenishment purposes, which were previously skipped despite still requiring per-item admin/inventory confirmation.
+[2026-10-12 00:04] - Fixed confirm-outgoing.php notification messages to describe the actual stock movement (deducted from source, added to Store or IoT Shelves) for replenishment purposes, and enabled the admin/inventory broadcast for replenishment approvals which was previously suppressed.
+[2026-10-12 00:00] - Removed duplicate menu-toggle click listener in checker.js that was cancelling the sidebar.js toggle on mobile, preventing the sidebar from opening on smaller screens.

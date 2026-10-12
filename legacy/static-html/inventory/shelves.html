@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGMI.IMS — Shelves</title>
+  <meta name="description" content="Hardware & Construction Supply Shelves Panel">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="/assets/lib/jquery/jquery-3.7.1.min.js"></script>
+
+  <!-- <link rel="stylesheet" href="/assets/css/layout/sidebar.css"> -->
+  <link rel="stylesheet" href="/assets/css/inventory-staff/main.css">
+  <link rel="stylesheet" href="/assets/css/inventory-staff/modal.css">
+  <link rel="stylesheet" href="/assets/css/inventory-staff/responsive.css">
+  
+  <!-- Root & Shelves-specific CSS -->
+  <link rel="stylesheet" href="/assets/css/root.css">
+  <link rel="stylesheet" href="/assets/css/inventory-staff/shelves.css">
+
+</head>
+<body>
+  <div class="app-wrapper">
+
+      <!-- ═══════════════ SIDEBAR ═══════════════ -->
+      <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main Navigation">
+        <div class="sidebar-logo">
+          <div class="logo-icon">CG</div>
+          <div class="logo-text">Calamba General Merchandise Inc.<span>Hardware &amp; Supply</span></div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section-label">Main</div>
+            <a class="nav-item" href="/pages/inventory/inventory.html" aria-current="page"><span class="nav-icon">IN</span>Inventory</a>
+            <a class="nav-item" href="/pages/inventory/incident-report.html"><span class="nav-icon">!</span>Incident Reports</a>
+            <a class="nav-item active" href="/pages/inventory/shelves.html"><span class="nav-icon">SH</span>Shelves</a>
+          <div class="nav-section-label">Settings</div>
+            <a class="nav-item" href="/index.html" aria-current="page"><span class="nav-icon">LO</span>Log-out</a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-card">
+            <div class="user-avatar">JD</div>
+            <div class="user-info">
+              <div class="user-name">John Dela Cruz</div>
+              <div class="user-role">Inventory Manager</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
+
+
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle sidebar">Menu</button>
+          <div>
+            <div class="page-title">Shelves</div>
+            <div class="page-breadcrumb"><span>Main > Shelf Management</span></div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <!-- ══ SHELF STATS ROW ══ -->
+        <div class="stats-row" role="region" aria-label="Shelf Status Summary">
+          <div class="stat-card" style="--stat-accent:#1F3F74;--stat-bg:rgba(31,63,116,0.1)">
+            <div class="stat-icon">SH</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-total">0</div>
+              <div class="stat-label">Total Shelves</div>
+              <div class="stat-change neutral">All Shelves</div>
+            </div>
+          </div>
+          <div class="stat-card" style="--stat-accent:#16a34a;--stat-bg:rgba(22,163,74,0.1)">
+            <div class="stat-icon">IN</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-occupied">0</div>
+              <div class="stat-label">Occupied Shelves</div>
+              <div class="stat-change up">In Use</div>
+            </div>
+          </div>
+          <div class="stat-card" style="--stat-accent:#4569AD;--stat-bg:rgba(69,105,173,0.1)">
+            <div class="stat-icon">EM</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-unused">0</div>
+              <div class="stat-label">Unused Shelves</div>
+              <div class="stat-change neutral">Available</div>
+            </div>
+          </div>
+          <div class="stat-card" style="--stat-accent:#dc2626;--stat-bg:rgba(220,38,38,0.1)">
+            <div class="stat-icon">!</div>
+            <div class="stat-info">
+              <div class="stat-value" id="stat-alert">0</div>
+              <div class="stat-label">Alert / Maintenance</div>
+              <div class="stat-change down">Needs Attention</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SHELVES PANEL ══ -->
+        <div class="panel-card">
+
+          <div class="panel-header">
+            <div class="panel-title">
+              SH Shelves
+              <span class="panel-title-badge" id="shelves-count-badge">0</span>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-primary" id="add-shelf-btn">Add Shelf</button>
+            </div>
+          </div>
+          <div class="shelves-grid" id="shelves-grid"></div>
+
+          <div class="empty-state" id="shelves-empty" style="display:none;">
+            <div class="empty-state-icon">SH</div>
+            <div class="empty-state-title">No Shelves Yet</div>
+            <div class="empty-state-desc">Click "Add Shelf" to register your first shelf.</div>
+          </div>
+
+        </div> <!-- End of .panel-card -->
+
+      </div> <!-- End of .page-content -->
+    </main> <!-- End of .main-content -->
+  </div> <!-- End of .app-wrapper -->
+
+  <!-- ═══════════════ SHELF DETAILS MODAL ═══════════════ -->
+  <div class="modal-backdrop" id="details-modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal" style="max-width:540px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon">INFO</div>
+          <div>
+            <div class="modal-title">Shelf Details</div>
+            <div class="modal-subtitle">Full information about this shelf</div>
+          </div>
+        </div>
+        <button class="modal-close" id="details-modal-close" aria-label="Close">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section-label">Shelf Identity</div>
+        <div class="det-info-grid">
+          <div class="det-info-item span-2">
+            <div class="det-info-label">Shelf Name</div>
+            <div class="det-info-value" id="det-shelf-name">—</div>
+          </div>
+          <div class="det-info-item">
+            <div class="det-info-label">Location</div>
+            <div class="det-info-value" id="det-location">—</div>
+          </div>
+          <div class="det-info-item">
+            <div class="det-info-label">Level</div>
+            <div class="det-info-value" id="det-level">—</div>
+          </div>
+        </div>
+        <div class="modal-section-label">Stored Item</div>
+        <div class="det-info-grid">
+          <div class="det-info-item span-2">
+            <div class="det-info-label">Item Name</div>
+            <div class="det-info-value" id="det-item">—</div>
+          </div>
+          <div class="det-info-item">
+            <div class="det-info-label">Quantity</div>
+            <div class="det-info-value" id="det-quantity">—</div>
+          </div>
+          <div class="det-info-item">
+            <div class="det-info-label">Weight</div>
+            <div class="det-info-value" id="det-weight">—</div>
+          </div>
+        </div>
+        <div class="modal-section-label">Weight Capacity</div>
+        <div class="det-info-grid">
+          <div class="det-info-item">
+            <div class="det-info-label">Min Weight Threshold (kg)</div>
+            <div class="det-info-value" id="det-min">—</div>
+          </div>
+          <div class="det-info-item">
+            <div class="det-info-label">Max Weight Threshold (kg)</div>
+            <div class="det-info-value" id="det-max">—</div>
+          </div>
+        </div>
+        <div class="modal-section-label">Status</div>
+        <div id="det-status-wrap"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="document.getElementById('details-modal-close').click()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ADD / UPDATE SHELF MODAL ═══════════════ -->
+  <div class="modal-backdrop" id="form-modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal" style="max-width:600px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon">SH</div>
+          <div>
+            <div class="modal-title" id="form-modal-title">Add New Shelf</div>
+            <div class="modal-subtitle" id="form-modal-subtitle">Fill in the details to register a shelf</div>
+          </div>
+        </div>
+        <button class="modal-close" id="form-modal-close" aria-label="Close">x</button>
+      </div>
+      <div class="modal-body">
+        <!-- Row 1: Shelf Name full width -->
+        <div class="form-group">
+          <label class="form-label required" for="form-shelf-name">Shelf Name</label>
+          <input class="form-control" type="text" id="form-shelf-name" placeholder="e.g. Shelf A1" autocomplete="off">
+        </div>
+        <!-- Row 2: Location | Item -->
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label required" for="form-location">Shelf Location</label>
+            <input class="form-control" type="text" id="form-location" placeholder="e.g. Aisle 1, Row A" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-item">Item (from Inventory)</label>
+            <select class="form-control" id="form-item"><option value="">— Select Item —</option></select>
+          </div>
+        </div>
+        <!-- Row 3: Min Weight | Max Weight -->
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="form-min">Min Weight Threshold (kg)</label>
+            <input class="form-control" type="number" id="form-min" placeholder="e.g. 0 kg" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-max">Max Weight Threshold (kg)</label>
+            <input class="form-control" type="number" id="form-max" placeholder="e.g. 500 kg" min="0">
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="form-status">Shelf Status</label>
+            <select class="form-control" id="form-status">
+              <option value="Unused">Unused</option>
+              <option value="Occupied">Occupied</option>
+              <option value="Alert">Alert</option>
+              <option value="Maintenance">Maintenance</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span class="save-hint">Fields marked <span style="color:var(--accent-danger)">*</span> are required.</span>
+        <button class="btn btn-ghost" id="form-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="form-save-btn">Add Shelf</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ CONFIRM DIALOG ═══════════════ -->
+  <div class="confirm-overlay" id="confirm-overlay" role="alertdialog" aria-modal="true">
+    <div class="confirm-box">
+      <div class="confirm-icon" id="confirm-icon">?</div>
+      <div class="confirm-title" id="confirm-title">Are you sure?</div>
+      <div class="confirm-msg" id="confirm-msg"></div>
+      <div class="confirm-actions">
+        <button class="btn btn-ghost" id="confirm-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="confirm-ok-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loading-overlay" aria-hidden="true"><div class="loader"></div></div>
+  <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="/assets/js/components/sidebar.js"></script>
+  <script src="/assets/js/modules/shelves/shelves-admin.js"></script>
+</body>
+</html>

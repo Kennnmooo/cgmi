@@ -1,0 +1,46 @@
+/* ============================= */
+/* Highcharts Data Table Styling */
+/* ============================= */
+.highcharts-data-table {
+    border-collapse: collapse;
+    margin: 1em auto;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 800px;
+}
+
+.highcharts-data-table caption {
+    padding: 0.5em;
+    font-weight: 600;
+    color: #333;
+    text-align: left;
+}
+
+.highcharts-data-table thead tr {
+    background-color: #007BFF;
+    color: white;
+}
+
+.highcharts-data-table th,
+.highcharts-data-table td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+.highcharts-data-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.highcharts-data-table tbody tr:hover {
+    background-color: #e9f3ff;
+}
+
+.highcharts-data-table td {
+    color: #333;
+}

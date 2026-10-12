@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CGMI.IMS — Point of Sale</title>
+  <meta name="description" content="Hardware & Construction Supply User Management Panel">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!--
+    ═══════════════════════════════════════════════════════════
+    CSS — load order matters (base first, responsive last)
+    ═══════════════════════════════════════════════════════════
+    css/base.css        Variables, reset, buttons, animations, toast
+    css/layout.css      Header, pos-app, pos-layout, toolbar
+    css/products.css    Product grid, product cards, empty state
+    css/cart.css        Cart panel, rows, qty stepper, summary
+    css/checkout.css    Modals, numpad, change display, receipt
+    css/responsive.css  All @media breakpoints + @media print
+  -->
+
+  <link rel="stylesheet" href="/assets/css/cashier/pos.css">
+  <link rel="stylesheet" href="/assets/css/root.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MAIN POS APP
+       Visible immediately — no login screen.
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="pos-app" class="pos-app">
+
+    <!-- ── Header ─────────────────────────────────────────── -->
+    <header class="header">
+      <div class="header-left">
+        <span class="logo-icon-sm">CG</span>
+        <span class="brand-name">Calamba General Merchandise Inc. INC.</span>
+      </div>
+      <div class="header-center">
+        <span id="current-datetime" class="datetime"></span>
+      </div>
+      <div class="header-right">
+        <!-- Right side intentionally empty — add cashier name here if needed -->
+      </div>
+    </header>
+
+    <!-- ── Main split layout ──────────────────────────────── -->
+    <div class="pos-layout">
+
+      <!-- ════ PRODUCTS PANEL (left) ════ -->
+      <section class="products-panel">
+
+        <!-- Search + Filter Toolbar -->
+        <div class="toolbar">
+
+          <!-- Search bar -->
+          <div class="search-wrapper">
+            <span class="search-icon">S</span>
+            <input
+              type="text"
+              id="search-input"
+              class="search-input"
+              placeholder="Search products…"
+              autocomplete="off"
+            />
+            <button id="search-clear" class="search-clear hidden">x</button>
+          </div>
+
+          <!-- Dropdowns: category, sub-category, sort -->
+          <div class="filter-controls">
+            <select id="category-filter" class="select-control">
+              <option value="all">All Categories</option>
+              <!-- Populated dynamically by products.js -->
+            </select>
+
+            <select id="subcategory-filter" class="select-control hidden">
+              <option value="all">All Sub-categories</option>
+              <!-- Populated dynamically by products.js -->
+            </select>
+
+            <select id="sort-control" class="select-control">
+              <option value="default">Sort: Default</option>
+              <option value="az">Name: A → Z</option>
+              <option value="za">Name: Z → A</option>
+              <option value="price-asc">Price: Low → High</option>
+              <option value="price-desc">Price: High → Low</option>
+            </select>
+          </div>
+        </div><!-- end .toolbar -->
+
+        <!-- Product Cards Grid — populated by products.js -->
+        <div id="product-grid" class="product-grid"></div>
+
+        <!-- Shown when search/filter returns no results -->
+        <div id="no-results" class="no-results hidden">
+          <span>Item</span>
+          <p>No products found.</p>
+        </div>
+
+      </section><!-- end .products-panel -->
+
+
+      <!-- ════ CART PANEL (right) ════ -->
+      <aside class="cart-panel">
+
+        <!-- Cart header: title + Clear All -->
+        <div class="cart-header">
+          <h2 class="cart-title">Cart</h2>
+          <button id="clear-cart-btn" class="btn btn-ghost btn-sm">Clear All</button>
+        </div>
+
+        <!-- Scrollable list of cart rows — populated by cart-ui.js -->
+        <div id="cart-items" class="cart-items"></div>
+
+        <!-- Shown when cart is empty -->
+        <div id="cart-empty" class="cart-empty">
+          <span>Basket</span>
+          <p>Your cart is empty.<br/>Add items from the product list.</p>
+        </div>
+
+        <!-- Summary section — shown only when cart has items -->
+        <div id="cart-summary" class="cart-summary hidden">
+
+          <!-- Transaction-level discount (single fixed ₱ amount) -->
+          <div class="summary-discount-row">
+            <label class="summary-label" for="transaction-discount">Discount (₱)</label>
+            <input
+              type="number"
+              id="transaction-discount"
+              class="discount-input"
+              placeholder="0.00"
+              min="0"
+              step="0.01"
+            />
+          </div>
+
+          <!-- Running totals -->
+          <div class="summary-line">
+            <span>Sub-total</span>
+            <span id="summary-subtotal">₱0.00</span>
+          </div>
+          <div class="summary-line discount-line">
+            <span>Discount</span>
+            <span id="summary-discount">–₱0.00</span>
+          </div>
+          <div class="summary-line total-line">
+            <span>TOTAL</span>
+            <span id="summary-total">₱0.00</span>
+          </div>
+
+          <!-- Pickup / Delivery toggle -->
+          <div class="fulfillment-toggle">
+            <button id="btn-pickup"   class="fulfillment-btn active" data-type="pickup">Pickup</button>
+            <button id="btn-delivery" class="fulfillment-btn"        data-type="delivery">Delivery</button>
+          </div>
+
+          <!-- Opens the checkout confirmation modal -->
+          <button id="checkout-btn" class="btn btn-primary btn-full btn-lg">Checkout</button>
+
+        </div><!-- end #cart-summary -->
+
+      </aside><!-- end .cart-panel -->
+
+    </div><!-- end .pos-layout -->
+  </div><!-- end #pos-app -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       ORDER CONFIRMATION MODAL
+       Shows the order summary table and totals.
+       Body is built dynamically by checkout-modal.js.
+  ═══════════════════════════════════════════════════════════ -->
+
+  <div id="checkout-modal" class="modal-overlay hidden">
+    <div class="modal modal-checkout">
+
+      <div class="modal-header">
+        <h2>Order Confirmation</h2>
+        <button id="close-checkout-modal" class="modal-close">x</button>
+      </div>
+
+      <!-- Populated by checkout-modal.js (fulfillment badge + items table + totals) -->
+      <div id="checkout-summary-body" class="modal-body"></div>
+
+      <div class="modal-footer">
+        <button id="proceed-to-payment-btn" class="btn btn-primary btn-lg">
+          Proceed to Payment
+        </button>
+        <button id="cancel-order-btn" class="btn btn-outline btn-lg">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       NUMPAD (PAYMENT) MODAL
+       Shows only the total due and the cash numpad.
+       Body is built dynamically by checkout-modal.js.
+  ═══════════════════════════════════════════════════════════ -->
+
+  <div id="numpad-modal" class="modal-overlay hidden">
+    <div class="modal modal-numpad">
+
+      <div class="modal-header">
+        <h2>Cash Payment</h2>
+        <button id="close-numpad-modal" class="modal-close">x</button>
+      </div>
+
+      <!-- Populated by checkout-modal.js (total due + numpad) -->
+      <div id="numpad-body" class="modal-body"></div>
+
+      <div class="modal-footer">
+        <!-- Disabled until sufficient cash is entered (numpad.js) -->
+        <button id="confirm-order-btn" class="btn btn-primary btn-lg" disabled>
+          Confirm &amp; Print Receipt
+        </button>
+        <button id="back-to-order-btn" class="btn btn-outline btn-lg">← Back</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       RECEIPT MODAL
+       Body is built dynamically by receipt.js.
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="receipt-modal" class="modal-overlay hidden">
+    <div class="modal modal-receipt">
+
+      <div class="modal-header no-print">
+        <h2>Official Receipt</h2>
+        <button id="close-receipt-modal" class="modal-close no-print" disabled></button>
+      </div>
+
+      <!-- Populated by receipt.js -->
+      <div id="receipt-body" class="modal-body"></div>
+
+      <div class="modal-footer no-print">
+        <button id="print-btn" class="btn btn-primary btn-lg">Print Receipt</button>
+        <button id="new-transaction-btn" class="btn btn-outline btn-lg">New Transaction</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       QUANTITY MODAL  (opened by quantity-modal.js when any
+       "Add to Cart" action is triggered)
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="quantity-modal" class="modal-overlay hidden">
+    <div class="modal">
+
+      <div class="modal-header">
+        <h2 class="modal-title">How many units?</h2>
+        <button id="qm-close-btn" class="modal-close">x</button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Product preview row -->
+        <div class="qm-product-preview">
+          <span id="qm-product-emoji" class="qm-emoji">IN</span>
+          <div>
+            <div id="qm-product-name" class="qm-product-name"></div>
+            <div id="qm-product-price" class="qm-product-price"></div>
+          </div>
+        </div>
+
+        <!-- Quantity input + stepper -->
+        <div class="qm-qty-row">
+          <label for="qm-qty-input">Quantity</label>
+          <input
+            id="qm-qty-input"
+            type="number"
+            min="1"
+            step="1"
+            value="1"
+            autocomplete="off"
+          />
+          <div class="qm-stepper">
+            <button class="qm-step-btn" id="qm-dec-btn" title="Decrease">−</button>
+            <button class="qm-step-btn" id="qm-inc-btn" title="Increase">+</button>
+          </div>
+        </div>
+
+      </div><!-- /.modal-body -->
+
+      <div class="modal-footer">
+        <button id="qm-cancel-btn"  class="btn btn-outline">Cancel</button>
+        <button id="qm-confirm-btn" class="btn btn-primary">Add to Cart</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       TOAST NOTIFICATION  (global, managed by app.js)
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="toast" class="toast hidden"></div>
+
+
+  <!--
+    ═══════════════════════════════════════════════════════════
+    JAVASCRIPT — strict load order required
+
+    Each file handles one responsibility. Dependencies:
+      helpers.js        → no dependencies (load first)
+      data.js           → no dependencies
+      products.js       → data.js, helpers.js, cart-state.js, cart-ui.js
+      cart-state.js     → helpers.js, cart-ui.js, numpad.js
+      cart-ui.js        → cart-state.js, helpers.js, numpad.js
+      cart-events.js    → cart-state.js, cart-ui.js, checkout-modal.js
+      numpad.js         → cart-state.js, helpers.js
+      checkout-modal.js → cart-state.js, helpers.js, numpad.js
+      receipt.js        → cart-state.js, helpers.js
+      checkout-events.js→ checkout-modal.js, receipt.js
+      app.js            → all of the above (entry point, load last)
+    ═══════════════════════════════════════════════════════════
+  -->
+  <script src="/assets/js/modules/pos/helpers.js"></script>
+  <script src="/assets/js/modules/pos/data.js"></script>
+  <script src="/assets/js/modules/pos/cart-state.js"></script>
+  <script src="/assets/js/modules/pos/cart-ui.js"></script>
+  <script src="/assets/js/modules/pos/numpad.js"></script>
+  <script src="/assets/js/modules/pos/cart-events.js"></script>
+  <script src="/assets/js/modules/pos/checkout-modal.js"></script>
+  <script src="/assets/js/modules/pos/receipt.js"></script>
+  <script src="/assets/js/modules/pos/checkout-events.js"></script>
+  <script src="/assets/js/modules/pos/products.js"></script>
+  <script src="/assets/js/modules/pos/quantity-modal.js"></script>
+  <script src="/assets/js/modules/pos/app.js"></script>
+
+</body>
+</html>

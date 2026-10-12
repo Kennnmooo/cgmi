@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Append to Changelog",
+      "trigger": "PostToolUse",
+      "description": "After any file is created or edited, appends a timestamped summary to changelog.txt",
+      "matcher": "fs_write|str_replace|fs_append",
+      "action": {
+        "type": "agent",
+        "prompt": "A file was just created or modified. Append a new entry to the file `changelog.txt` in the workspace root (create it if it doesn't exist). The entry should be on its own line with the format: `[YYYY-MM-DD HH:MM] - <short summary of what was changed and why>`. Do NOT overwrite existing entries — always append. Keep summaries to one concise sentence."
+      }
+    }
+  ]
+}

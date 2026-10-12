@@ -1,0 +1,1040 @@
+﻿/* ============================================================
+   RESPONSIVE.CSS - ENHANCED FULL DEVICE RESPONSIVENESS
+   Mobile-first fluid breakpoints with orientation support.
+   Supports: Mobile Phones, Tablets, Laptops, Desktop Computers
+   Orientations: Portrait & Landscape
+   Key rule: ≤ 680px → compact 3-column table mode (JS-driven).
+   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   BASE FLUID TYPOGRAPHY & SPACING
+───────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: clip;
+  min-width: 320px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent layout shift on scroll */
+.app-wrapper {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ULTRA-WIDE DESKTOP ≥ 1920px
+───────────────────────────────────────────────────────────── */
+@media (min-width: 1920px) {
+  :root { --sidebar-width: 300px; }
+  .page-content { padding: 32px 40px; gap: 28px; max-width: 2400px; margin: 0 auto; }
+  .stats-row { grid-template-columns: repeat(4,1fr); gap: 24px; }
+  .panel-header, .toolbar { padding-left: 32px; padding-right: 32px; }
+  #inventory-table thead th,
+  #inventory-table tbody td { padding-left: 20px; padding-right: 20px; }
+  .stat-card { padding: 24px; }
+  .modal { max-width: 720px; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LARGE DESKTOP ≥ 1400px
+───────────────────────────────────────────────────────────── */
+@media (min-width: 1400px) {
+  :root { --sidebar-width: 272px; }
+  .page-content { padding: 28px 32px; gap: 24px; }
+  .stats-row { grid-template-columns: repeat(4,1fr); gap: 18px; }
+  .panel-header, .toolbar { padding-left: 26px; padding-right: 26px; }
+  #inventory-table thead th,
+  #inventory-table tbody td { padding-left: 18px; padding-right: 18px; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   STANDARD DESKTOP 1024px – 1399px  (base CSS)
+───────────────────────────────────────────────────────────── */
+
+/* ─────────────────────────────────────────────────────────────
+   LAPTOP / SMALL DESKTOP ≤ 1200px
+───────────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  :root { --sidebar-width: 240px; }
+  .stats-row { gap: 12px; }
+  .stat-icon { width: 40px; height: 40px; font-size: 18px; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TABLET LANDSCAPE ≤ 1024px
+   Better handling for landscape tablets and small laptops
+───────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  :root { --sidebar-width: 220px; --header-height: 60px; }
+
+  .page-content { padding: 18px; gap: 16px; }
+  .stats-row { grid-template-columns: repeat(2,1fr); gap: 12px; }
+  .header-stat { display: none; }
+  .toolbar { padding: 12px 16px; gap: 8px; flex-wrap: wrap; }
+  .search-wrapper { max-width: 260px; flex: 1; min-width: 200px; }
+  .panel-header { padding: 14px 18px; flex-wrap: wrap; }
+  .modal { max-width: 580px; }
+  
+  /* Ensure buttons remain accessible */
+  .btn { white-space: nowrap; }
+  .panel-actions { flex-wrap: wrap; gap: 8px; }
+}
+
+/* Tablet Landscape Orientation Specific */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .stats-row { grid-template-columns: repeat(4,1fr); gap: 10px; }
+  .stat-card { padding: 12px; }
+  .stat-icon { width: 36px; height: 36px; font-size: 16px; }
+  .stat-label { font-size: var(--fs-xs); }
+  .toolbar { padding: 10px 14px; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TABLET PORTRAIT ≤ 768px
+   Sidebar → slide-over drawer
+   Enhanced overflow and touch-friendly spacing
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root { --header-height: 58px; --sidebar-width: 280px; }
+
+  /* Sidebar drawer */
+  .sidebar { 
+    transform: translateX(-100%); 
+    box-shadow: none;
+    max-width: 85vw;
+  }
+  .sidebar.open { 
+    transform: translateX(0); 
+    box-shadow: 6px 0 32px rgba(8,31,68,0.3); 
+  }
+  .main-content { margin-left: 0; }
+  .menu-toggle { display: flex; }
+
+  /* Header */
+  .top-header { 
+    padding: 0 16px; 
+    gap: 10px; 
+    flex-wrap: nowrap;
+  }
+  .page-title { 
+    font-size: clamp(0.9rem, 3vw, 1.1rem); 
+  }
+  .page-breadcrumb { display: none; }
+  .header-right { 
+    gap: 8px; 
+    min-width: 0;
+  }
+
+  /* Content */
+  .page-content { 
+    padding: 14px; 
+    gap: 14px; 
+    width: 100%;
+  }
+
+  /* Stats */
+  .stats-row { 
+    grid-template-columns: repeat(2,1fr); 
+    gap: 10px; 
+    width: 100%;
+  }
+  .stat-card { 
+    padding: 14px; 
+    gap: 12px; 
+    min-width: 0;
+  }
+  .stat-value { 
+    font-size: clamp(1.2rem, 4vw, 1.5rem); 
+  }
+  .stat-label { 
+    font-size: var(--fs-xs); 
+  }
+  .stat-change { display: none; }
+  .stat-icon { width: 38px; height: 38px; font-size: 17px; }
+
+  /* Panel header stacks */
+  .panel-header { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 10px; 
+    padding: 14px 16px; 
+  }
+  .panel-actions { 
+    width: 100%; 
+    justify-content: flex-end; 
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .panel-actions .btn { 
+    flex: 1 1 auto; 
+    justify-content: center; 
+    min-width: 120px;
+    max-width: 200px; 
+  }
+
+  /* Toolbar stacks */
+  .toolbar { 
+    flex-direction: column; 
+    align-items: stretch; 
+    padding: 12px 14px; 
+    gap: 10px; 
+  }
+  .toolbar-left  { 
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 8px; 
+    width: 100%;
+  }
+  .toolbar-right { 
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 8px; 
+    width: 100%;
+  }
+  .search-wrapper { 
+    max-width: 100%; 
+    width: 100%;
+  }
+  .status-tabs { 
+    width: 100%; 
+    overflow-x: auto; 
+    display: flex;
+    -webkit-overflow-scrolling: touch;
+  }
+  .status-tab {
+    flex: 1 1 auto;
+    min-width: fit-content;
+    white-space: nowrap;
+  }
+  .filter-group { 
+    flex-direction: column; 
+    gap: 8px;
+  }
+  .filter-select { 
+    min-width: 100%; 
+    width: 100%; 
+  }
+  .sort-wrapper  { width: 100%; }
+  .sort-btn      { 
+    width: 100%; 
+    justify-content: center; 
+  }
+  .sort-dropdown { 
+    left: 0; 
+    right: 0; 
+    min-width: 0; 
+    width: 100%;
+  }
+
+  /* Table */
+  .dt-container { 
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  #inventory-table { 
+    min-width: 100%;
+  }
+  #inventory-table thead th { 
+    padding: 10px 10px; 
+    white-space: nowrap;
+  }
+  #inventory-table tbody td { 
+    padding: 10px 10px; 
+  }
+  .item-img-wrap,
+  .item-img-placeholder { 
+    width: 36px; 
+    height: 36px; 
+    font-size: 16px; 
+  }
+
+  /* Pagination */
+  .dataTables_paginate { 
+    justify-content: center; 
+    padding: 10px; 
+    flex-wrap: wrap;
+  }
+  .dataTables_info { 
+    text-align: center; 
+    padding: 10px; 
+  }
+
+  /* Modal */
+  .modal-backdrop { 
+    padding: 10px; 
+  }
+  .modal { 
+    max-height: 94vh; 
+    border-radius: var(--radius-lg); 
+    width: 100%;
+    max-width: calc(100vw - 20px);
+  }
+  .modal-header { 
+    padding: 16px 18px; 
+  }
+  .modal-body   { 
+    padding: 18px; 
+    gap: 14px; 
+  }
+  .modal-footer { 
+    padding: 14px 18px; 
+    flex-wrap: wrap;
+  }
+  .form-grid { 
+    grid-template-columns: 1fr; 
+  }
+  .form-grid .span-2 { 
+    grid-column: span 1; 
+  }
+  .form-row { 
+    flex-direction: column; 
+    gap: 12px; 
+  }
+
+  /* Toast */
+  #toast-container { 
+    bottom: 14px; 
+    right: 14px; 
+    left: 14px; 
+    max-width: 100%; 
+    width: auto; 
+  }
+  .toast {
+    width: 100%;
+  }
+  .confirm-box { 
+    padding: 24px 20px; 
+    max-width: 90vw;
+  }
+}
+
+/* Tablet Portrait Orientation Specific */
+@media (max-width: 768px) and (orientation: portrait) {
+  .stats-row { 
+    grid-template-columns: 1fr 1fr; 
+  }
+  .stat-card {
+    min-height: 100px;
+  }
+}
+
+/* Tablet Landscape Orientation Specific (medium) */
+@media (max-width: 768px) and (orientation: landscape) {
+  .stats-row { 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 8px;
+  }
+  .stat-card {
+    padding: 10px;
+    min-height: 80px;
+  }
+  .page-content {
+    padding: 10px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COMPACT TABLE BREAKPOINT ≤ 680px
+   JavaScript switches to 3-column layout.
+   CSS only needs to style those columns nicely.
+   Enhanced for better mobile readability and touch targets
+───────────────────────────────────────────────────────────── */
+@media (max-width: 680px) {
+  /* Compact image thumbnail */
+  .item-img-wrap,
+  .item-img-placeholder {
+    width: 40px; 
+    height: 40px;
+    border-radius: var(--radius-sm);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Item name in compact mode */
+  .item-name { 
+    font-size: var(--fs-sm); 
+    line-height: 1.3;
+  }
+  .item-id { 
+    display: none; 
+  }
+
+  /* Compact action buttons side-by-side with better touch targets */
+  .actions-cell--compact { 
+    gap: 6px; 
+    flex-wrap: nowrap; 
+    justify-content: flex-end;
+  }
+  .btn-details { 
+    padding: 8px 12px; 
+    font-size: var(--fs-xs);
+    min-width: 70px;
+  }
+  .btn-update  { 
+    padding: 8px 10px;  
+    font-size: var(--fs-xs);
+    min-width: 32px;
+  }
+
+  /* Tighter table padding */
+  #inventory-table thead th { 
+    padding: 10px 8px; 
+    font-size: 10px; 
+    letter-spacing: 0.6px; 
+  }
+  #inventory-table tbody td { 
+    padding: 12px 8px;
+    vertical-align: middle;
+  }
+
+  /* No horizontal scroll on compact (only 3 cols, should always fit) */
+  .dt-container { 
+    overflow-x: visible; 
+    width: 100%;
+  }
+  
+  #inventory-table {
+    width: 100%;
+    table-layout: auto;
+  }
+
+  /* Status tabs: stretch to fill */
+  .status-tabs { 
+    width: 100%; 
+    gap: 4px;
+  }
+  .status-tab { 
+    flex: 1; 
+    text-align: center; 
+    padding: 6px 4px; 
+    font-size: var(--fs-xs);
+    min-width: 0;
+  }
+
+  /* Toolbar: smaller padding */
+  .toolbar { 
+    padding: 10px 12px; 
+    gap: 8px; 
+  }
+  
+  /* Search input touch-friendly */
+  .search-wrapper input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 10px 12px 10px 36px;
+  }
+  
+  /* Better spacing for filters */
+  .filter-select {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+}
+
+/* Compact mode - landscape orientation */
+@media (max-width: 680px) and (orientation: landscape) {
+  .stats-row {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .stat-card {
+    padding: 8px;
+  }
+  .stat-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  .stat-value {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MOBILE ≤ 480px
+   Enhanced touch targets and mobile-optimized layouts
+───────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  :root { --header-height: 54px; }
+
+  /* Prevent horizontal overflow */
+  body, html {
+    overflow-x: clip;
+    width: 100%;
+  }
+
+  .top-header { 
+    padding: 0 12px; 
+    min-height: var(--header-height);
+  }
+  .page-content { 
+    padding: 10px; 
+    gap: 12px; 
+    width: 100%;
+  }
+
+  /* Stats 2-col smaller */
+  .stats-row { 
+    gap: 8px; 
+    width: 100%;
+  }
+  .stat-card { 
+    padding: 12px; 
+    gap: 10px; 
+    border-radius: var(--radius-md); 
+    min-width: 0;
+  }
+  .stat-icon { 
+    width: 36px; 
+    height: 36px; 
+    font-size: 15px; 
+  }
+  .stat-value {
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+    word-break: break-word;
+  }
+  .stat-label {
+    font-size: var(--fs-xs);
+    line-height: 1.2;
+  }
+
+  /* Compact table cells with better touch targets */
+  #inventory-table thead th { 
+    padding: 9px 6px; 
+  }
+  #inventory-table tbody td { 
+    padding: 10px 6px; 
+  }
+  .action-btn { 
+    padding: 8px 10px; 
+    min-width: 44px; /* WCAG touch target minimum */
+    min-height: 44px;
+  }
+
+  /* Modal → bottom sheet for better mobile UX */
+  .modal-backdrop { 
+    padding: 0; 
+    align-items: flex-end; 
+  }
+  .modal {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 92vh;
+    width: 100%;
+    max-width: 100vw;
+    animation: modalInUp 0.3s cubic-bezier(0.34,1.2,0.64,1);
+  }
+  @keyframes modalInUp { 
+    from { opacity:0; transform:translateY(60px); } 
+    to { opacity:1; transform:translateY(0); } 
+  }
+  .modal-header  { 
+    padding: 14px 16px; 
+  }
+  .modal-title {
+    font-size: clamp(1rem, 4vw, 1.25rem);
+  }
+  .modal-body { 
+    padding: 16px; 
+    gap: 13px; 
+    max-height: calc(92vh - 120px);
+    overflow-y: auto;
+  }
+  .modal-footer  { 
+    padding: 12px 16px; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+  }
+  .save-hint { 
+    display: none; 
+  }
+  .modal-footer .btn { 
+    flex: 1; 
+    justify-content: center; 
+    min-width: 0;
+    min-height: 44px;
+  }
+
+  /* Form inputs - prevent zoom on iOS */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  .img-upload-zone { 
+    height: 120px; 
+  }
+  .status-toggle label { 
+    font-size: var(--fs-xs); 
+    padding: 10px 8px; 
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Confirm dialog */
+  .confirm-box { 
+    padding: 22px 16px; 
+    max-width: 90vw;
+    width: 100%;
+  }
+  .confirm-actions { 
+    flex-direction: column-reverse; 
+    gap: 8px;
+  }
+  .confirm-actions .btn { 
+    width: 100%; 
+    justify-content: center; 
+    min-height: 44px;
+  }
+
+  /* Toast - full width on mobile */
+  #toast-container { 
+    bottom: 12px; 
+    right: 10px; 
+    left: 10px; 
+    width: auto;
+  }
+  .toast { 
+    padding: 12px 14px; 
+    width: 100%;
+  }
+
+  /* Pagination smaller but touch-friendly */
+  .dataTables_paginate .paginate_button { 
+    min-width: 36px; 
+    height: 36px; 
+    font-size: var(--fs-sm);
+  }
+  
+  /* Panel actions full width */
+  .panel-actions {
+    width: 100%;
+  }
+  .panel-actions .btn {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+  
+  /* Sidebar full width on very small screens */
+  .sidebar {
+    max-width: 90vw;
+  }
+  
+  /* Details panel adjustments */
+  .details-panel {
+    max-width: 100vw;
+    width: 100%;
+  }
+}
+
+/* Mobile Portrait Orientation */
+@media (max-width: 480px) and (orientation: portrait) {
+  .stats-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .panel-header {
+    padding: 12px;
+  }
+  
+  .toolbar {
+    padding: 10px;
+  }
+}
+
+/* Mobile Landscape Orientation */
+@media (max-width: 480px) and (orientation: landscape) {
+  :root { --header-height: 48px; }
+  
+  .stats-row {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  
+  .stat-card {
+    padding: 8px;
+  }
+  
+  .page-content {
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .modal {
+    max-height: 95vh;
+  }
+  
+  .modal-body {
+    max-height: calc(95vh - 100px);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SMALL MOBILE ≤ 360px
+   Optimized for smallest devices with orientation handling
+───────────────────────────────────────────────────────────── */
+@media (max-width: 360px) {
+  :root { --header-height: 50px; }
+
+  .logo-icon { 
+    width: 34px; 
+    height: 34px; 
+    font-size: 15px; 
+  }
+  .page-title {
+    font-size: clamp(0.85rem, 4vw, 1rem);
+  }
+  .page-content { 
+    padding: 8px; 
+    gap: 8px; 
+  }
+  .stats-row { 
+    grid-template-columns: 1fr 1fr; 
+    gap: 6px; 
+  }
+  .stat-card { 
+    padding: 10px; 
+    gap: 8px; 
+  }
+  .stat-value {
+    font-size: clamp(1rem, 5vw, 1.25rem);
+  }
+
+  .panel-header { 
+    padding: 12px; 
+  }
+  .panel-title  { 
+    font-size: var(--fs-sm); 
+  }
+  .panel-title-badge { 
+    display: none; 
+  }
+
+  .toolbar { 
+    padding: 8px 10px; 
+  }
+
+  #inventory-table thead th { 
+    padding: 8px 5px; 
+    font-size: 9px; 
+  }
+  #inventory-table tbody td { 
+    padding: 8px 5px; 
+  }
+
+  .item-img-wrap,
+  .item-img-placeholder { 
+    width: 34px; 
+    height: 34px; 
+    font-size: 15px; 
+  }
+
+  .btn { 
+    padding: 8px 12px; 
+    font-size: var(--fs-xs);
+  }
+  .btn-sm { 
+    padding: 6px 10px; 
+  }
+
+  .confirm-box { 
+    padding: 18px 14px; 
+  }
+
+  /* Details panel full-height on tiny screens */
+  .details-panel { 
+    max-height: 96vh; 
+  }
+  .dp-image-wrap { 
+    height: 140px; 
+  }
+  
+  /* Adjust modal for very small screens */
+  .modal-body {
+    padding: 12px;
+  }
+  
+  /* Form elements */
+  .form-label {
+    font-size: var(--fs-xs);
+  }
+  
+  input, select, textarea {
+    font-size: 16px !important;
+    padding: 10px;
+  }
+}
+
+/* Small Mobile Portrait */
+@media (max-width: 360px) and (orientation: portrait) {
+  .header-right .btn {
+    padding: 6px 8px;
+    font-size: var(--fs-xs);
+  }
+  
+  .stats-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Small Mobile Landscape */
+@media (max-width: 360px) and (orientation: landscape) {
+  :root { --header-height: 44px; }
+  
+  .stats-row {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+  
+  .stat-card {
+    padding: 6px;
+  }
+  
+  .stat-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .page-content {
+    padding: 6px;
+  }
+  
+  .modal {
+    max-height: 96vh;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   PRINT
+───────────────────────────────────────────────────────────── */
+@media print {
+  .sidebar, .sidebar-overlay, .top-header,
+  .toolbar, .actions-cell, .panel-actions,
+  #toast-container, .details-backdrop { display: none !important; }
+
+  .main-content { margin-left: 0 !important; }
+  .page-content { padding: 0 !important; }
+  .panel-card   { box-shadow: none; border: 1px solid #ccc; }
+
+  #inventory-table thead th {
+    background: #e8edf8 !important; color: #081F44 !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  #inventory-table tbody tr:nth-child(even) {
+    background: #f5f7fb !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ADDITIONAL ORIENTATION FIXES
+   Ensures smooth transitions between orientations
+───────────────────────────────────────────────────────────── */
+
+/* General orientation change handling */
+@media (orientation: portrait) {
+  .app-wrapper {
+    max-width: 100vw;
+  }
+}
+
+@media (orientation: landscape) {
+  .app-wrapper {
+    max-width: 100vw;
+  }
+  
+  /* Optimize header for landscape */
+  .top-header {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ACCESSIBILITY & TOUCH ENHANCEMENTS
+───────────────────────────────────────────────────────────── */
+
+/* Ensure minimum touch target size (44x44px per WCAG) */
+@media (max-width: 768px) {
+  button, a.btn, .nav-item, .status-tab, 
+  .action-btn, .paginate_button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Exception for inline text buttons */
+  .btn-sm {
+    min-height: 36px;
+    min-width: 36px;
+  }
+}
+
+/* Prevent zoom on input focus (iOS) */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="number"],
+  input[type="search"],
+  input[type="email"],
+  input[type="tel"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .top-header {
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+  }
+  
+  .modal-footer,
+  .details-footer {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  
+  #toast-container {
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: max(10px, env(safe-area-inset-left));
+    right: max(10px, env(safe-area-inset-right));
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FOLDING / DUAL-SCREEN DEVICES
+───────────────────────────────────────────────────────────── */
+
+/* Surface Duo and similar dual-screen devices */
+@media (horizontal-viewport-segments: 2) {
+  .app-wrapper {
+    grid-template-columns: env(viewport-segment-width 0 0) env(viewport-segment-width 1 0);
+  }
+  
+  .sidebar {
+    grid-column: 1;
+  }
+  
+  .main-content {
+    grid-column: 2;
+    margin-left: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   REDUCED MOTION
+───────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HIGH CONTRAST MODE
+───────────────────────────────────────────────────────────── */
+
+@media (prefers-contrast: high) {
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .nav-item:hover,
+  .nav-item.active {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+  
+  input, select, textarea {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DARK MODE PREPARATION (if needed in future)
+───────────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  /* Dark mode styles can be added here if needed */
+}
+
+/* ─────────────────────────────────────────────────────────────
+   OVERFLOW FIX - CRITICAL FOR ALL DEVICES
+───────────────────────────────────────────────────────────── */
+
+html {
+  overflow-x: clip;
+  width: 100%;
+}
+
+body {
+  overflow-x: clip;
+  width: 100%;
+  position: relative;
+}
+
+.app-wrapper {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.page-content,
+.panel-card {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* .main-content must NOT be a scroll container, otherwise the
+   position:sticky top-header sticks to it instead of the viewport
+   and scrolls out of view. Horizontal overflow is already guarded
+   on html/body and .page-content. */
+.main-content {
+  max-width: 100%;
+}
+
+/* Ensure tables don't cause overflow */
+.dt-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+#inventory-table {
+  max-width: 100%;
+}
+
+/* Ensure modals fit on screen */
+.modal {
+  max-width: min(95vw, 720px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   END OF RESPONSIVE.CSS
+───────────────────────────────────────────────────────────── */
+
+/* ── Desktop Collapsed State ──────────────────────────────── */
+body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
+body.sidebar-collapsed .main-content { margin-left: 0; }
