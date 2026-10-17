@@ -2,6 +2,8 @@
   const api = window.CGMI_USERS_API || {};
   const context = window.CGMI_USERS_CONTEXT || {};
   const manageableRoles = (context.manageableRoles || ['inventory', 'checker']).map(r => String(r).toLowerCase());
+  // canEdit: super-admins may edit user info; plain admins may only activate/deactivate.
+  const canEdit = context.canEdit !== false ? true : !!context.canEdit;
   let users = [];
   let editingId = null;
   let currentFilter = 'active';
@@ -57,8 +59,8 @@
         </div>
         <div class="user-card-actions">
           ${canManage(user) ? `
-          <button class="btn btn-secondary btn-sm action-edit" data-id="${user.id}"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Edit</button>
-          <button class="btn ${String(user.status).toLowerCase() === 'active' ? 'btn-ghost' : 'btn-primary'} btn-sm action-toggle" data-id="${user.id}" data-action="${String(user.status).toLowerCase() === 'active' ? 'deactivate' : 'activate'}">${String(user.status).toLowerCase() === 'active' ? 'Deactivate' : 'Activate'}</button>
+          ${canEdit ? `<button class="btn btn-secondary btn-sm action-edit" data-id="${user.id}"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Update</button>` : ''}
+          <button class="btn ${String(user.status).toLowerCase() === 'active' ? 'btn-danger' : 'btn-primary'} btn-sm action-toggle" data-id="${user.id}" data-action="${String(user.status).toLowerCase() === 'active' ? 'deactivate' : 'activate'}">${String(user.status).toLowerCase() === 'active' ? '<span class="btn-inline-icon ui-icon icon-incident" aria-hidden="true"></span>Deactivate' : 'Activate'}</button>
           ` : `<span class="user-card-locked" title="You do not have permission to manage this account">Restricted</span>`}
         </div>
       </article>`).join('');
@@ -126,7 +128,25 @@
   // Route a plain-text toast to the correct on-screen stack by type:
   // error / warning -> BOTTOM-LEFT, success (default) -> BOTTOM-RIGHT.
   function toastStackFor(type){ const side = /^(error|warning|reject|rejected|danger|fail)/i.test(String(type || '')) ? 'left' : 'right'; const id = 'toast-stack-' + side; let stack = document.getElementById(id); if (!stack) { stack = document.createElement('div'); stack.id = id; stack.className = 'toast-stack toast-stack-' + side; stack.setAttribute('aria-live', side === 'left' ? 'assertive' : 'polite'); document.body.appendChild(stack); } return stack; }
-  function toast(message, type = 'success'){ const c = toastStackFor(type); if (!c) return alert(message); const n = document.createElement('div'); n.className = 'toast show'; n.textContent = message; c.appendChild(n); setTimeout(() => { n.classList.remove('show'); setTimeout(() => n.remove(), 300); }, 2400); }
+  const TOAST_META = {
+    success: { color: 'var(--accent-success, #16a34a)', icon: '✓', title: 'Success' },
+    error:   { color: 'var(--accent-danger, #dc2626)',  icon: '✕', title: 'Error' },
+    warning: { color: 'var(--accent-warning, #d97706)', icon: '⚠', title: 'Warning' },
+    info:    { color: 'var(--blue-medium, #4569AD)',     icon: 'ℹ', title: 'Notice' },
+  };
+  function toast(message, type = 'success'){
+    const c = toastStackFor(type);
+    if (!c) return alert(message);
+    const meta = TOAST_META[type] || TOAST_META.success;
+    const n = document.createElement('div');
+    n.className = 'toast';
+    n.style.setProperty('--toast-color', meta.color);
+    n.innerHTML = `<div class="toast-icon" style="color:${meta.color}" aria-hidden="true">${meta.icon}</div><div class="toast-body"><div class="toast-title">${meta.title}</div><div class="toast-msg">${message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div></div>`;
+    const dismiss = () => { n.classList.add('hide'); n.addEventListener('animationend', () => n.remove(), { once: true }); };
+    n.addEventListener('click', dismiss);
+    c.appendChild(n);
+    setTimeout(dismiss, type === 'error' ? 6000 : 4000);
+  }
 
   let confirmCallback = null;
   function openConfirm({ title, message, confirmText = 'Confirm', danger = false }, onConfirm){

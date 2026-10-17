@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/Helpers.php';
 require_login(['super-admin']);
@@ -15,7 +15,7 @@ $sidebarActive = 'incoming-confirmation';
   <meta name="description" content="Hardware & Construction Supply Incoming Confirmation Panel">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
 
   <!-- Design System: root variables must load first -->
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
@@ -113,12 +113,12 @@ $sidebarActive = 'incoming-confirmation';
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th class="col-hide-mobile">Date</th>
                   <th>Supplier</th>
-                  <th>Items</th>
-                  <th>Total Qty</th>
+                  <th class="col-hide-mobile">Items</th>
+                  <th>Quantity</th>
                   <th>Status</th>
-                  <th>Checker</th>
+                  <th class="col-hide-mobile">Checker</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -136,12 +136,12 @@ $sidebarActive = 'incoming-confirmation';
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th class="col-hide-mobile">Date</th>
                   <th>Supplier</th>
-                  <th>Items</th>
-                  <th>Total Qty</th>
+                  <th class="col-hide-mobile">Items</th>
+                  <th>Quantity</th>
                   <th>Status</th>
-                  <th>Checker</th>
+                  <th class="col-hide-mobile">Checker</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -159,12 +159,12 @@ $sidebarActive = 'incoming-confirmation';
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th class="col-hide-mobile">Date</th>
                   <th>Supplier</th>
-                  <th>Items</th>
-                  <th>Total Qty</th>
+                  <th class="col-hide-mobile">Items</th>
+                  <th>Quantity</th>
                   <th>Status</th>
-                  <th>Checker</th>
+                  <th class="col-hide-mobile">Checker</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -182,12 +182,12 @@ $sidebarActive = 'incoming-confirmation';
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th class="col-hide-mobile">Date</th>
                   <th>Supplier</th>
-                  <th>Items</th>
-                  <th>Total Qty</th>
+                  <th class="col-hide-mobile">Items</th>
+                  <th>Quantity</th>
                   <th>Status</th>
-                  <th>Checker</th>
+                  <th class="col-hide-mobile">Checker</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -251,6 +251,6 @@ $sidebarActive = 'incoming-confirmation';
 <div id="toast-container" aria-live="polite"></div>
 
 <script src="<?= app_url('/assets/js/components/sidebar.js') ?>"></script>
-<script src="<?= app_url('/assets/js/modules/checker/incoming-confirmation.js') ?>"></script>
+<script src="<?= app_url('/assets/js/modules/checker/incoming-confirmation.js') ?>?v=<?= filemtime(__DIR__ . '/../../../assets/js/modules/checker/incoming-confirmation.js') ?>"></script>
 </body>
 </html>

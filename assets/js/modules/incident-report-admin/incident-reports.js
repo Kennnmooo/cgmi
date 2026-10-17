@@ -161,7 +161,7 @@
     // Trash tab (super-admin): restore or permanently remove from the UI.
     if (trashEnabled && activeTab === 'trash') {
       buttons.push(`<button class="btn btn-secondary${sz} action-restore" data-id="${report.id}"><span class="btn-inline-icon ui-icon icon-reports" aria-hidden="true"></span>Restore</button>`);
-      buttons.push(`<button class="btn btn-danger${sz} action-purge" data-id="${report.id}"><span class="btn-inline-icon ui-icon icon-close" aria-hidden="true"></span>Delete Permanently</button>`);
+      buttons.push(`<button class="btn btn-danger${sz} action-purge" data-id="${report.id}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete Permanently</button>`);
       return buttons.join('');
     }
 
@@ -174,7 +174,7 @@
     if (report.status === 'Approved' || report.status === 'Rejected') {
       if (trashEnabled) {
         // Super-admin: Delete moves the report to Trash (UI only).
-        buttons.push(`<button class="btn btn-danger${sz} action-delete" data-id="${report.id}">Delete</button>`);
+        buttons.push(`<button class="btn btn-danger${sz} action-delete" data-id="${report.id}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>`);
       }
     }
 
@@ -503,6 +503,14 @@
       sortMode = sortMode === 'latest' ? 'oldest' : 'latest';
       el('sort-label').textContent = sortMode === 'latest' ? 'Latest First' : 'Oldest First';
       renderReports();
+    });
+
+    el('refresh-btn')?.addEventListener('click', () => {
+      const btn = el('refresh-btn');
+      btn.classList.add('is-loading');
+      loadActiveReports()
+        .catch((err) => toast(err.message, 'error'))
+        .finally(() => btn.classList.remove('is-loading'));
     });
 
     // Date filter

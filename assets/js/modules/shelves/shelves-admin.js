@@ -56,7 +56,7 @@
           <div class="shelf-detail-item"><div class="shelf-detail-label">Min Weight</div><div class="shelf-detail-value">${shelf.minWeight != null ? esc(fmt(shelf.minWeight)) + ' kg' : '—'}</div></div>
           <div class="shelf-detail-item"><div class="shelf-detail-label">Max Weight</div><div class="shelf-detail-value">${shelf.maxWeight != null ? esc(fmt(shelf.maxWeight)) + ' kg' : '—'}</div></div>
         </div>
-        <div class="shelf-card-actions"><button class="btn btn-secondary btn-sm shelf-details-btn" data-id="${shelf.id}">Details</button><button class="btn btn-primary btn-sm shelf-update-btn" data-id="${shelf.id}">Update</button></div>
+        <div class="shelf-card-actions"><button class="btn btn-secondary btn-sm shelf-details-btn" data-id="${shelf.id}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button><button class="btn btn-secondary btn-sm shelf-update-btn" data-id="${shelf.id}"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Update</button></div>
       </div>`).join('');
   }
 
@@ -154,14 +154,33 @@
     return stack;
   }
 
+  const TOAST_META = {
+    success: { color: 'var(--accent-success, #16a34a)', icon: '✓', title: 'Success' },
+    error:   { color: 'var(--accent-danger, #dc2626)',  icon: '✕', title: 'Error' },
+    warning: { color: 'var(--accent-warning, #d97706)', icon: '⚠', title: 'Warning' },
+    info:    { color: 'var(--blue-medium, #4569AD)',     icon: 'ℹ', title: 'Notice' },
+  };
+
   function toast(message, type = 'success'){
     const c = toastStackFor(type);
     if (!c) return alert(message);
+    const meta = TOAST_META[type] || TOAST_META.success;
     const n = document.createElement('div');
-    n.className='toast show';
-    n.textContent=message;
+    n.className = 'toast';
+    n.style.setProperty('--toast-color', meta.color);
+    n.innerHTML = `
+      <div class="toast-icon" style="color:${meta.color}" aria-hidden="true">${meta.icon}</div>
+      <div class="toast-body">
+        <div class="toast-title">${meta.title}</div>
+        <div class="toast-msg">${message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+      </div>`;
+    const dismiss = () => {
+      n.classList.add('hide');
+      n.addEventListener('animationend', () => n.remove(), { once: true });
+    };
+    n.addEventListener('click', dismiss);
     c.appendChild(n);
-    setTimeout(()=>{ n.classList.remove('show'); setTimeout(()=>n.remove(),300);},2400);
+    setTimeout(dismiss, type === 'error' ? 6000 : 4000);
   }
 
   document.addEventListener('DOMContentLoaded', () => {

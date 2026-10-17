@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../../includes/auth.php';
 require_login(['admin', 'inventory']);
 $user = current_user() ?: [];
@@ -11,11 +11,11 @@ $basePage = $isAdmin ? '/pages/admin' : '/pages/inventory';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CGMI.IMS — Incoming Confirmation</title>
+  <title>CGMI.IMS � Incoming Confirmation</title>
   <meta name="description" content="Hardware & Construction Supply Incoming Confirmation Panel">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
 
   <!-- Design System: root variables must load first -->
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
@@ -66,7 +66,7 @@ $basePage = $isAdmin ? '/pages/admin' : '/pages/inventory';
     </aside>
 
   <?php else: ?>
-    <!-- INVENTORY SIDEBAR — copied from inventory/inventory.php, active item swapped -->
+    <!-- INVENTORY SIDEBAR � copied from inventory/inventory.php, active item swapped -->
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main Navigation">
       <div class="sidebar-logo">
         <div class="logo-icon ui-icon icon-store" aria-hidden="true"></div>
@@ -176,12 +176,12 @@ $basePage = $isAdmin ? '/pages/admin' : '/pages/inventory';
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th class="col-hide-mobile">Date</th>
                   <th>Supplier</th>
-                  <th>Items</th>
-                  <th>Total Qty</th>
+                  <th class="col-hide-mobile">Items</th>
+                  <th>Quantity</th>
                   <th>Status</th>
-                  <th>Checker</th>
+                  <th class="col-hide-mobile">Checker</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -199,12 +199,12 @@ $basePage = $isAdmin ? '/pages/admin' : '/pages/inventory';
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th class="col-hide-mobile">Date</th>
                   <th>Supplier</th>
-                  <th>Items</th>
-                  <th>Total Qty</th>
+                  <th class="col-hide-mobile">Items</th>
+                  <th>Quantity</th>
                   <th>Status</th>
-                  <th>Checker</th>
+                  <th class="col-hide-mobile">Checker</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -222,12 +222,12 @@ $basePage = $isAdmin ? '/pages/admin' : '/pages/inventory';
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th class="col-hide-mobile">Date</th>
                   <th>Supplier</th>
-                  <th>Items</th>
-                  <th>Total Qty</th>
+                  <th class="col-hide-mobile">Items</th>
+                  <th>Quantity</th>
                   <th>Status</th>
-                  <th>Checker</th>
+                  <th class="col-hide-mobile">Checker</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -291,6 +291,6 @@ $basePage = $isAdmin ? '/pages/admin' : '/pages/inventory';
 <div id="toast-container" aria-live="polite"></div>
 
 <script src="<?= app_url('/assets/js/components/sidebar.js') ?>"></script>
-<script src="<?= app_url('/assets/js/modules/checker/incoming-confirmation.js') ?>"></script>
+<script src="<?= app_url('/assets/js/modules/checker/incoming-confirmation.js') ?>?v=<?= filemtime(__DIR__ . '/../../../../assets/js/modules/checker/incoming-confirmation.js') ?>"></script>
 </body>
 </html>

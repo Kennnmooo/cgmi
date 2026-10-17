@@ -258,10 +258,10 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .btn-primary:active { transform: none; box-shadow: none; }
 .btn-secondary {
-  background: transparent; color: var(--navy-mid);
-  border: 1px solid var(--border-color);
+  background: rgba(69,105,173,0.08); color: var(--blue-medium);
+  border: 1px solid rgba(69,105,173,0.22);
 }
-.btn-secondary:hover { background: var(--bg-elevated); border-color: var(--blue-medium); }
+.btn-secondary:hover { background: var(--blue-medium); color: white; border-color: var(--blue-medium); }
 .btn-ghost {
   background: transparent; color: var(--text-secondary);
   border: 1px solid var(--border-color); padding: 7px 14px;
@@ -585,14 +585,21 @@ div.dt-container div.dt-layout-start { display: flex; align-items: center; }
   display: flex; flex-direction: column; gap: 8px;
 }
 .toast {
-  background: var(--navy-deepest); color: var(--white);
-  padding: 12px 20px; border-radius: var(--radius-md);
-  font-size: var(--fs-sm); font-weight: 500;
-  box-shadow: var(--shadow-elevated);
-  opacity: 0; transform: translateX(20px);
-  transition: all 0.3s ease;
+  background: var(--white); border: 1px solid var(--border-color);
+  border-left: 4px solid var(--toast-color, var(--blue-medium));
+  border-radius: var(--radius-md); padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 11px;
+  box-shadow: 0 2px 12px rgba(8,31,68,0.10);
+  animation: slideInToast 0.28s cubic-bezier(0.34,1.4,0.64,1);
+  pointer-events: all; cursor: pointer; min-width: 260px;
 }
-.toast.show { opacity: 1; transform: translateX(0); }
+@keyframes slideInToast { from { opacity:0; transform:translateX(80px); } to { opacity:1; transform:translateX(0); } }
+.toast.hide { animation: slideOutToast 0.25s ease forwards; }
+@keyframes slideOutToast { to { opacity:0; transform:translateX(80px); } }
+.toast-icon  { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.toast-body  { flex: 1; min-width: 0; }
+.toast-title { font-size: var(--fs-sm); font-weight: 700; color: var(--navy-deepest); }
+.toast-msg   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 3px; line-height: 1.45; }
 
 /* ── Empty State ──────────────────────────────────────────── */
 .empty-state { text-align: center; padding: 56px 20px; }
@@ -617,11 +624,11 @@ div.dt-container div.dt-layout-start { display: flex; align-items: center; }
   :root { --sidebar-width: 240px; }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1376px) {
   :root { --sidebar-width: 220px; --header-height: 60px; }
   .stats-row { grid-template-columns: repeat(3, 1fr); }
 }
-@media (max-width: 900px) {
+@media (max-width: 1376px) {
   .sidebar { transform: translateX(-100%); }
   .sidebar.open { transform: translateX(0); }
   .sidebar-overlay.active { display: block; }
@@ -691,3 +698,132 @@ div.dt-container div.dt-layout-start { display: flex; align-items: center; }
 /* ── Desktop Collapsed State ──────────────────────────────── */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}
+
+/* ── Mobile Portrait — Supplier Details feature ───────────── */
+
+/* Details button: hidden on all screen sizes by default */
+.mobile-only-btn { display: none !important; }
+
+/* Deactivate button in table row: visible by default, hidden on mobile portrait */
+.desktop-only-btn { display: inline-flex; }
+
+/* Details field list inside the details modal */
+.details-field-list {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.details-field {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 10px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+.details-field-label {
+  font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--text-muted);
+}
+.details-field-value {
+  font-size: var(--fs-sm); font-weight: 600; color: var(--navy-deepest);
+  word-break: break-word;
+}
+
+/* Mobile portrait (≤ 480px, portrait orientation):
+   - Show Details button, hide Address & Phone columns
+   - Only show supplier name + action buttons in the table row */
+@media (max-width: 480px) and (orientation: portrait) {
+  /* Show the Details button */
+  .mobile-only-btn { display: inline-flex !important; }
+
+  /* Style it — same blue tint as btn-secondary */
+  .action-btns .action-details {
+    background: rgba(69,105,173,0.08);
+    color: var(--blue-medium);
+    border: 1px solid rgba(69,105,173,0.22);
+  }
+  .action-btns .action-details:hover {
+    background: var(--blue-medium);
+    color: white;
+    transform: none;
+  }
+
+  /* Hide Address (col 2) and Phone Number (col 3) in both tables */
+  #supplier-table-active thead th:nth-child(2),
+  #supplier-table-active thead th:nth-child(3),
+  #supplier-table-active tbody td:nth-child(2),
+  #supplier-table-active tbody td:nth-child(3),
+  #supplier-table-inactive thead th:nth-child(2),
+  #supplier-table-inactive thead th:nth-child(3),
+  #supplier-table-inactive tbody td:nth-child(2),
+  #supplier-table-inactive tbody td:nth-child(3) {
+    display: none !important;
+  }
+
+  /* Hide the Deactivate button from the table row on mobile portrait */
+  .desktop-only-btn { display: none !important; }
+
+  /* Remove the min-width constraint so the table fills the viewport */
+  div.dt-container table.dataTable {
+    min-width: unset !important;
+    width: 100% !important;
+  }
+
+  /* Kill horizontal scroll on the DataTables wrapper */
+  div.dt-container div.dt-layout-table {
+    overflow-x: hidden !important;
+  }
+
+  /* Prevent the panel card itself from overflowing */
+  .panel-card {
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  /* Reset DataTables inline col widths so CSS can take over */
+  #supplier-table-active,
+  #supplier-table-inactive {
+    table-layout: auto !important;
+  }
+
+  #supplier-table-active colgroup col,
+  #supplier-table-inactive colgroup col {
+    width: auto !important;
+  }
+
+  /* Name column takes all remaining space */
+  #supplier-table-active thead th:nth-child(1),
+  #supplier-table-active tbody td:nth-child(1),
+  #supplier-table-inactive thead th:nth-child(1),
+  #supplier-table-inactive tbody td:nth-child(1) {
+    width: auto !important;
+  }
+
+  /* Actions column shrinks to content */
+  #supplier-table-active thead th:last-child,
+  #supplier-table-active tbody td:last-child,
+  #supplier-table-inactive thead th:last-child,
+  #supplier-table-inactive tbody td:last-child {
+    width: 1% !important;
+    white-space: nowrap;
+  }
+
+  /* Stack action buttons vertically in both tables */
+  #supplier-table-active .action-btns,
+  #supplier-table-inactive .action-btns {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  #supplier-table-active .action-btns .btn,
+  #supplier-table-inactive .action-btns .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

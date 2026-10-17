@@ -95,19 +95,23 @@ try {
                 $reporterRole = (string)($rs->fetchColumn() ?: '');
             } catch (Throwable $e) { /* ignore */ }
 
-            $refNo = (string)($row['reportNo'] ?? ('INC-' . $id));
-            $title = (string)($row['reportTitle'] ?? 'your incident report');
-            $outcome = $action === 'approve' ? 'approved' : 'rejected';
-            notify_user(
-                $pdo,
-                $reporterId,
-                'incident',
-                'Incident report ' . $outcome,
-                'Your report "' . $title . '" (' . $refNo . ') was ' . $outcome . '.',
-                notification_link_for_role($reporterRole, 'incidents'),
-                'incident:' . $id . ':' . $outcome,
-                $reporterRole ?: null
-            );
+            // Inventory users only submit reports; they do not receive
+            // approval/rejection notifications.
+            if ($reporterRole !== 'inventory') {
+                $refNo = (string)($row['reportNo'] ?? ('INC-' . $id));
+                $title = (string)($row['reportTitle'] ?? 'your incident report');
+                $outcome = $action === 'approve' ? 'approved' : 'rejected';
+                notify_user(
+                    $pdo,
+                    $reporterId,
+                    'incident',
+                    'Incident report ' . $outcome,
+                    'Your report "' . $title . '" (' . $refNo . ') was ' . $outcome . '.',
+                    notification_link_for_role($reporterRole, 'incidents'),
+                    'incident:' . $id . ':' . $outcome,
+                    $reporterRole ?: null
+                );
+            }
         }
     }
 

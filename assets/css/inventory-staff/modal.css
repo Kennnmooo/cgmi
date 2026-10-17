@@ -348,3 +348,10 @@
 /* ── Desktop Collapsed State ──────────────────────────────── */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}

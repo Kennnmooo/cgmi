@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/Helpers.php';
 require_login(['super-admin']);
@@ -15,12 +15,83 @@ $monthStart = date('Y-m-01');
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CGMI.IMS   Inventory Reports</title>
   <meta name="description" content="Inventory Reports">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
   <script src="<?= app_url('/assets/lib/jquery/jquery-3.7.1.min.js') ?>"></script>
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/admin/reports.css') ?>">
   <style>
-    .page-content{padding:20px}.toolbar{display:flex;gap:12px;align-items:end;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}.filter-form{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:700;color:#52607a;text-transform:uppercase;letter-spacing:.04em}.field input{height:44px;border:1px solid #dbe3f0;border-radius:12px;padding:0 14px;font:inherit;background:#fff;color:#183153}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{height:44px;border:none;border-radius:12px;padding:0 16px;font:700 14px/44px 'Montserrat',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.btn-primary{background:#1f4da0;color:#fff}.btn-secondary{background:#edf2fb;color:#1f4da0}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px}.stat-card,.panel{background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.08)}.stat-card{border-top:4px solid #4f79c7}.stat-label{font-size:13px;color:#6b7280;margin-bottom:6px}.stat-value{font-size:28px;font-weight:800;color:#0f172a}.report-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;margin-bottom:20px}.report-table{width:100%;border-collapse:collapse}.report-table th,.report-table td{padding:12px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;text-align:left;vertical-align:top}.report-table th{font-size:12px;text-transform:uppercase;color:#71809c;letter-spacing:.04em}.panel h3{margin:0 0 14px;font-size:22px;color:#16315f}.empty-state{text-align:center;color:#6b7280;padding:20px}.bar-row{display:grid;grid-template-columns:160px 1fr 120px;gap:12px;align-items:center;margin-bottom:10px}.bar-track{background:#e5e7eb;border-radius:999px;height:12px;overflow:hidden}.bar-fill{background:#10b981;height:100%;border-radius:999px}.bar-label,.bar-value{font-size:12px;color:#475569}.user-avatar{display:flex;align-items:center;justify-content:center}.section-note{font-size:13px;color:#64748b;margin:-6px 0 14px}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.muted{font-size:12px;color:#7a879f}.table-responsive{overflow:auto}.badge{display:inline-flex;align-items:center;gap:6px;background:#eef4ff;color:#1f4da0;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:700;text-transform:uppercase}.print-note{display:none}@media(max-width:980px){.report-layout{grid-template-columns:1fr}.bar-row{grid-template-columns:1fr}.bar-value{text-align:left}}@media print{body{background:#fff}.sidebar,.top-header,.toolbar,.sidebar-overlay{display:none !important}.main-content{margin:0 !important;width:100% !important}.page-content{padding:0}.panel,.stat-card{box-shadow:none;border:1px solid #d7deea}.print-note{display:block;margin-bottom:16px;color:#42526b}}
+    /* ── Inventory Report Page Styles ── */
+    .page-content { padding: 20px; }
+    .toolbar { display:flex; gap:12px; align-items:end; justify-content:space-between; flex-wrap:wrap; margin-bottom:18px; }
+    .filter-form { display:flex; gap:12px; align-items:end; flex-wrap:wrap; }
+    .field { display:flex; flex-direction:column; gap:6px; }
+    .field label { font-size:12px; font-weight:700; color:#52607a; text-transform:uppercase; letter-spacing:.04em; }
+    .field input { height:44px; border:1px solid #dbe3f0; border-radius:12px; padding:0 14px; font:inherit; background:#fff; color:#183153; min-width:140px; }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; }
+    .btn { height:44px; border:none; border-radius:12px; padding:0 16px; font:700 14px/44px 'Montserrat',sans-serif; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; white-space:nowrap; }
+    .btn-primary { background:#1f4da0; color:#fff; }
+    .btn-secondary { background:#edf2fb; color:#1f4da0; }
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:20px; }
+    .stat-card, .panel { background:#fff; border-radius:18px; padding:18px; box-shadow:0 8px 24px rgba(15,23,42,.08); }
+    .stat-card { border-top:4px solid #4f79c7; }
+    .stat-label { font-size:13px; color:#6b7280; margin-bottom:6px; }
+    .stat-value { font-size:28px; font-weight:800; color:#0f172a; }
+    .report-layout { display:grid; grid-template-columns:1.1fr 1fr; gap:20px; margin-bottom:20px; }
+    .report-table { width:100%; border-collapse:collapse; }
+    .report-table th, .report-table td { padding:12px 10px; border-bottom:1px solid #e5e7eb; font-size:13px; text-align:left; vertical-align:top; }
+    .report-table th { font-size:12px; text-transform:uppercase; color:#71809c; letter-spacing:.04em; }
+    .panel h3 { margin:0 0 14px; font-size:22px; color:#16315f; }
+    .empty-state { text-align:center; color:#6b7280; padding:20px; }
+    .bar-row { display:grid; grid-template-columns:160px 1fr 120px; gap:12px; align-items:center; margin-bottom:10px; }
+    .bar-track { background:#e5e7eb; border-radius:999px; height:12px; overflow:hidden; }
+    .bar-fill { background:#10b981; height:100%; border-radius:999px; }
+    .bar-label, .bar-value { font-size:12px; color:#475569; }
+    .user-avatar { display:flex; align-items:center; justify-content:center; }
+    .section-note { font-size:13px; color:#64748b; margin:-6px 0 14px; }
+    .panel-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap; }
+    .muted { font-size:12px; color:#7a879f; }
+    .table-responsive { overflow:auto; -webkit-overflow-scrolling:touch; }
+    .badge { display:inline-flex; align-items:center; gap:6px; background:#eef4ff; color:#1f4da0; border-radius:999px; padding:4px 10px; font-size:11px; font-weight:700; text-transform:uppercase; }
+    .print-note { display:none; }
+
+    @media (max-width: 980px) {
+      .report-layout { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 1fr; }
+      .bar-value { text-align: left; }
+    }
+    @media (max-width: 768px) {
+      .page-content { padding: 14px; }
+      .toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+      .filter-form { flex-direction: column; align-items: stretch; gap: 10px; width: 100%; }
+      .field input { min-width: 0; width: 100%; font-size: 16px; }
+      .actions { width: 100%; }
+      .actions .btn { flex: 1; justify-content: center; min-width: 0; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .stat-value { font-size: 22px; }
+      .panel { padding: 14px; }
+      .panel h3 { font-size: 18px; }
+      .bar-row { grid-template-columns: 1fr; }
+      .bar-value { text-align: left; }
+    }
+    @media (max-width: 480px) {
+      .page-content { padding: 10px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .stat-card { padding: 14px; }
+      .stat-value { font-size: 20px; }
+      .stat-label { font-size: 12px; }
+      .report-table th, .report-table td { padding: 8px 6px; font-size: 12px; }
+    }
+    @media (max-width: 360px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; }
+      .sidebar, .top-header, .toolbar, .sidebar-overlay { display: none !important; }
+      .main-content { margin: 0 !important; width: 100% !important; }
+      .page-content { padding: 0; }
+      .panel, .stat-card { box-shadow: none; border: 1px solid #d7deea; }
+      .print-note { display: block; margin-bottom: 16px; color: #42526b; }
+    }
   </style>
 </head>
 <body>

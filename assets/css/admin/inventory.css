@@ -1,18 +1,17 @@
-﻿/* inventory merged styles */
+/* inventory merged styles */
 
 
 /* FILE: main.css */
 /* ============================================================
-   MAIN.CSS — Base, Variables, Layout, Typography
+   MAIN.CSS � Base, Variables, Layout, Typography
    Palette: #081F44 #0D0058 #1F3F74 #4569AD #8EA2D7 #B7C3E8 #FFF
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
 
-/* ── Custom Properties ────────────────────────────────────── */
+/* -- Custom Properties -------------------------------------- */
 
 
-/* ── Reset ────────────────────────────────────────────────── */
+/* -- Reset -------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
@@ -28,16 +27,16 @@ img { max-width: 100%; display: block; }
 a   { text-decoration: none; color: inherit; }
 button { cursor: pointer; font-family: var(--font); }
 
-/* ── Scrollbar ────────────────────────────────────────────── */
+/* -- Scrollbar ---------------------------------------------- */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--blue-pale); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--blue-light); }
 
-/* ── App Layout ───────────────────────────────────────────── */
+/* -- App Layout --------------------------------------------- */
 .app-wrapper { display: flex; min-height: 100vh; }
 
-/* ── Sidebar ──────────────────────────────────────────────── */
+/* -- Sidebar ------------------------------------------------ */
 .sidebar {
   width: var(--sidebar-width);
   background: var(--navy-deepest);
@@ -131,7 +130,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .user-role { font-size: var(--fs-xs); color: var(--blue-pale); margin-top: 1px; }
 
-/* ── Sidebar Overlay ──────────────────────────────────────── */
+/* -- Sidebar Overlay ---------------------------------------- */
 .sidebar-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.65); z-index: 199;
@@ -142,7 +141,7 @@ button { cursor: pointer; font-family: var(--font); }
 @keyframes sidebarOverlayIn  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sidebarOverlayOut { from { opacity: 1; } to { opacity: 0; } }
 
-/* ── Sidebar Dropdown ──────────────────────────────────────── */
+/* -- Sidebar Dropdown ---------------------------------------- */
 .nav-dropdown-toggle {
   cursor: pointer;
   user-select: none;
@@ -183,7 +182,7 @@ button { cursor: pointer; font-family: var(--font); }
 .nav-sub-item:hover {
   opacity: 1;
 }
-/* ── Main Content ─────────────────────────────────────────── */
+/* -- Main Content ------------------------------------------- */
 .main-content {
   flex: 1; margin-left: var(--sidebar-width);
   display: flex; flex-direction: column;
@@ -191,7 +190,7 @@ button { cursor: pointer; font-family: var(--font); }
   transition: margin-left var(--transition-slow);
 }
 
-/* ── Top Header ───────────────────────────────────────────── */
+/* -- Top Header --------------------------------------------- */
 .top-header {
   height: var(--header-height);
   background: var(--navy-mid);
@@ -242,13 +241,13 @@ button { cursor: pointer; font-family: var(--font); }
   letter-spacing: 0.8px; text-transform: uppercase; margin-top: 2px;
 }
 
-/* ── Page Content ─────────────────────────────────────────── */
+/* -- Page Content ------------------------------------------- */
 .page-content {
   flex: 1; padding: 24px;
   display: flex; flex-direction: column; gap: 20px;
 }
 
-/* ── Stats Cards ──────────────────────────────────────────── */
+/* -- Stats Cards -------------------------------------------- */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -288,7 +287,7 @@ button { cursor: pointer; font-family: var(--font); }
 .stat-change.down    { color: var(--accent-danger); }
 .stat-change.neutral { color: var(--text-muted); }
 
-/* ── Panel Card ───────────────────────────────────────────── */
+/* -- Panel Card --------------------------------------------- */
 .panel-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -314,7 +313,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .panel-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
-/* ── Buttons ──────────────────────────────────────────────── */
+/* -- Buttons ------------------------------------------------ */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 16px; border-radius: var(--radius-md);
@@ -335,10 +334,10 @@ button { cursor: pointer; font-family: var(--font); }
 .btn-primary:active { transform: none; box-shadow: none; }
 
 .btn-secondary {
-  background: transparent; color: var(--navy-mid);
-  border: 1px solid var(--border-color);
+  background: rgba(69,105,173,0.08); color: var(--blue-medium);
+  border: 1px solid rgba(69,105,173,0.22);
 }
-.btn-secondary:hover { background: var(--bg-elevated); border-color: var(--blue-medium); }
+.btn-secondary:hover { background: var(--blue-medium); color: white; border-color: var(--blue-medium); }
 
 .btn-ghost {
   background: transparent; color: var(--text-secondary);
@@ -356,7 +355,7 @@ button { cursor: pointer; font-family: var(--font); }
 .btn-xs  { padding: 4px 10px;  font-size: var(--fs-xs); }
 .btn-icon{ padding: 8px; border-radius: var(--radius-sm); }
 
-/* ── Forms ────────────────────────────────────────────────── */
+/* -- Forms -------------------------------------------------- */
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-label {
   font-size: var(--fs-xs); font-weight: 600;
@@ -385,7 +384,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 
 .hint-text { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
 
-/* ── Badges ───────────────────────────────────────────────── */
+/* -- Badges ------------------------------------------------- */
 .badge {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 3px 10px; border-radius: 99px;
@@ -395,7 +394,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .badge-active   { background: rgba(22,163,74,0.1);  color: var(--accent-success); border: 1px solid rgba(22,163,74,0.22); }
 .badge-inactive { background: rgba(220,38,38,0.08); color: var(--accent-danger);  border: 1px solid rgba(220,38,38,0.18); }
 
-/* ── Toast ────────────────────────────────────────────────── */
+/* -- Toast -------------------------------------------------- */
 #toast-container {
   position: fixed; bottom: 24px; right: 24px;
   z-index: 9999; display: flex; flex-direction: column; gap: 10px;
@@ -403,22 +402,22 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 .toast {
   background: var(--white); border: 1px solid var(--border-color);
-  border-left: 3px solid var(--toast-color, var(--blue-medium));
-  border-radius: var(--radius-md); padding: 13px 15px;
-  display: flex; align-items: flex-start; gap: 10px;
-  box-shadow: var(--shadow-elevated);
+  border-left: 4px solid var(--toast-color, var(--blue-medium));
+  border-radius: var(--radius-md); padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 11px;
+  box-shadow: 0 2px 12px rgba(8,31,68,0.10);
   animation: slideInToast 0.28s cubic-bezier(0.34,1.4,0.64,1);
-  pointer-events: all; cursor: pointer;
+  pointer-events: all; cursor: pointer; min-width: 260px;
 }
 @keyframes slideInToast { from { opacity:0; transform:translateX(80px); } to { opacity:1; transform:translateX(0); } }
 .toast.hide { animation: slideOutToast 0.25s ease forwards; }
 @keyframes slideOutToast { to { opacity:0; transform:translateX(80px); } }
-.toast-icon  { font-size: 17px; flex-shrink: 0; }
+.toast-icon  { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 .toast-body  { flex: 1; min-width: 0; }
 .toast-title { font-size: var(--fs-sm); font-weight: 700; color: var(--navy-deepest); }
-.toast-msg   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+.toast-msg   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 3px; line-height: 1.45; }
 
-/* ── Confirm Dialog ───────────────────────────────────────── */
+/* -- Confirm Dialog ----------------------------------------- */
 .confirm-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.6); z-index: 9000;
@@ -439,7 +438,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .confirm-msg     { font-size: var(--fs-sm); color: var(--text-secondary); margin-top: 8px; line-height: 1.6; }
 .confirm-actions { display: flex; gap: 10px; justify-content: center; margin-top: 22px; }
 
-/* ── Loading ──────────────────────────────────────────────── */
+/* -- Loading ------------------------------------------------ */
 .loading-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.55); z-index: 8888;
@@ -455,7 +454,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Empty State ──────────────────────────────────────────── */
+/* -- Empty State -------------------------------------------- */
 .empty-state { text-align: center; padding: 56px 20px; }
 .empty-state-icon  { font-size: 44px; margin-bottom: 14px; opacity: 0.4; }
 .empty-state-title { font-family: var(--font); font-size: var(--fs-lg); font-weight: 700; color: var(--text-secondary); }
@@ -464,10 +463,10 @@ select.form-control option { background: var(--white); color: var(--text-primary
 
 /* FILE: modal.css */
 /* ============================================================
-   MODAL.CSS — Add/Edit modal  +  Details Panel
+   MODAL.CSS � Add/Edit modal  +  Details Panel
    ============================================================ */
 
-/* ── Edit / Add Modal Backdrop ────────────────────────────── */
+/* -- Edit / Add Modal Backdrop ------------------------------ */
 .modal-backdrop {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.65); z-index: 1000;
@@ -518,7 +517,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
   display: flex; flex-direction: column; gap: 16px;
 }
 
-/* ── Image Upload Zone ────────────────────────────────────── */
+/* -- Image Upload Zone -------------------------------------- */
 .img-upload-zone {
   border: 2px dashed var(--border-color);
   border-radius: var(--radius-lg); padding: 20px;
@@ -552,7 +551,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 .img-preview-remove:hover { background: var(--accent-danger); }
 
-/* ── Form Grid ────────────────────────────────────────────── */
+/* -- Form Grid ---------------------------------------------- */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-grid .span-2 { grid-column: span 2; }
 .form-row { display: flex; gap: 12px; }
@@ -568,7 +567,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .qty-input-group .qty-multi-group .qty-field-label {
   font-size: 11px; font-weight: 600; color: var(--gray-600, #5C6480); text-transform: uppercase; letter-spacing: 0.3px;
 }
-/* Read-only / locked quantity fields — shared, consistent treatment.
+/* Read-only / locked quantity fields � shared, consistent treatment.
    qty-field-disabled : IoT field with no shelf assigned.
    qty-field-locked   : permission lock (e.g. inventory role).
    Both render identically: dimmed, hatched dashed input, gray label,
@@ -620,7 +619,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 .price-input-wrap .form-control { padding-left: 26px; }
 
-/* ── Status Toggle ────────────────────────────────────────── */
+/* -- Status Toggle ------------------------------------------ */
 .status-toggle { display: flex; gap: 8px; }
 .status-toggle > div { flex: 1; }
 .status-toggle input[type="radio"] { display: none; }
@@ -640,7 +639,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
   background: rgba(220,38,38,0.08); color: var(--accent-danger); border-color: rgba(220,38,38,0.28);
 }
 
-/* ── Modal Footer ─────────────────────────────────────────── */
+/* -- Modal Footer ------------------------------------------- */
 .modal-footer {
   padding: 14px 22px; border-top: 1px solid var(--border-color);
   display: flex; align-items: center; justify-content: flex-end;
@@ -658,9 +657,9 @@ select.form-control option { background: var(--white); color: var(--text-primary
   padding-bottom: 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 2px;
 }
 
-/* ══════════════════════════════════════════════════════════
-   DETAILS PANEL — slide-up sheet (compact / mobile mode)
-   ══════════════════════════════════════════════════════════ */
+/* ----------------------------------------------------------
+   DETAILS PANEL � slide-up sheet (compact / mobile mode)
+   ---------------------------------------------------------- */
 
 .details-backdrop {
   display: none;
@@ -817,12 +816,12 @@ select.form-control option { background: var(--white); color: var(--text-primary
    Mobile-first fluid breakpoints with orientation support.
    Supports: Mobile Phones, Tablets, Laptops, Desktop Computers
    Orientations: Portrait & Landscape
-   Key rule: ≤ 680px → compact 3-column table mode (JS-driven).
+   Key rule: = 680px ? compact 3-column table mode (JS-driven).
    ============================================================ */
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    BASE FLUID TYPOGRAPHY & SPACING
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 * {
   box-sizing: border-box;
 }
@@ -852,9 +851,9 @@ img {
   overflow-x: clip;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   ULTRA-WIDE DESKTOP ≥ 1920px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   ULTRA-WIDE DESKTOP = 1920px
+------------------------------------------------------------- */
 @media (min-width: 1920px) {
   :root { --sidebar-width: 300px; }
   .page-content { padding: 32px 40px; gap: 28px; max-width: 2400px; margin: 0 auto; }
@@ -866,9 +865,9 @@ img {
   .modal { max-width: 720px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   LARGE DESKTOP ≥ 1400px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   LARGE DESKTOP = 1400px
+------------------------------------------------------------- */
 @media (min-width: 1400px) {
   :root { --sidebar-width: 272px; }
   .page-content { padding: 28px 32px; gap: 24px; }
@@ -878,53 +877,128 @@ img {
   #inventory-table tbody td { padding-left: 18px; padding-right: 18px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   STANDARD DESKTOP 1024px – 1399px  (base CSS)
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   STANDARD DESKTOP 1024px � 1399px  (base CSS)
+------------------------------------------------------------- */
 
-/* ─────────────────────────────────────────────────────────────
-   LAPTOP / SMALL DESKTOP ≤ 1200px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   LAPTOP / SMALL DESKTOP = 1200px
+------------------------------------------------------------- */
 @media (max-width: 1200px) {
   :root { --sidebar-width: 240px; }
   .stats-row { gap: 12px; }
   .stat-icon { width: 40px; height: 40px; font-size: 18px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   TABLET LANDSCAPE ≤ 1024px
-   Better handling for landscape tablets and small laptops
-───────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  :root { --sidebar-width: 220px; --header-height: 60px; }
+/* -------------------------------------------------------------
+   TABLET ≤ 1376px  (portrait AND landscape)
+   Mirrors mobile portrait: sidebar becomes a slide-over drawer.
+   Desktop (> 1376px) is NOT affected.
+------------------------------------------------------------- */
+@media (max-width: 1376px) {
+  :root { --sidebar-width: 280px; --header-height: 58px; }
 
-  .page-content { padding: 18px; gap: 16px; }
-  .stats-row { grid-template-columns: repeat(2,1fr); gap: 12px; }
+  /* Sidebar drawer */
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+    max-width: 85vw;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 6px 0 32px rgba(8,31,68,0.3);
+  }
+  .main-content { margin-left: 0; }
+  .menu-toggle { display: flex; }
+
+  /* Header */
+  .top-header { padding: 0 16px; gap: 10px; flex-wrap: nowrap; }
+  .page-title { font-size: clamp(0.9rem, 3vw, 1.1rem); }
+  .page-breadcrumb { display: none; }
   .header-stat { display: none; }
-  .toolbar { padding: 12px 16px; gap: 8px; flex-wrap: wrap; }
-  .search-wrapper { max-width: 260px; flex: 1; min-width: 200px; }
-  .panel-header { padding: 14px 18px; flex-wrap: wrap; }
-  .modal { max-width: 580px; }
-  
-  /* Ensure buttons remain accessible */
-  .btn { white-space: nowrap; }
-  .panel-actions { flex-wrap: wrap; gap: 8px; }
-}
+  .header-right { gap: 8px; min-width: 0; }
 
-/* Tablet Landscape Orientation Specific */
-@media (max-width: 1024px) and (orientation: landscape) {
-  .stats-row { grid-template-columns: repeat(4,1fr); gap: 10px; }
-  .stat-card { padding: 12px; }
-  .stat-icon { width: 36px; height: 36px; font-size: 16px; }
+  /* Content */
+  .page-content { padding: 14px; gap: 14px; width: 100%; }
+
+  /* Stats — 2 columns, same as mobile portrait */
+  .stats-row { grid-template-columns: repeat(2,1fr); gap: 10px; width: 100%; }
+  .stat-card { padding: 14px; gap: 12px; min-width: 0; }
+  .stat-value { font-size: clamp(1.2rem, 4vw, 1.5rem); }
   .stat-label { font-size: var(--fs-xs); }
-  .toolbar { padding: 10px 14px; }
+  .stat-change { display: none; }
+  .stat-icon { width: 38px; height: 38px; font-size: 17px; }
+
+  /* Panel header stacks */
+  .panel-header { flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px 16px; }
+  .panel-actions { width: 100%; justify-content: flex-end; display: flex; flex-wrap: wrap; gap: 8px; }
+  .panel-actions .btn { flex: 1 1 auto; justify-content: center; min-width: 120px; max-width: 200px; }
+
+  /* Toolbar stacks */
+  .toolbar { flex-direction: column; align-items: stretch; padding: 12px 14px; gap: 10px; }
+  .toolbar-left  { flex-direction: column; align-items: stretch; gap: 8px; width: 100%; }
+  .toolbar-right { flex-direction: column; align-items: stretch; gap: 8px; width: 100%; }
+  .search-wrapper { max-width: 100%; width: 100%; }
+  .status-tabs { width: 100%; overflow-x: auto; display: flex; -webkit-overflow-scrolling: touch; }
+  .status-tab { flex: 1 1 auto; min-width: fit-content; white-space: nowrap; }
+  .filter-group { flex-direction: column; gap: 8px; }
+  .filter-select { min-width: 100%; width: 100%; }
+  .sort-wrapper  { width: 100%; }
+  .sort-btn { width: 100%; justify-content: center; }
+  .sort-dropdown { left: 0; right: 0; min-width: 0; width: 100%; }
+
+  /* Modal */
+  .modal-backdrop { padding: 10px; }
+  .modal { max-height: 94vh; border-radius: var(--radius-lg); width: 100%; max-width: calc(100vw - 20px); }
+  .modal-header { padding: 16px 18px; }
+  .modal-body   { padding: 18px; gap: 14px; }
+  .modal-footer { padding: 14px 18px; flex-wrap: wrap; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .span-2 { grid-column: span 1; }
+  .form-row { flex-direction: column; gap: 12px; }
+
+  .btn { white-space: nowrap; }
+
+  /* ── Tablet table: JS switches to 3-column mode (Image, Name, Overall, Actions) ── */
+  .dt-container { overflow-x: visible; width: 100%; }
+  #inventory-table { width: 100%; table-layout: auto; }
+  #inventory-table thead th { padding: 11px 12px; white-space: nowrap; }
+  #inventory-table tbody td { padding: 12px 12px; vertical-align: middle; }
+  .item-img-wrap,
+  .item-img-placeholder { width: 44px; height: 44px; }
+  /* Compact action buttons side-by-side on tablet (more room than mobile) */
+  .actions-cell--compact {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+  .actions-cell--compact .action-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: var(--fs-xs);
+    min-width: 0;
+  }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   TABLET PORTRAIT ≤ 768px
-   Sidebar → slide-over drawer
+/* Tablet portrait — 2-col stats, same as mobile portrait */
+@media (max-width: 1376px) and (orientation: portrait) {
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .stat-card { min-height: 100px; }
+}
+
+/* Tablet landscape — keep portrait stacked layout, no wide overrides */
+@media (max-width: 1376px) and (orientation: landscape) {
+  .stats-row { grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .stat-card { padding: 14px; }
+}
+
+/* -------------------------------------------------------------
+   TABLET PORTRAIT = 768px
+   Sidebar ? slide-over drawer
    Enhanced overflow and touch-friendly spacing
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 768px) {
   :root { --header-height: 58px; --sidebar-width: 280px; }
 
@@ -1141,7 +1215,7 @@ img {
   }
 }
 
-/* Tablet Portrait Orientation Specific */
+/* Mobile portrait — 2-col stats */
 @media (max-width: 768px) and (orientation: portrait) {
   .stats-row { 
     grid-template-columns: 1fr 1fr; 
@@ -1151,27 +1225,27 @@ img {
   }
 }
 
-/* Tablet Landscape Orientation Specific (medium) */
+/* Mobile landscape — keep portrait stacked layout */
 @media (max-width: 768px) and (orientation: landscape) {
   .stats-row { 
-    grid-template-columns: repeat(4, 1fr); 
+    grid-template-columns: 1fr 1fr; 
     gap: 8px;
   }
   .stat-card {
-    padding: 10px;
-    min-height: 80px;
+    padding: 12px;
+    min-height: 100px;
   }
   .page-content {
-    padding: 10px;
+    padding: 12px;
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   COMPACT TABLE BREAKPOINT ≤ 680px
+/* -------------------------------------------------------------
+   COMPACT TABLE BREAKPOINT = 680px
    JavaScript switches to 3-column layout.
    CSS only needs to style those columns nicely.
    Enhanced for better mobile readability and touch targets
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 680px) {
   /* Compact image thumbnail */
   .item-img-wrap,
@@ -1192,21 +1266,25 @@ img {
     display: none; 
   }
 
-  /* Compact action buttons side-by-side with better touch targets */
-  .actions-cell--compact { 
-    gap: 6px; 
-    flex-wrap: nowrap; 
-    justify-content: flex-end;
+  /* Compact action buttons stacked vertically: Update on top, Details below */
+  .actions-cell--compact {
+    flex-direction: column !important;
+    gap: 5px !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
   }
-  .btn-details { 
-    padding: 8px 12px; 
-    font-size: var(--fs-xs);
-    min-width: 70px;
-  }
-  .btn-update  { 
-    padding: 8px 10px;  
-    font-size: var(--fs-xs);
-    min-width: 32px;
+  .actions-cell--compact .btn-details,
+  .actions-cell--compact .btn-update {
+    padding: 7px 10px !important;
+    font-size: var(--fs-xs) !important;
+    font-weight: 700 !important;
+    min-width: 0 !important;
+    min-height: unset !important;
+    width: 100% !important;
+    justify-content: center !important;
+    border-radius: var(--radius-md) !important;
+    border-width: 1px !important;
+    flex: none !important;
   }
 
   /* Tighter table padding */
@@ -1263,29 +1341,29 @@ img {
   }
 }
 
-/* Compact mode - landscape orientation */
+/* Compact mode - landscape — keep portrait stacked layout */
 @media (max-width: 680px) and (orientation: landscape) {
   .stats-row {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 6px;
   }
   .stat-card {
-    padding: 8px;
+    padding: 12px;
   }
   .stat-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
   }
   .stat-value {
     font-size: clamp(1rem, 3vw, 1.2rem);
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   MOBILE ≤ 480px
+/* -------------------------------------------------------------
+   MOBILE = 480px
    Enhanced touch targets and mobile-optimized layouts
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 480px) {
   :root { --header-height: 54px; }
 
@@ -1343,7 +1421,7 @@ img {
     min-height: 44px;
   }
 
-  /* Modal → bottom sheet for better mobile UX */
+  /* Modal ? bottom sheet for better mobile UX */
   .modal-backdrop { 
     padding: 0; 
     align-items: flex-end; 
@@ -1473,22 +1551,22 @@ img {
   }
 }
 
-/* Mobile Landscape Orientation */
+/* Mobile Landscape — keep portrait stacked layout */
 @media (max-width: 480px) and (orientation: landscape) {
   :root { --header-height: 48px; }
   
   .stats-row {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 6px;
   }
   
   .stat-card {
-    padding: 8px;
+    padding: 10px;
   }
   
   .page-content {
-    padding: 8px;
-    gap: 8px;
+    padding: 10px;
+    gap: 10px;
   }
   
   .modal {
@@ -1500,10 +1578,10 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   SMALL MOBILE ≤ 360px
+/* -------------------------------------------------------------
+   SMALL MOBILE = 360px
    Optimized for smallest devices with orientation handling
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 360px) {
   :root { --header-height: 50px; }
 
@@ -1608,27 +1686,27 @@ img {
   }
 }
 
-/* Small Mobile Landscape */
+/* Small Mobile Landscape — keep portrait stacked layout */
 @media (max-width: 360px) and (orientation: landscape) {
   :root { --header-height: 44px; }
   
   .stats-row {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 4px;
   }
   
   .stat-card {
-    padding: 6px;
+    padding: 8px;
   }
   
   .stat-icon {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
   }
   
   .page-content {
-    padding: 6px;
+    padding: 8px;
   }
   
   .modal {
@@ -1636,9 +1714,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    PRINT
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media print {
   .sidebar, .sidebar-overlay, .top-header,
   .toolbar, .actions-cell, .panel-actions,
@@ -1658,10 +1736,10 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    ADDITIONAL ORIENTATION FIXES
    Ensures smooth transitions between orientations
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* General orientation change handling */
 @media (orientation: portrait) {
@@ -1682,9 +1760,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    ACCESSIBILITY & TOUCH ENHANCEMENTS
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* Ensure minimum touch target size (44x44px per WCAG) */
 @media (max-width: 768px) {
@@ -1733,9 +1811,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    FOLDING / DUAL-SCREEN DEVICES
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* Surface Duo and similar dual-screen devices */
 @media (horizontal-viewport-segments: 2) {
@@ -1753,9 +1831,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    REDUCED MOTION
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1768,9 +1846,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    HIGH CONTRAST MODE
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-contrast: high) {
   .btn {
@@ -1788,17 +1866,17 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    DARK MODE PREPARATION (if needed in future)
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-color-scheme: dark) {
   /* Dark mode styles can be added here if needed */
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    OVERFLOW FIX - CRITICAL FOR ALL DEVICES
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 html {
   overflow-x: clip;
@@ -1845,17 +1923,17 @@ body {
   max-width: min(95vw, 720px);
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    END OF RESPONSIVE.CSS
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 
 /* FILE: table.css */
 /* ============================================================
-   TABLE.CSS — Toolbar, DataTable, compact mode
+   TABLE.CSS � Toolbar, DataTable, compact mode
    ============================================================ */
 
-/* ── Toolbar ──────────────────────────────────────────────── */
+/* -- Toolbar ------------------------------------------------ */
 .toolbar {
   padding: 14px 20px;
   border-bottom: 1px solid var(--border-color);
@@ -1974,7 +2052,7 @@ body {
 .sort-option.active { color: var(--blue-medium); background: rgba(69,105,173,0.07); font-weight: 600; }
 .sort-icon { font-size: 14px; }
 
-/* ── DataTable wrapper ────────────────────────────────────── */
+/* -- DataTable wrapper -------------------------------------- */
 .dt-container { padding: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
 .dataTables_wrapper { color: var(--text-primary); font-family: var(--font); position: relative; }
@@ -2007,7 +2085,7 @@ body {
 }
 .dataTables_paginate .paginate_button.disabled { opacity: 0.35; cursor: not-allowed; }
 
-/* ── Table itself ─────────────────────────────────────────── */
+/* -- Table itself ------------------------------------------- */
 #inventory-table { width: 100% !important; border-collapse: collapse; }
 
 #inventory-table thead th {
@@ -2020,20 +2098,20 @@ body {
 }
 #inventory-table thead th:hover { color: var(--navy-deepest); background: #dde6f7; }
 
-#inventory-table thead .sorting::after      { content: '⇅'; display:inline-block; margin-left:5px; opacity:0.35; font-size:10px; }
-#inventory-table thead .sorting_asc::after  { content: '↑'; display:inline-block; margin-left:5px; opacity:1; color:var(--blue-medium); font-size:10px; }
-#inventory-table thead .sorting_desc::after { content: '↓'; display:inline-block; margin-left:5px; opacity:1; color:var(--blue-medium); font-size:10px; }
+#inventory-table thead .sorting::after      { content: '?'; display:inline-block; margin-left:5px; opacity:0.35; font-size:10px; }
+#inventory-table thead .sorting_asc::after  { content: '?'; display:inline-block; margin-left:5px; opacity:1; color:var(--blue-medium); font-size:10px; }
+#inventory-table thead .sorting_desc::after { content: '?'; display:inline-block; margin-left:5px; opacity:1; color:var(--blue-medium); font-size:10px; }
 
 #inventory-table tbody tr { border-bottom: 1px solid var(--border-color); transition: background var(--transition); }
 #inventory-table tbody tr:hover { background: #f0f5ff; }
 #inventory-table tbody tr:last-child { border-bottom: none; }
 
 #inventory-table tbody td {
-  padding: 12px 14px; vertical-align: middle;
+  padding: 11px 10px; vertical-align: middle;
   font-size: var(--fs-sm); color: var(--text-primary);
 }
 
-/* ── Cell components ──────────────────────────────────────── */
+/* -- Cell components ---------------------------------------- */
 .item-img-wrap {
   width: 42px; height: 42px; border-radius: var(--radius-md);
   overflow: hidden; background: var(--bg-elevated);
@@ -2071,7 +2149,7 @@ body {
   font-weight: 700; color: var(--navy-deepest);
 }
 
-/* ── Action Buttons (table row) ───────────────────────────── */
+/* -- Action Buttons (table row) ----------------------------- */
 .actions-cell { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
 
 /* Compact action cell */
@@ -2091,26 +2169,40 @@ body {
 }
 .btn-update:hover { background: var(--blue-medium); color: white; }
 
-/* Details button — teal-ish accent to distinguish from Update */
+/* Details button � teal-ish accent to distinguish from Update */
+/* Details button — matches btn-secondary blue tint */
 .btn-details {
-  background: rgba(31,63,116,0.08); color: var(--navy-mid);
-  border: 1px solid rgba(31,63,116,0.2);
+  background: rgba(69,105,173,0.08); color: var(--blue-medium);
+  border: 1px solid rgba(69,105,173,0.22);
 }
-.btn-details:hover { background: var(--navy-mid); color: white; }
+.btn-details:hover { background: var(--blue-medium); color: white; }
 
-/* Deactivate button — danger/warning accent */
+/* Deactivate button � danger/warning accent */
 .btn-deactivate {
   background: rgba(220,53,69,0.1); color: var(--accent-danger, #dc3545);
   border: 1px solid rgba(220,53,69,0.22);
 }
 .btn-deactivate:hover { background: var(--accent-danger, #dc3545); color: white; }
 
-/* Reactivate button — success accent */
+/* Reactivate button � success accent */
 .btn-reactivate {
   background: rgba(40,167,69,0.1); color: var(--accent-success, #28a745);
   border: 1px solid rgba(40,167,69,0.22);
 }
 .btn-reactivate:hover { background: var(--accent-success, #28a745); color: white; }
+
+/* Details footer toggle button variants (btn-danger / btn-success) */
+.btn.btn-danger {
+  background: rgba(220,53,69,0.1); color: var(--accent-danger, #dc3545);
+  border: 1px solid rgba(220,53,69,0.3); font-weight: 700;
+}
+.btn.btn-danger:hover { background: var(--accent-danger, #dc3545); color: white; }
+
+.btn.btn-success {
+  background: rgba(40,167,69,0.1); color: var(--accent-success, #28a745);
+  border: 1px solid rgba(40,167,69,0.3); font-weight: 700;
+}
+.btn.btn-success:hover { background: var(--accent-success, #28a745); color: white; }
 
 /* Footer row */
 .dt-footer-row {
@@ -2188,7 +2280,7 @@ body {
   border-color: rgba(197, 106, 0, .20);
 }
 
-/* ── Custom pagination bar (matches Outgoing deliveries layout) ── */
+/* -- Custom pagination bar (matches Outgoing deliveries layout) -- */
 .table-pagination {
   display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: 10px;
@@ -2211,6 +2303,6 @@ body {
 .table-pagination .small-btn { padding: 7px 12px; font-size: var(--fs-xs); }
 .table-pagination .small-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* ── Desktop Collapsed State ──────────────────────────────── */
+/* -- Desktop Collapsed State -------------------------------- */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }

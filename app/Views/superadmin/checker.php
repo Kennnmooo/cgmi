@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/Helpers.php';
 require_login(['super-admin']);
@@ -15,14 +15,14 @@ $sidebarActive = 'checker';
   <meta name="description" content="Hardware & Construction Supply Checker Panel">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
 
   <!-- Design system + module CSS -->
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/modules/checker/main.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/modules/checker/responsive.css') ?>">
 </head>
-<body>
+<body data-checker-trash-enabled="1">
 <div class="app-wrapper">
 
   <?php require __DIR__ . '/../shared/sidebar.php'; ?>
@@ -101,14 +101,16 @@ $sidebarActive = 'checker';
           <button type="button" class="btn btn-primary" id="toggle-incoming-form"><span class="btn-inline-icon ui-icon icon-add" aria-hidden="true"></span>New Delivery</button>
         </div>
         <div class="incoming-filter-tabs" role="tablist" aria-label="Incoming status filter">
-          <button class="filter-tab active" data-filter="all">All</button>
-          <button class="filter-tab" data-filter="Pending">Pending</button>
-          <button class="filter-tab" data-filter="Checked">Checked</button>
+          <button class="filter-tab active" data-filter="all">All <span class="tab-count" id="incoming-all-count"></span></button>
+          <button class="filter-tab" data-filter="Pending">Pending <span class="tab-count" id="incoming-pending-tab-count"></span></button>
+          <button class="filter-tab" data-filter="Checked">Checked <span class="tab-count" id="incoming-checked-count"></span></button>
+          <button class="filter-tab" data-filter="Trash">Trash <span class="tab-count" id="incoming-trash-count"></span></button>
         </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Date</th><th>Supplier</th><th>Items</th><th>Total Qty</th><th>Status</th><th>Checker</th><th>Action</th></tr></thead>
-            <tbody id="incoming-table"><tr><td colspan="7" class="empty">Loading </td></tr></tbody>
+            <tbody id="incoming-table"><tr><td colspan="7" class="empty">Loading&#8230;</td></tr></tbody>
+            <tbody id="incoming-trash-table" style="display:none"><tr><td colspan="7" class="empty">Trash is empty.</td></tr></tbody>
           </table>
         </div>
         <div class="table-pagination" id="incoming-pagination"></div>
@@ -124,14 +126,16 @@ $sidebarActive = 'checker';
           <button type="button" class="btn btn-primary" id="manual-outgoing-open"><span class="btn-inline-icon ui-icon icon-add" aria-hidden="true"></span>Add Manual Outgoing</button>
         </div>
         <div class="incoming-filter-tabs" role="tablist" aria-label="Outgoing status filter">
-          <button class="filter-tab outgoing-filter-tab active" data-outgoing-filter="all">All</button>
-          <button class="filter-tab outgoing-filter-tab" data-outgoing-filter="Pending">Pending</button>
-          <button class="filter-tab outgoing-filter-tab" data-outgoing-filter="Checked">Checked</button>
+          <button class="filter-tab outgoing-filter-tab active" data-outgoing-filter="all">All <span class="tab-count" id="outgoing-all-count"></span></button>
+          <button class="filter-tab outgoing-filter-tab" data-outgoing-filter="Pending">Pending <span class="tab-count" id="outgoing-pending-count"></span></button>
+          <button class="filter-tab outgoing-filter-tab" data-outgoing-filter="Checked">Checked <span class="tab-count" id="outgoing-checked-count"></span></button>
+          <button class="filter-tab outgoing-filter-tab" data-outgoing-filter="Trash">Trash <span class="tab-count" id="outgoing-trash-count"></span></button>
         </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Source</th><th>Date</th><th>Purpose</th><th>SKU</th><th>Items</th><th>Status</th><th>Action</th></tr></thead>
-            <tbody id="outgoing-table"><tr><td colspan="7" class="empty">Loading </td></tr></tbody>
+            <tbody id="outgoing-table"><tr><td colspan="7" class="empty">Loading&#8230;</td></tr></tbody>
+            <tbody id="outgoing-trash-table" style="display:none"><tr><td colspan="7" class="empty">Trash is empty.</td></tr></tbody>
           </table>
         </div>
         <div class="table-pagination" id="outgoing-pagination"></div>
@@ -145,10 +149,15 @@ $sidebarActive = 'checker';
             <p>Items approved by Admin/Inventory but marked as Damaged or Incomplete/Missing. These need to be re-verified before restocking.</p>
           </div>
         </div>
+        <div class="incoming-filter-tabs" role="tablist" aria-label="Re-checking status filter">
+          <button class="filter-tab recheck-filter-tab active" data-recheck-filter="all">All <span class="tab-count" id="recheck-all-count"></span></button>
+          <button class="filter-tab recheck-filter-tab" data-recheck-filter="Trash">Trash <span class="tab-count" id="recheck-trash-count"></span></button>
+        </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Date Confirmed</th><th>Supplier</th><th>Item</th><th>Qty</th><th>Condition</th><th>Confirmed By</th><th>Notes</th><th>Action</th></tr></thead>
-            <tbody id="rechecking-table"><tr><td colspan="8" class="empty">Loading </td></tr></tbody>
+            <tbody id="rechecking-table"><tr><td colspan="8" class="empty">Loading&#8230;</td></tr></tbody>
+            <tbody id="rechecking-trash-table" style="display:none"><tr><td colspan="8" class="empty">Trash is empty.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -280,7 +289,7 @@ $sidebarActive = 'checker';
       <button type="button" id="recheck-modal-close">&#x2715;</button>
     </div>
     <input type="hidden" id="recheck-item-id">
-    <div class="form-group"><label>Updated Condition</label><select id="recheck-condition" required><option value="Accepted / Good">Accepted / Good</option><option value="Damaged">Damaged</option><option value="Incomplete / Missing">Incomplete / Missing</option></select></div>
+    <div class="form-group"><label>Updated Condition</label><select id="recheck-condition" required><option value="">Choose Condition</option><option value="Accepted / Good">Accepted / Good</option></select></div>
     <div class="form-group"><label>Re-check Notes</label><textarea rows="4" id="recheck-notes" placeholder="Describe what was found during re-checking. E.g.: Item repacked, now complete. Or: Still damaged, needs supplier return."></textarea></div>
     <div class="modal-actions">
       <button type="button" class="btn btn-ghost" id="recheck-modal-cancel">Cancel</button>

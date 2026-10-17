@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_login(['inventory']);
 ?>
@@ -12,7 +12,7 @@ require_login(['inventory']);
     <meta name="description" content="Hardware & Construction Supply Inventory Management Panel">
 
     <!-- Google Fonts -->
-     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+     
 
     <!-- Design system + module CSS -->
     <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
@@ -203,7 +203,7 @@ require_login(['inventory']);
               <!-- Submit -->
               <div class="panel-submit-row">
                 <button type="button" class="btn btn-ghost" id="clear-report-btn">x Clear</button>
-                <button type="button" class="btn btn-primary" id="submit-report-btn">Add Report</button>
+                <button type="button" class="btn btn-primary" id="submit-report-btn"><span class="btn-inline-icon ui-icon icon-add" aria-hidden="true"></span>Add Report</button>
               </div>
 
             </div><!-- /panel-body -->

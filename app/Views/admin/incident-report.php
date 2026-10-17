@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_login(['admin']);
 ?>
@@ -11,7 +11,7 @@ require_login(['admin']);
   <meta name="description" content="Hardware & Construction Supply Incident Reports Panel">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
 
   <!--
        CSS FILE ORDER:
@@ -19,6 +19,7 @@ require_login(['admin']);
        2. responsive.css   all breakpoints / media queries
        3. incident-reports.css   page-specific styles for the reports panel
   -->
+    <link rel="stylesheet" href="<?= app_url('/assets/fonts/montserrat.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/admin/incidents.css') ?>">
 </head>
@@ -147,9 +148,14 @@ require_login(['admin']);
                 <button class="btn btn-ghost btn-sm" id="clear-date-filter" style="display:none;">Clear</button>
               </div>
 
+              <!-- REFRESH -->
+              <button class="btn btn-ghost" id="refresh-btn" type="button" aria-label="Refresh reports">
+                <span class="btn-inline-icon ui-icon icon-refresh" aria-hidden="true"></span>Refresh
+              </button>
+
               <!-- SORT TOGGLE -->
               <button class="sort-btn" id="sort-btn" type="button" aria-label="Toggle sort order">
-                Sort <span id="sort-label">Latest First</span> ▾
+                Sort <span id="sort-label">Latest First</span> ?
               </button>
               <!-- /SORT TOGGLE -->
             </div>

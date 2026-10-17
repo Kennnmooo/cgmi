@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/Helpers.php';
 require_login(['super-admin']);
@@ -15,7 +15,7 @@ $sidebarActive = 'suppliers';
   <meta name="description" content="Hardware & Construction Supply Supplier Management Panel">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
 
   <!-- jQuery -->
   <script src="<?= app_url('/assets/lib/jquery/jquery-3.7.1.min.js') ?>"></script>
@@ -170,6 +170,44 @@ $sidebarActive = 'suppliers';
       <span class="save-hint">Fields marked with <strong>*</strong> are required.</span>
       <button class="btn btn-ghost" id="modal-cancel-btn">Cancel</button>
       <button class="btn btn-primary" id="modal-save-btn">Save Supplier</button>
+    </div>
+  </div>
+</div>
+
+<!--  SUPPLIER DETAILS MODAL (mobile portrait only)  -->
+<div class="modal-backdrop" id="supplier-details-modal" role="dialog" aria-modal="true" aria-labelledby="details-modal-title">
+  <div class="modal modal-details">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <div class="modal-icon ui-icon icon-inventory" aria-hidden="true"></div>
+        <div>
+          <div class="modal-title" id="details-modal-title">Supplier Details</div>
+          <div class="modal-subtitle">Full supplier information</div>
+        </div>
+      </div>
+      <button class="modal-close" id="details-modal-close-btn" aria-label="Close details">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section-label">Supplier Information</div>
+      <div class="details-field-list">
+        <div class="details-field">
+          <span class="details-field-label">Supplier Name</span>
+          <span class="details-field-value" id="details-modal-name">—</span>
+        </div>
+        <div class="details-field">
+          <span class="details-field-label">Address</span>
+          <span class="details-field-value" id="details-modal-address">—</span>
+        </div>
+        <div class="details-field">
+          <span class="details-field-label">Phone Number</span>
+          <span class="details-field-value" id="details-modal-phone">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="details-modal-close-footer-btn" onclick="document.getElementById('supplier-details-modal').classList.remove('active')">Close</button>
+      <button class="btn btn-danger small-btn action-toggle" id="details-modal-deactivate-btn" data-action="deactivate" data-id=""><span class="btn-inline-icon ui-icon icon-incident" aria-hidden="true"></span>Deactivate</button>
+      <button class="btn btn-secondary action-edit" id="details-modal-edit-btn" data-id=""><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Update</button>
     </div>
   </div>
 </div>

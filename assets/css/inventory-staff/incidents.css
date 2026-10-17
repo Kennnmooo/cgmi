@@ -1,18 +1,17 @@
-﻿/* incident-report-inventory merged styles */
+/* incident-report-inventory merged styles */
 
 
 /* FILE: main.css */
 /* ============================================================
-   MAIN.CSS — Base, Variables, Layout, Typography
+   MAIN.CSS � Base, Variables, Layout, Typography
    Palette: #081F44 #0D0058 #1F3F74 #4569AD #8EA2D7 #B7C3E8 #FFF
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
 
-/* ── Custom Properties ────────────────────────────────────── */
+/* -- Custom Properties -------------------------------------- */
 
 
-/* ── Reset ────────────────────────────────────────────────── */
+/* -- Reset -------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
@@ -28,16 +27,16 @@ img { max-width: 100%; display: block; }
 a   { text-decoration: none; color: inherit; }
 button { cursor: pointer; font-family: var(--font); }
 
-/* ── Scrollbar ────────────────────────────────────────────── */
+/* -- Scrollbar ---------------------------------------------- */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--blue-pale); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--blue-light); }
 
-/* ── App Layout ───────────────────────────────────────────── */
+/* -- App Layout --------------------------------------------- */
 .app-wrapper { display: flex; min-height: 100vh; }
 
-/* ── Sidebar ──────────────────────────────────────────────── */
+/* -- Sidebar ------------------------------------------------ */
 .sidebar {
   width: var(--sidebar-width);
   background: var(--navy-deepest);
@@ -131,7 +130,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .user-role { font-size: var(--fs-xs); color: var(--blue-pale); margin-top: 1px; }
 
-/* ── Sidebar Overlay ──────────────────────────────────────── */
+/* -- Sidebar Overlay ---------------------------------------- */
 .sidebar-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.65); z-index: 199;
@@ -142,7 +141,7 @@ button { cursor: pointer; font-family: var(--font); }
 @keyframes sidebarOverlayIn  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sidebarOverlayOut { from { opacity: 1; } to { opacity: 0; } }
 
-/* ── Main Content ─────────────────────────────────────────── */
+/* -- Main Content ------------------------------------------- */
 .main-content {
   flex: 1; margin-left: var(--sidebar-width);
   display: flex; flex-direction: column;
@@ -150,7 +149,7 @@ button { cursor: pointer; font-family: var(--font); }
   transition: margin-left var(--transition-slow);
 }
 
-/* ── Top Header ───────────────────────────────────────────── */
+/* -- Top Header --------------------------------------------- */
 .top-header {
   height: var(--header-height);
   background: var(--navy-mid);
@@ -201,13 +200,13 @@ button { cursor: pointer; font-family: var(--font); }
   letter-spacing: 0.8px; text-transform: uppercase; margin-top: 2px;
 }
 
-/* ── Page Content ─────────────────────────────────────────── */
+/* -- Page Content ------------------------------------------- */
 .page-content {
   flex: 1; padding: 24px;
   display: flex; flex-direction: column; gap: 20px;
 }
 
-/* ── Stats Cards ──────────────────────────────────────────── */
+/* -- Stats Cards -------------------------------------------- */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -247,7 +246,7 @@ button { cursor: pointer; font-family: var(--font); }
 .stat-change.down    { color: var(--accent-danger); }
 .stat-change.neutral { color: var(--text-muted); }
 
-/* ── Panel Card ───────────────────────────────────────────── */
+/* -- Panel Card --------------------------------------------- */
 .panel-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -273,7 +272,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .panel-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
-/* ── Buttons ──────────────────────────────────────────────── */
+/* -- Buttons ------------------------------------------------ */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 16px; border-radius: var(--radius-md);
@@ -294,10 +293,10 @@ button { cursor: pointer; font-family: var(--font); }
 .btn-primary:active { transform: none; box-shadow: none; }
 
 .btn-secondary {
-  background: transparent; color: var(--navy-mid);
-  border: 1px solid var(--border-color);
+  background: rgba(69,105,173,0.08); color: var(--blue-medium);
+  border: 1px solid rgba(69,105,173,0.22);
 }
-.btn-secondary:hover { background: var(--bg-elevated); border-color: var(--blue-medium); }
+.btn-secondary:hover { background: var(--blue-medium); color: white; border-color: var(--blue-medium); }
 
 .btn-ghost {
   background: transparent; color: var(--text-secondary);
@@ -315,7 +314,7 @@ button { cursor: pointer; font-family: var(--font); }
 .btn-xs  { padding: 4px 10px;  font-size: var(--fs-xs); }
 .btn-icon{ padding: 8px; border-radius: var(--radius-sm); }
 
-/* ── Forms ────────────────────────────────────────────────── */
+/* -- Forms -------------------------------------------------- */
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-label {
   font-size: var(--fs-xs); font-weight: 600;
@@ -344,7 +343,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 
 .hint-text { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
 
-/* ── Badges ───────────────────────────────────────────────── */
+/* -- Badges ------------------------------------------------- */
 .badge {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 3px 10px; border-radius: 99px;
@@ -354,7 +353,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .badge-active   { background: rgba(22,163,74,0.1);  color: var(--accent-success); border: 1px solid rgba(22,163,74,0.22); }
 .badge-inactive { background: rgba(220,38,38,0.08); color: var(--accent-danger);  border: 1px solid rgba(220,38,38,0.18); }
 
-/* ── Toast ────────────────────────────────────────────────── */
+/* -- Toast -------------------------------------------------- */
 #toast-container {
   position: fixed; bottom: 24px; right: 24px;
   z-index: 9999; display: flex; flex-direction: column; gap: 10px;
@@ -362,22 +361,22 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 .toast {
   background: var(--white); border: 1px solid var(--border-color);
-  border-left: 3px solid var(--toast-color, var(--blue-medium));
-  border-radius: var(--radius-md); padding: 13px 15px;
-  display: flex; align-items: flex-start; gap: 10px;
-  box-shadow: var(--shadow-elevated);
+  border-left: 4px solid var(--toast-color, var(--blue-medium));
+  border-radius: var(--radius-md); padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 11px;
+  box-shadow: 0 2px 12px rgba(8,31,68,0.10);
   animation: slideInToast 0.28s cubic-bezier(0.34,1.4,0.64,1);
-  pointer-events: all; cursor: pointer;
+  pointer-events: all; cursor: pointer; min-width: 260px;
 }
 @keyframes slideInToast { from { opacity:0; transform:translateX(80px); } to { opacity:1; transform:translateX(0); } }
 .toast.hide { animation: slideOutToast 0.25s ease forwards; }
 @keyframes slideOutToast { to { opacity:0; transform:translateX(80px); } }
-.toast-icon  { font-size: 17px; flex-shrink: 0; }
+.toast-icon  { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 .toast-body  { flex: 1; min-width: 0; }
 .toast-title { font-size: var(--fs-sm); font-weight: 700; color: var(--navy-deepest); }
-.toast-msg   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+.toast-msg   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 3px; line-height: 1.45; }
 
-/* ── Confirm Dialog ───────────────────────────────────────── */
+/* -- Confirm Dialog ----------------------------------------- */
 .confirm-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.6); z-index: 9000;
@@ -398,7 +397,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .confirm-msg     { font-size: var(--fs-sm); color: var(--text-secondary); margin-top: 8px; line-height: 1.6; }
 .confirm-actions { display: flex; gap: 10px; justify-content: center; margin-top: 22px; }
 
-/* ── Loading ──────────────────────────────────────────────── */
+/* -- Loading ------------------------------------------------ */
 .loading-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.55); z-index: 8888;
@@ -414,13 +413,13 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Empty State ──────────────────────────────────────────── */
+/* -- Empty State -------------------------------------------- */
 .empty-state { text-align: center; padding: 56px 20px; }
 .empty-state-icon  { font-size: 44px; margin-bottom: 14px; opacity: 0.4; }
 .empty-state-title { font-family: var(--font); font-size: var(--fs-lg); font-weight: 700; color: var(--text-secondary); }
 .empty-state-desc  { font-size: var(--fs-sm); margin-top: 6px; color: var(--text-muted); }
 
-/* ── Add Report Panel ─────────────────────────────────────── */
+/* -- Add Report Panel --------------------------------------- */
 .panel-body {
   padding: 22px 20px;
   display: flex; flex-direction: column; gap: 0;
@@ -498,7 +497,7 @@ textarea.form-control {
   gap: 10px; margin-top: 22px; flex-wrap: wrap;
 }
 
-/* ── Camera Modal ─────────────────────────────────────────── */
+/* -- Camera Modal ------------------------------------------- */
 .camera-overlay {
   position: fixed; inset: 0; z-index: 9100;
   background: rgba(8,31,68,0.72);
@@ -597,12 +596,12 @@ textarea.form-control {
    Mobile-first fluid breakpoints with orientation support.
    Supports: Mobile Phones, Tablets, Laptops, Desktop Computers
    Orientations: Portrait & Landscape
-   Key rule: ≤ 680px → compact 3-column table mode (JS-driven).
+   Key rule: = 680px ? compact 3-column table mode (JS-driven).
    ============================================================ */
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    BASE FLUID TYPOGRAPHY & SPACING
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 * {
   box-sizing: border-box;
 }
@@ -632,9 +631,9 @@ img {
   overflow-x: clip;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   ULTRA-WIDE DESKTOP ≥ 1920px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   ULTRA-WIDE DESKTOP = 1920px
+------------------------------------------------------------- */
 @media (min-width: 1920px) {
   :root { --sidebar-width: 300px; }
   .page-content { padding: 32px 40px; gap: 28px; max-width: 2400px; margin: 0 auto; }
@@ -646,9 +645,9 @@ img {
   .modal { max-width: 720px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   LARGE DESKTOP ≥ 1400px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   LARGE DESKTOP = 1400px
+------------------------------------------------------------- */
 @media (min-width: 1400px) {
   :root { --sidebar-width: 272px; }
   .page-content { padding: 28px 32px; gap: 24px; }
@@ -658,24 +657,24 @@ img {
   #inventory-table tbody td { padding-left: 18px; padding-right: 18px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   STANDARD DESKTOP 1024px – 1399px  (base CSS)
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   STANDARD DESKTOP 1024px � 1399px  (base CSS)
+------------------------------------------------------------- */
 
-/* ─────────────────────────────────────────────────────────────
-   LAPTOP / SMALL DESKTOP ≤ 1200px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   LAPTOP / SMALL DESKTOP = 1200px
+------------------------------------------------------------- */
 @media (max-width: 1200px) {
   :root { --sidebar-width: 240px; }
   .stats-row { gap: 12px; }
   .stat-icon { width: 40px; height: 40px; font-size: 18px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   TABLET LANDSCAPE ≤ 1024px
+/* -------------------------------------------------------------
+   TABLET LANDSCAPE ≤ 1376px
    Better handling for landscape tablets and small laptops
-───────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
+------------------------------------------------------------- */
+@media (max-width: 1376px) {
   :root { --sidebar-width: 220px; --header-height: 60px; }
 
   .page-content { padding: 18px; gap: 16px; }
@@ -692,7 +691,7 @@ img {
 }
 
 /* Tablet Landscape Orientation Specific */
-@media (max-width: 1024px) and (orientation: landscape) {
+@media (max-width: 1376px) and (orientation: landscape) {
   .stats-row { grid-template-columns: repeat(4,1fr); gap: 10px; }
   .stat-card { padding: 12px; }
   .stat-icon { width: 36px; height: 36px; font-size: 16px; }
@@ -700,11 +699,11 @@ img {
   .toolbar { padding: 10px 14px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   TABLET PORTRAIT ≤ 768px
-   Sidebar → slide-over drawer
+/* -------------------------------------------------------------
+   TABLET PORTRAIT = 768px
+   Sidebar ? slide-over drawer
    Enhanced overflow and touch-friendly spacing
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 768px) {
   :root { --header-height: 58px; --sidebar-width: 280px; }
 
@@ -946,12 +945,12 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   COMPACT TABLE BREAKPOINT ≤ 680px
+/* -------------------------------------------------------------
+   COMPACT TABLE BREAKPOINT = 680px
    JavaScript switches to 3-column layout.
    CSS only needs to style those columns nicely.
    Enhanced for better mobile readability and touch targets
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 680px) {
   /* Compact image thumbnail */
   .item-img-wrap,
@@ -1062,10 +1061,10 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   MOBILE ≤ 480px
+/* -------------------------------------------------------------
+   MOBILE = 480px
    Enhanced touch targets and mobile-optimized layouts
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 480px) {
   :root { --header-height: 54px; }
 
@@ -1123,7 +1122,7 @@ img {
     min-height: 44px;
   }
 
-  /* Modal → bottom sheet for better mobile UX */
+  /* Modal ? bottom sheet for better mobile UX */
   .modal-backdrop { 
     padding: 0; 
     align-items: flex-end; 
@@ -1280,10 +1279,10 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   SMALL MOBILE ≤ 360px
+/* -------------------------------------------------------------
+   SMALL MOBILE = 360px
    Optimized for smallest devices with orientation handling
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 360px) {
   :root { --header-height: 50px; }
 
@@ -1416,9 +1415,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    PRINT
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media print {
   .sidebar, .sidebar-overlay, .top-header,
   .toolbar, .actions-cell, .panel-actions,
@@ -1438,10 +1437,10 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    ADDITIONAL ORIENTATION FIXES
    Ensures smooth transitions between orientations
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* General orientation change handling */
 @media (orientation: portrait) {
@@ -1462,9 +1461,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    ACCESSIBILITY & TOUCH ENHANCEMENTS
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* Ensure minimum touch target size (44x44px per WCAG) */
 @media (max-width: 768px) {
@@ -1513,9 +1512,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    FOLDING / DUAL-SCREEN DEVICES
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* Surface Duo and similar dual-screen devices */
 @media (horizontal-viewport-segments: 2) {
@@ -1533,9 +1532,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    REDUCED MOTION
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1548,9 +1547,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    HIGH CONTRAST MODE
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-contrast: high) {
   .btn {
@@ -1568,17 +1567,17 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    DARK MODE PREPARATION (if needed in future)
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-color-scheme: dark) {
   /* Dark mode styles can be added here if needed */
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    OVERFLOW FIX - CRITICAL FOR ALL DEVICES
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 html {
   overflow-x: clip;
@@ -1625,11 +1624,18 @@ body {
   max-width: min(95vw, 720px);
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    END OF RESPONSIVE.CSS
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 
-/* ── Desktop Collapsed State ──────────────────────────────── */
+/* -- Desktop Collapsed State -------------------------------- */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}

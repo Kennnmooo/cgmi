@@ -3,7 +3,7 @@ const menuToggle = document.getElementById('menu-toggle');
 const sidebar    = document.getElementById('sidebar');
 const overlay    = document.getElementById('sidebar-overlay');
 
-const MOBILE_BREAKPOINT = 768;
+const MOBILE_BREAKPOINT = 1376; // treat tablets (≤ 1376px) as mobile: drawer + overlay
 const STORAGE_KEY = 'cgmi_sidebar_collapsed';
 
 /* Transition values applied inline so they win over any CSS cascade */

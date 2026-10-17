@@ -108,6 +108,12 @@
   --transition: .18s ease;
 }
 
+/* ===== Global Overflow Protection (prevents horizontal scroll on all pages) ===== */
+html { overflow-x: clip; -webkit-text-size-adjust: 100%; }
+body { overflow-x: clip; min-width: 320px; }
+.app-wrapper { max-width: 100%; overflow-x: clip; }
+img { max-width: 100%; height: auto; }
+
 /* ===== CGMI Inline SVG Icon System (no emoji / no external icon dependency) ===== */
 .ui-icon{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;color:inherit;font-size:0;line-height:1;flex-shrink:0;letter-spacing:0;text-indent:0;overflow:hidden;}
 .ui-icon::before{content:"";display:block;width:1.12em;height:1.12em;background:currentColor;-webkit-mask:var(--icon-mask) center/contain no-repeat;mask:var(--icon-mask) center/contain no-repeat;}
@@ -156,6 +162,7 @@
 .icon-menu{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M4%206h16%27/%3E%3Cpath%20d=%27M4%2012h16%27/%3E%3Cpath%20d=%27M4%2018h16%27/%3E%3C/svg%3E");}
 .icon-archive{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M3%207h18%27/%3E%3Cpath%20d=%27M5%207v13h14V7%27/%3E%3Cpath%20d=%27M9%2011h6%27/%3E%3Cpath%20d=%27M4%203h16v4H4z%27/%3E%3C/svg%3E");}
 .icon-camera{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M4%207h3l2-3h6l2%203h3v13H4z%27/%3E%3Ccircle%20cx=%2712%27%20cy=%2713%27%20r=%274%27/%3E%3C/svg%3E");}
+.icon-refresh{--icon-mask:url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27black%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M3%2012a9%209%200%200%201%2015.6-6.4L21%203v6h-6l2.4-2.4A7%207%200%201%200%2019%2012%27/%3E%3C/svg%3E");}
 
 
 /* ============================================================
@@ -542,3 +549,10 @@
 /* ── Desktop Collapsed State ──────────────────────────────── */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}

@@ -26,8 +26,9 @@ function canEditInventoryQuantity() {
   return ['super-admin', 'admin'].includes(currentUserRole());
 }
 
-/* ─── Breakpoint at which we switch to compact layout ────── */
-const COMPACT_BREAKPOINT = 680;
+/* ─── Breakpoints for layout switching ──────────────────── */
+const COMPACT_BREAKPOINT = 680;   // ≤ 680px  → mobile compact (3 cols)
+const TABLET_BREAKPOINT  = 1376;  // ≤ 1376px → tablet mode   (3 cols, same structure)
 
 /* ─── Pagination defaults (shared by init + custom pagination bar) ─── */
 const INVENTORY_PAGE_SIZE   = 10;
@@ -98,42 +99,42 @@ function getFullColumns() {
         : data,
     },
     {
-      title: 'Warehouse Total', data: 'warehouseQty', width: '130px',
+      title: 'Warehouse Total', data: 'warehouseQty', width: '110px',
       render: (data, type, row) => type === 'display' ? renderQtyTotalCell(data, row.unit) : data,
     },
     {
-      title: 'Store Total', data: 'storeQty', width: '120px',
+      title: 'Store Total', data: 'storeQty', width: '100px',
       render: (data, type, row) => type === 'display' ? renderQtyTotalCell(data, row.unit) : data,
     },
     {
-      title: 'Shelves Total', data: 'iotShelfQty', width: '140px',
+      title: 'Shelves Total', data: 'iotShelfQty', width: '110px',
       render: (data, type, row) => type === 'display' ? renderQtyTotalCell(data, row.unit) : data,
     },
     {
-      title: 'Overall Total', data: 'overallQty', width: '120px',
+      title: 'Overall Total', data: 'overallQty', width: '100px',
       render: (data, type, row) => type === 'display' ? renderQtyTotalCell(data, row.unit) : data,
     },
     {
-      title: 'Weight Check', data: 'monitoringStatus', width: '165px', orderable: true,
+      title: 'Weight Check', data: 'monitoringStatus', width: '145px', orderable: true,
       render: (data, type, row) => type === 'display' ? renderWeightCheckCell(row) : (data || ''),
     },
     { title: 'CatRaw',     data: 'category',      visible: false, searchable: true },
     { title: 'SubRaw',     data: 'subcategory',   visible: false, searchable: true },
     {
-      title: 'Unit Price', data: 'unitPrice', width: '110px',
+      title: 'Unit Price', data: 'unitPrice', width: '95px',
       render: (data, type) => type === 'display'
         ? `<span class="price-val">₱${formatPrice(data)}</span>`
         : data,
     },
     {
-      title: 'Status', data: 'status', width: '96px', orderable: false,
+      title: 'Status', data: 'status', width: '84px', orderable: false,
       render: (data, type) => type === 'display'
         ? `<span class="badge ${data === 'Active' ? 'badge-active' : 'badge-inactive'}" data-status="${data}">${data}</span>`
         : data,
       createdCell: (td, cellData) => { td.dataset.status = cellData; },
     },
     {
-      title: 'Actions', data: null, orderable: false, searchable: false, width: '180px',
+      title: 'Actions', data: null, orderable: false, searchable: false, width: '155px',
       render: (data) => {
         const isActive = data.status === 'Active';
         // Only super-admin can activate/deactivate items.
@@ -151,6 +152,42 @@ function getFullColumns() {
            ${updateBtn}
            ${toggleBtn}
          </div>`;
+      },
+    },
+  ];
+}
+
+/** Tablet column set (681px–1024px): Image, Name, Overall Qty, Actions */
+function getTabletColumns() {
+  return [
+    {
+      title: 'Image', data: null, orderable: false, searchable: false, width: '52px',
+      render: (data) => renderImageCell(data),
+    },
+    {
+      title: 'Name', data: 'name',
+      render: (data, type, row) => type === 'display'
+        ? `<div class="item-name-cell">
+             <span class="item-name">${escapeHtml(data)}</span>
+             <span class="item-id">${escapeHtml(row.id)}</span>
+           </div>`
+        : data,
+    },
+    {
+      title: 'Overall', data: 'overallQty', width: '110px',
+      render: (data, type, row) => type === 'display' ? renderQtyTotalCell(data, row.unit) : data,
+    },
+    { title: 'CatRaw',    data: 'category',      visible: false, searchable: true },
+    { title: 'SubRaw',    data: 'subcategory',   visible: false, searchable: true },
+    { title: 'Status',    data: 'status',        visible: false, searchable: false },
+    {
+      title: 'Actions', data: null, orderable: false, searchable: false, width: '155px',
+      render: (data) => {
+        const detailsBtn = `<button class="action-btn btn-details" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button>`;
+        const updateBtn = data.status === 'Active'
+          ? `<button class="action-btn btn-update" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Update</button>`
+          : '';
+        return `<div class="actions-cell actions-cell--compact">${updateBtn}${detailsBtn}</div>`;
       },
     },
   ];
@@ -180,28 +217,15 @@ function getCompactColumns() {
     { title: 'SubRaw',    data: 'subcategory',   visible: false, searchable: true },
     { title: 'Status',    data: 'status',        visible: false, searchable: false },
     {
-      title: 'Details', data: null, orderable: false, searchable: false, width: '80px',
-      render: (data) =>
-        `<button class="action-btn btn-details" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button>`,
-    },
-    {
-      title: 'Update', data: null, orderable: false, searchable: false, width: '60px',
-      render: (data) =>
+      title: 'Actions', data: null, orderable: false, searchable: false, width: '140px',
+      render: (data) => {
+        const detailsBtn = `<button class="action-btn btn-details" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button>`;
         // The Edit button is only shown for active items. Inactive items
         // cannot be edited until they are reactivated.
-        data.status === 'Active'
-          ? `<button class="action-btn btn-update" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Edit</button>`
-          : '',
-    },
-    {
-      title: 'Status', data: null, orderable: false, searchable: false, width: '90px',
-      render: (data) => {
-        // Only super-admin can activate/deactivate items.
-        if (!canManageInventoryStatus()) return '';
-        const isActive = data.status === 'Active';
-        return isActive
-          ? `<button class="action-btn btn-deactivate" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-incident" aria-hidden="true"></span>Deactivate</button>`
-          : `<button class="action-btn btn-reactivate" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-check" aria-hidden="true"></span>Reactivate</button>`;
+        const updateBtn = data.status === 'Active'
+          ? `<button class="action-btn btn-update" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Update</button>`
+          : '';
+        return `<div class="actions-cell actions-cell--compact">${updateBtn}${detailsBtn}</div>`;
       },
     },
   ];
@@ -230,11 +254,28 @@ function _destroyExistingTable() {
 }
 
 /* ============================================================
+   LAYOUT MODE HELPERS
+   Three modes: 'full' (> 1024px), 'tablet' (681–1024px), 'compact' (≤ 680px)
+   ============================================================ */
+function _getLayoutMode() {
+  const w = window.innerWidth;
+  if (w <= COMPACT_BREAKPOINT) return 'compact';
+  if (w <= TABLET_BREAKPOINT)  return 'tablet';
+  return 'full';
+}
+
+function _getColumns(mode) {
+  if (mode === 'compact') return getCompactColumns();
+  if (mode === 'tablet')  return getTabletColumns();
+  return getFullColumns();
+}
+
+/* ============================================================
    INIT DataTable
    ============================================================ */
 function initDataTable() {
-  const compact = window.innerWidth <= COMPACT_BREAKPOINT;
-  isCompactMode = compact;
+  const mode    = _getLayoutMode();
+  isCompactMode = (mode !== 'full');
 
   /* ── FIX: always destroy before reinitialising ── */
   _destroyExistingTable();
@@ -248,7 +289,7 @@ function initDataTable() {
     /* Render only the table body; pagination is drawn by our custom bar
        so it matches the Outgoing deliveries layout. */
     dom:        '<"dt-container"t>',
-    columns:    compact ? getCompactColumns() : getFullColumns(),
+    columns:    _getColumns(mode),
     language: {
       emptyTable:  '<div class="empty-state"><div class="empty-state-icon ui-icon icon-inventory" aria-hidden="true"></div><div class="empty-state-title">No items found</div><div class="empty-state-desc">Try adjusting filters or add a new item.</div></div>',
       zeroRecords: '<div class="empty-state"><div class="empty-state-icon ui-icon icon-search" aria-hidden="true"></div><div class="empty-state-title">No matching items</div><div class="empty-state-desc">Try a different search or filter.</div></div>',
@@ -268,32 +309,35 @@ function initDataTable() {
 
 /* ============================================================
    RESPONSIVE RESIZE WATCHER
-   Destroys & rebuilds the DataTable when crossing the breakpoint.
+   Destroys & rebuilds the DataTable when crossing either breakpoint.
    Guard flag prevents duplicate listeners when initDataTable is
    called again on panel re-entry.
    ============================================================ */
 let _resizeTimer             = null;
 let _resizeWatcherAttached   = false;  // ← FIX: prevent stacking listeners
+let _currentLayoutMode       = 'full'; // tracks active mode across resizes
 
 function _attachResizeWatcher() {
   if (_resizeWatcherAttached) return;
   _resizeWatcherAttached = true;
+  _currentLayoutMode     = _getLayoutMode();
 
   window.addEventListener('resize', () => {
     clearTimeout(_resizeTimer);
     _resizeTimer = setTimeout(() => {
-      const shouldBeCompact = window.innerWidth <= COMPACT_BREAKPOINT;
-      if (shouldBeCompact !== isCompactMode) {
-        _switchTableMode(shouldBeCompact);
+      const newMode = _getLayoutMode();
+      if (newMode !== _currentLayoutMode) {
+        _switchTableMode(newMode);
       }
     }, 120);
   });
 }
 
-function _switchTableMode(compact) {
+function _switchTableMode(mode) {
   if (!dtInstance) return;
 
-  isCompactMode = compact;
+  _currentLayoutMode = mode;
+  isCompactMode      = (mode !== 'full');
 
   const currentData = InventoryManager.getAll();
 
@@ -306,7 +350,7 @@ function _switchTableMode(compact) {
     lengthMenu: INVENTORY_LENGTH_MENU,
     order:      [[1, 'asc']],
     dom:        '<"dt-container"t>',
-    columns:    compact ? getCompactColumns() : getFullColumns(),
+    columns:    _getColumns(mode),
     language: {
       emptyTable:  '<div class="empty-state"><div class="empty-state-icon ui-icon icon-inventory" aria-hidden="true"></div><div class="empty-state-title">No items found</div><div class="empty-state-desc">Try adjusting filters or add a new item.</div></div>',
       zeroRecords: '<div class="empty-state"><div class="empty-state-icon ui-icon icon-search" aria-hidden="true"></div><div class="empty-state-title">No matching items</div><div class="empty-state-desc">Try a different search or filter.</div></div>',

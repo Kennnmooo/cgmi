@@ -1,4 +1,4 @@
-﻿/* dashboard merged styles */
+/* dashboard merged styles */
 
 
 /* FILE: dashboard.css */
@@ -29,7 +29,7 @@ body{font-family:var(--font,"Montserrat",sans-serif);background:var(--bg-primary
 .report-panel.active{display:block}
 @keyframes reportPanelFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .card{background:var(--bg-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:18px;border:1px solid var(--border-color);transition:box-shadow var(--transition)}.card:hover{box-shadow:var(--shadow-card)}.card-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px}.card-title{font-size:var(--fs-xs);font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em}
-/* KPI metric cards — modern, minimal, palette-consistent */
+/* KPI metric cards � modern, minimal, palette-consistent */
 .metrics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}.metric-card{background:var(--bg-card);border:1px solid var(--border-color);box-shadow:var(--shadow-sm);border-radius:var(--radius-lg);padding:16px 18px;min-width:0;transition:box-shadow var(--transition),transform var(--transition)}.metric-card:hover{box-shadow:var(--shadow-card)}.metric-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.metric-icon{width:42px;height:42px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--blue-medium);background:var(--blue-white)}.metric-icon.blue{color:var(--blue-medium);background:var(--blue-white)}.metric-icon.green{color:var(--accent-success);background:rgba(22,163,74,.1)}.metric-icon.orange{color:var(--accent-warning);background:rgba(217,119,6,.1)}.metric-icon.red{color:var(--accent-danger);background:rgba(220,38,38,.1)}.metric-icon.purple{color:var(--navy-mid);background:var(--blue-white)}.metric-icon.teal{color:var(--blue-medium);background:var(--blue-white)}.metric-badge{font-size:var(--fs-xs);font-weight:700;padding:2px 9px;border-radius:999px}.metric-badge.up{background:rgba(22,163,74,.1);color:var(--accent-success)}.metric-badge.down{background:rgba(220,38,38,.1);color:var(--accent-danger)}.metric-badge.warn{background:rgba(217,119,6,.1);color:var(--accent-warning)}.metric-value{font-size:var(--fs-2xl);font-weight:800;color:var(--text-primary);line-height:1.1}.metric-label{font-size:var(--fs-xs);font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-top:6px}.metric-sub{font-size:var(--fs-xs);color:var(--gray-600);margin-top:2px}
 .f-body{display:grid;grid-template-columns:minmax(0,2fr) minmax(320px,1fr);gap:16px;margin-bottom:0}.f-left,.f-right{display:flex;flex-direction:column;gap:16px;min-width:0}.f-full{margin-bottom:16px}.chart-box{min-height:240px;width:100%}.chart-box-lg{min-height:290px;width:100%}
 .tab-group{display:flex;gap:6px;background:var(--bg-elevated);padding:4px;border-radius:var(--radius-md);width:fit-content}.tab-btn{padding:5px 14px;font-size:var(--fs-xs);font-weight:600;border-radius:var(--radius-sm);color:var(--text-muted);transition:var(--transition);cursor:pointer;border:none;background:transparent}.tab-btn.active{background:var(--white);color:var(--accent-primary);box-shadow:var(--shadow-sm)}
@@ -40,11 +40,12 @@ body{font-family:var(--font,"Montserrat",sans-serif);background:var(--bg-primary
 .incident-list{display:flex;flex-direction:column;gap:10px}.inc-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:var(--radius-md);background:var(--bg-elevated);border:1px solid var(--border-color);transition:var(--transition)}.inc-item:hover{background:var(--bg-card);box-shadow:var(--shadow-sm)}.inc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}.inc-dot.red{background:var(--accent-danger)}.inc-dot.orange{background:var(--accent-warning)}.inc-dot.green{background:var(--accent-success)}.inc-dot.blue{background:var(--blue-medium)}.inc-title{font-size:var(--fs-sm);font-weight:600;color:var(--text-primary)}.inc-meta{font-size:var(--fs-xs);color:var(--text-muted);margin-top:2px}.inc-body{flex:1;min-width:0}
 .refill-list{display:flex;flex-direction:column;gap:8px}.refill-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-md);background:var(--bg-elevated);border:1px solid var(--border-color)}.refill-icon{font-size:1rem;flex-shrink:0}.refill-name{flex:1;font-size:var(--fs-sm);font-weight:600;color:var(--text-primary)}.refill-stock{font-size:var(--fs-xs);color:var(--text-muted)}.refill-urg{font-size:var(--fs-xs);font-weight:700;padding:2px 8px;border-radius:20px}.refill-urg.critical{background:rgba(220,38,38,.12);color:var(--accent-danger)}.refill-urg.high{background:rgba(217,119,6,.12);color:var(--accent-warning)}.refill-urg.medium{background:rgba(69,105,173,.12);color:var(--blue-medium)}
 .act-list{display:flex;flex-direction:column}.act-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border-color)}.act-row:last-child{border-bottom:none}.act-av{width:32px;height:32px;border-radius:50%;background:var(--blue-medium);color:#fff;font-size:var(--fs-xs);font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}.act-user{font-size:var(--fs-sm);font-weight:600;color:var(--text-primary)}.act-action{font-size:var(--fs-xs);color:var(--text-muted)}.act-time{font-size:var(--fs-xs);color:var(--gray-400);flex-shrink:0;margin-left:auto}.empty-card{padding:18px;text-align:center;color:var(--text-muted);font-size:var(--fs-sm)}
-#toast-container{position:fixed;bottom:24px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:10px}.toast{background:var(--navy-deepest);color:var(--white);padding:12px 14px;border-radius:var(--radius-md);box-shadow:var(--shadow-elevated)}
+#toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px}
 @media (max-width:1280px){.metrics-grid{grid-template-columns:repeat(4,1fr)}.f-body{grid-template-columns:minmax(0,1.8fr) minmax(300px,1fr)}}
-@media (max-width:1100px){.metrics-grid{grid-template-columns:repeat(3,1fr)}.f-body{grid-template-columns:1fr}.f-right{flex-direction:row;flex-wrap:wrap}.f-right>.card{flex:1 1 280px}}
-@media (max-width:768px){:root{--sidebar-width:0px}.sidebar{transform:translateX(-100%);width:256px}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.menu-toggle{display:flex}.page-content{padding:16px}.metrics-grid{grid-template-columns:repeat(2,1fr);gap:12px}.f-body{grid-template-columns:1fr}.f-right{flex-direction:column}.shelf-grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:480px){.metrics-grid{grid-template-columns:1fr}.metric-value{font-size:var(--fs-xl)}.top-header{padding:0 16px}.card{padding:16px}.section-divider{margin:24px 0}.page-content{padding:12px}.data-table{display:block;overflow-x:auto}.act-row{align-items:flex-start}.act-time{margin-left:0}}
+@media (max-width:1100px){.metrics-grid{grid-template-columns:repeat(3,1fr)}.f-body{grid-template-columns:1fr}.f-right{flex-direction:column}.f-right>.card{flex:1 1 auto;min-width:0}}
+@media (max-width:1376px){:root{--sidebar-width:280px}.sidebar{transform:translateX(-100%);width:280px}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.menu-toggle{display:flex}.page-breadcrumb{display:none}.page-content{padding:14px}.metrics-grid{grid-template-columns:repeat(2,1fr);gap:12px}.f-body{grid-template-columns:1fr}.f-right{flex-direction:column}.shelf-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:768px){:root{--sidebar-width:280px}.sidebar{transform:translateX(-100%);width:280px}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.menu-toggle{display:flex}.page-breadcrumb{display:none}.page-content{padding:16px}.metrics-grid{grid-template-columns:repeat(2,1fr);gap:12px}.f-body{grid-template-columns:1fr}.f-right{flex-direction:column}.shelf-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.metrics-grid{grid-template-columns:1fr 1fr}.metric-value{font-size:var(--fs-xl)}.top-header{padding:0 16px}.card{padding:16px}.section-divider{margin:24px 0}.page-content{padding:12px}.data-table{display:block;overflow-x:auto}.act-row{align-items:flex-start}.act-time{margin-left:0}}
 
 
 /* REMOVE NAVBAR UNDERLINES */
@@ -63,16 +64,15 @@ body{font-family:var(--font,"Montserrat",sans-serif);background:var(--bg-primary
 
 /* FILE: main.css */
 /* ============================================================
-   MAIN.CSS — Base, Variables, Layout, Typography
+   MAIN.CSS � Base, Variables, Layout, Typography
    Palette: #081F44 #0D0058 #1F3F74 #4569AD #8EA2D7 #B7C3E8 #FFF
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
 
-/* ── Custom Properties ────────────────────────────────────── */
+/* -- Custom Properties -------------------------------------- */
 
 
-/* ── Reset ────────────────────────────────────────────────── */
+/* -- Reset -------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
@@ -88,17 +88,17 @@ img { max-width: 100%; display: block; }
 a   { text-decoration: none; color: inherit; }
 button { cursor: pointer; font-family: var(--font); }
 
-/* ── Scrollbar ────────────────────────────────────────────── */
+/* -- Scrollbar ---------------------------------------------- */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--blue-pale); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--blue-light); }
 
-/* ── App Layout ───────────────────────────────────────────── */
+/* -- App Layout --------------------------------------------- */
 .app-wrapper { display: flex; min-height: 100vh; }
 
 
-/* ── Sidebar ──────────────────────────────────────────────── */
+/* -- Sidebar ------------------------------------------------ */
 .sidebar {
   width: var(--sidebar-width);
   background: var(--navy-deepest);
@@ -192,7 +192,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .user-role { font-size: var(--fs-xs); color: var(--blue-pale); margin-top: 1px; }
 
-/* ── Sidebar Overlay ──────────────────────────────────────── */
+/* -- Sidebar Overlay ---------------------------------------- */
 .sidebar-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.65); z-index: 199;
@@ -203,7 +203,7 @@ button { cursor: pointer; font-family: var(--font); }
 @keyframes sidebarOverlayIn  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sidebarOverlayOut { from { opacity: 1; } to { opacity: 0; } }
 
-/* ── Sidebar Dropdown ──────────────────────────────────────── */
+/* -- Sidebar Dropdown ---------------------------------------- */
 .nav-dropdown-toggle {
   cursor: pointer;
   user-select: none;
@@ -245,7 +245,7 @@ button { cursor: pointer; font-family: var(--font); }
   opacity: 1;
 }
 
-/* ── Main Content ─────────────────────────────────────────── */
+/* -- Main Content ------------------------------------------- */
 .main-content {
   flex: 1; margin-left: var(--sidebar-width);
   display: flex; flex-direction: column;
@@ -253,7 +253,7 @@ button { cursor: pointer; font-family: var(--font); }
   transition: margin-left var(--transition-slow);
 }
 
-/* ── Top Header ───────────────────────────────────────────── */
+/* -- Top Header --------------------------------------------- */
 .top-header {
   height: var(--header-height);
   background: var(--navy-mid);
@@ -304,13 +304,13 @@ button { cursor: pointer; font-family: var(--font); }
   letter-spacing: 0.8px; text-transform: uppercase; margin-top: 2px;
 }
 
-/* ── Page Content ─────────────────────────────────────────── */
+/* -- Page Content ------------------------------------------- */
 .page-content {
   flex: 1; padding: 24px;
   display: flex; flex-direction: column; gap: 20px;
 }
 
-/* ── Stats Cards ──────────────────────────────────────────── */
+/* -- Stats Cards -------------------------------------------- */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -350,7 +350,7 @@ button { cursor: pointer; font-family: var(--font); }
 .stat-change.down    { color: var(--accent-danger); }
 .stat-change.neutral { color: var(--text-muted); }
 
-/* ── Panel Card ───────────────────────────────────────────── */
+/* -- Panel Card --------------------------------------------- */
 .panel-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -376,7 +376,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .panel-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
-/* ── Buttons ──────────────────────────────────────────────── */
+/* -- Buttons ------------------------------------------------ */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 16px; border-radius: var(--radius-md);
@@ -397,10 +397,10 @@ button { cursor: pointer; font-family: var(--font); }
 .btn-primary:active { transform: none; box-shadow: none; }
 
 .btn-secondary {
-  background: transparent; color: var(--navy-mid);
-  border: 1px solid var(--border-color);
+  background: rgba(69,105,173,0.08); color: var(--blue-medium);
+  border: 1px solid rgba(69,105,173,0.22);
 }
-.btn-secondary:hover { background: var(--bg-elevated); border-color: var(--blue-medium); }
+.btn-secondary:hover { background: var(--blue-medium); color: white; border-color: var(--blue-medium); }
 
 .btn-ghost {
   background: transparent; color: var(--text-secondary);
@@ -418,7 +418,7 @@ button { cursor: pointer; font-family: var(--font); }
 .btn-xs  { padding: 4px 10px;  font-size: var(--fs-xs); }
 .btn-icon{ padding: 8px; border-radius: var(--radius-sm); }
 
-/* ── Forms ────────────────────────────────────────────────── */
+/* -- Forms -------------------------------------------------- */
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-label {
   font-size: var(--fs-xs); font-weight: 600;
@@ -447,7 +447,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 
 .hint-text { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
 
-/* ── Badges ───────────────────────────────────────────────── */
+/* -- Badges ------------------------------------------------- */
 .badge {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 3px 10px; border-radius: 99px;
@@ -457,7 +457,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .badge-active   { background: rgba(22,163,74,0.1);  color: var(--accent-success); border: 1px solid rgba(22,163,74,0.22); }
 .badge-inactive { background: rgba(220,38,38,0.08); color: var(--accent-danger);  border: 1px solid rgba(220,38,38,0.18); }
 
-/* ── Toast ────────────────────────────────────────────────── */
+/* -- Toast -------------------------------------------------- */
 #toast-container {
   position: fixed; bottom: 24px; right: 24px;
   z-index: 9999; display: flex; flex-direction: column; gap: 10px;
@@ -465,22 +465,22 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 .toast {
   background: var(--white); border: 1px solid var(--border-color);
-  border-left: 3px solid var(--toast-color, var(--blue-medium));
-  border-radius: var(--radius-md); padding: 13px 15px;
-  display: flex; align-items: flex-start; gap: 10px;
-  box-shadow: var(--shadow-elevated);
+  border-left: 4px solid var(--toast-color, var(--blue-medium));
+  border-radius: var(--radius-md); padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 11px;
+  box-shadow: 0 2px 12px rgba(8,31,68,0.10);
   animation: slideInToast 0.28s cubic-bezier(0.34,1.4,0.64,1);
-  pointer-events: all; cursor: pointer;
+  pointer-events: all; cursor: pointer; min-width: 260px;
 }
 @keyframes slideInToast { from { opacity:0; transform:translateX(80px); } to { opacity:1; transform:translateX(0); } }
 .toast.hide { animation: slideOutToast 0.25s ease forwards; }
 @keyframes slideOutToast { to { opacity:0; transform:translateX(80px); } }
-.toast-icon  { font-size: 17px; flex-shrink: 0; }
+.toast-icon  { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 .toast-body  { flex: 1; min-width: 0; }
 .toast-title { font-size: var(--fs-sm); font-weight: 700; color: var(--navy-deepest); }
 .toast-msg   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
 
-/* ── Confirm Dialog ───────────────────────────────────────── */
+/* -- Confirm Dialog ----------------------------------------- */
 .confirm-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.6); z-index: 9000;
@@ -501,7 +501,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .confirm-msg     { font-size: var(--fs-sm); color: var(--text-secondary); margin-top: 8px; line-height: 1.6; }
 .confirm-actions { display: flex; gap: 10px; justify-content: center; margin-top: 22px; }
 
-/* ── Loading ──────────────────────────────────────────────── */
+/* -- Loading ------------------------------------------------ */
 .loading-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.55); z-index: 8888;
@@ -517,7 +517,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Empty State ──────────────────────────────────────────── */
+/* -- Empty State -------------------------------------------- */
 .empty-state { text-align: center; padding: 56px 20px; }
 .empty-state-icon  { font-size: 44px; margin-bottom: 14px; opacity: 0.4; }
 .empty-state-title { font-family: var(--font); font-size: var(--fs-lg); font-weight: 700; color: var(--text-secondary); }
@@ -530,12 +530,12 @@ select.form-control option { background: var(--white); color: var(--text-primary
    Mobile-first fluid breakpoints with orientation support.
    Supports: Mobile Phones, Tablets, Laptops, Desktop Computers
    Orientations: Portrait & Landscape
-   Key rule: ≤ 680px → compact 3-column table mode (JS-driven).
+   Key rule: = 680px ? compact 3-column table mode (JS-driven).
    ============================================================ */
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    BASE FLUID TYPOGRAPHY & SPACING
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 * {
   box-sizing: border-box;
 }
@@ -565,9 +565,9 @@ img {
   overflow-x: clip;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   ULTRA-WIDE DESKTOP ≥ 1920px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   ULTRA-WIDE DESKTOP = 1920px
+------------------------------------------------------------- */
 @media (min-width: 1920px) {
   :root { --sidebar-width: 300px; }
   .page-content { padding: 32px 40px; gap: 28px; max-width: none; margin: 0; }
@@ -579,9 +579,9 @@ img {
   .modal { max-width: 720px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   LARGE DESKTOP ≥ 1400px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   LARGE DESKTOP = 1400px
+------------------------------------------------------------- */
 @media (min-width: 1400px) {
   :root { --sidebar-width: 272px; }
   .page-content { padding: 28px 32px; gap: 24px; }
@@ -591,53 +591,128 @@ img {
   #inventory-table tbody td { padding-left: 18px; padding-right: 18px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   STANDARD DESKTOP 1024px – 1399px  (base CSS)
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   STANDARD DESKTOP 1024px � 1399px  (base CSS)
+------------------------------------------------------------- */
 
-/* ─────────────────────────────────────────────────────────────
-   LAPTOP / SMALL DESKTOP ≤ 1200px
-───────────────────────────────────────────────────────────── */
+/* -------------------------------------------------------------
+   LAPTOP / SMALL DESKTOP = 1200px
+------------------------------------------------------------- */
 @media (max-width: 1200px) {
   :root { --sidebar-width: 240px; }
   .stats-row { gap: 12px; }
   .stat-icon { width: 40px; height: 40px; font-size: 18px; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   TABLET LANDSCAPE ≤ 1024px
-   Better handling for landscape tablets and small laptops
-───────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  :root { --sidebar-width: 220px; --header-height: 60px; }
+/* -------------------------------------------------------------
+   TABLET LANDSCAPE = 1024px
+   Mirrors mobile portrait: sidebar becomes a drawer, layout stacks.
+   Desktop (>1376px) is NOT affected.
+------------------------------------------------------------- */
+@media (max-width: 1376px) {
+  :root { --sidebar-width: 280px; --header-height: 58px; }
 
-  .page-content { padding: 18px; gap: 16px; }
-  .stats-row { grid-template-columns: repeat(2,1fr); gap: 12px; }
+  /* Sidebar drawer — same as mobile portrait */
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+    max-width: 85vw;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 6px 0 32px rgba(8,31,68,0.3);
+  }
+  .main-content { margin-left: 0; }
+  .menu-toggle { display: flex; }
+
+  /* Header */
+  .top-header { padding: 0 16px; gap: 10px; flex-wrap: nowrap; }
+  .page-title { font-size: clamp(0.9rem, 3vw, 1.1rem); }
+  .page-breadcrumb { display: none; }
   .header-stat { display: none; }
-  .toolbar { padding: 12px 16px; gap: 8px; flex-wrap: wrap; }
-  .search-wrapper { max-width: 260px; flex: 1; min-width: 200px; }
-  .panel-header { padding: 14px 18px; flex-wrap: wrap; }
-  .modal { max-width: 580px; }
-  
-  /* Ensure buttons remain accessible */
-  .btn { white-space: nowrap; }
-  .panel-actions { flex-wrap: wrap; gap: 8px; }
-}
+  .header-right { gap: 8px; min-width: 0; }
 
-/* Tablet Landscape Orientation Specific */
-@media (max-width: 1024px) and (orientation: landscape) {
-  .stats-row { grid-template-columns: repeat(4,1fr); gap: 10px; }
-  .stat-card { padding: 12px; }
-  .stat-icon { width: 36px; height: 36px; font-size: 16px; }
+  /* Content */
+  .page-content { padding: 14px; gap: 14px; width: 100%; }
+
+  /* Stats — 2 columns (same as mobile portrait ≤768px) */
+  .stats-row { grid-template-columns: repeat(2,1fr); gap: 10px; width: 100%; }
+  .stat-card { padding: 14px; gap: 12px; min-width: 0; }
+  .stat-value { font-size: clamp(1.2rem, 4vw, 1.5rem); }
   .stat-label { font-size: var(--fs-xs); }
-  .toolbar { padding: 10px 14px; }
+  .stat-change { display: none; }
+  .stat-icon { width: 38px; height: 38px; font-size: 17px; }
+
+  /* Panel header stacks */
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  .panel-actions {
+    width: 100%;
+    justify-content: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .panel-actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 120px;
+    max-width: 200px;
+  }
+
+  /* Toolbar stacks */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .toolbar-left { flex-direction: column; align-items: stretch; gap: 8px; width: 100%; }
+  .toolbar-right { flex-direction: column; align-items: stretch; gap: 8px; width: 100%; }
+  .search-wrapper { max-width: 100%; width: 100%; }
+  .status-tabs { width: 100%; overflow-x: auto; display: flex; -webkit-overflow-scrolling: touch; }
+  .status-tab { flex: 1 1 auto; min-width: fit-content; white-space: nowrap; }
+  .filter-group { flex-direction: column; gap: 8px; }
+  .filter-select { min-width: 100%; width: 100%; }
+  .sort-wrapper { width: 100%; }
+  .sort-btn { width: 100%; justify-content: center; }
+  .sort-dropdown { left: 0; right: 0; min-width: 0; width: 100%; }
+
+  /* Modal */
+  .modal-backdrop { padding: 10px; }
+  .modal {
+    max-height: 94vh;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: calc(100vw - 20px);
+  }
+  .modal-header { padding: 16px 18px; }
+  .modal-body { padding: 18px; gap: 14px; }
+  .modal-footer { padding: 14px 18px; flex-wrap: wrap; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .span-2 { grid-column: span 1; }
+  .form-row { flex-direction: column; gap: 12px; }
+
+  /* Ensure buttons accessible */
+  .btn { white-space: nowrap; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   TABLET PORTRAIT ≤ 768px
-   Sidebar → slide-over drawer
+/* Tablet — both portrait and landscape get the same stacked layout */
+@media (max-width: 1376px) and (orientation: landscape) {
+  /* No wide multi-column overrides — keep the stacked portrait layout */
+  .stats-row { grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .stat-card { padding: 14px; }
+}
+
+/* -------------------------------------------------------------
+   TABLET PORTRAIT = 768px
+   Sidebar ? slide-over drawer
    Enhanced overflow and touch-friendly spacing
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 768px) {
   :root { --header-height: 58px; --sidebar-width: 280px; }
 
@@ -864,27 +939,26 @@ img {
   }
 }
 
-/* Tablet Landscape Orientation Specific (medium) */
+/* Mobile Landscape Orientation (medium) — keep portrait stacked layout */
 @media (max-width: 768px) and (orientation: landscape) {
   .stats-row { 
-    grid-template-columns: repeat(4, 1fr); 
+    grid-template-columns: repeat(2, 1fr); 
     gap: 8px;
   }
   .stat-card {
-    padding: 10px;
-    min-height: 80px;
+    padding: 12px;
   }
   .page-content {
-    padding: 10px;
+    padding: 12px;
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   COMPACT TABLE BREAKPOINT ≤ 680px
+/* -------------------------------------------------------------
+   COMPACT TABLE BREAKPOINT = 680px
    JavaScript switches to 3-column layout.
    CSS only needs to style those columns nicely.
    Enhanced for better mobile readability and touch targets
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 680px) {
   /* Compact image thumbnail */
   .item-img-wrap,
@@ -976,29 +1050,29 @@ img {
   }
 }
 
-/* Compact mode - landscape orientation */
+/* Compact mode - landscape orientation — keep portrait stacked layout */
 @media (max-width: 680px) and (orientation: landscape) {
   .stats-row {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 6px;
   }
   .stat-card {
-    padding: 8px;
+    padding: 10px;
   }
   .stat-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
   }
   .stat-value {
     font-size: clamp(1rem, 3vw, 1.2rem);
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   MOBILE ≤ 480px
+/* -------------------------------------------------------------
+   MOBILE = 480px
    Enhanced touch targets and mobile-optimized layouts
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 480px) {
   :root { --header-height: 54px; }
 
@@ -1059,7 +1133,7 @@ img {
     min-height: 44px;
   }
 
-  /* Modal → bottom sheet for better mobile UX */
+  /* Modal ? bottom sheet for better mobile UX */
   .modal-backdrop { 
     padding: 0; 
     align-items: flex-end; 
@@ -1189,22 +1263,22 @@ img {
   }
 }
 
-/* Mobile Landscape Orientation */
+/* Mobile Landscape Orientation — keep portrait stacked layout */
 @media (max-width: 480px) and (orientation: landscape) {
   :root { --header-height: 48px; }
   
   .stats-row {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 6px;
   }
   
   .stat-card {
-    padding: 8px;
+    padding: 10px;
   }
   
   .page-content {
-    padding: 8px;
-    gap: 8px;
+    padding: 10px;
+    gap: 10px;
   }
   
   .modal {
@@ -1216,10 +1290,10 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   SMALL MOBILE ≤ 360px
+/* -------------------------------------------------------------
+   SMALL MOBILE = 360px
    Optimized for smallest devices with orientation handling
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media (max-width: 360px) {
   :root { --header-height: 50px; }
 
@@ -1324,27 +1398,27 @@ img {
   }
 }
 
-/* Small Mobile Landscape */
+/* Small Mobile Landscape — keep portrait stacked layout */
 @media (max-width: 360px) and (orientation: landscape) {
   :root { --header-height: 44px; }
   
   .stats-row {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 4px;
   }
   
   .stat-card {
-    padding: 6px;
+    padding: 8px;
   }
   
   .stat-icon {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
   }
   
   .page-content {
-    padding: 6px;
+    padding: 8px;
   }
   
   .modal {
@@ -1352,9 +1426,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    PRINT
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 @media print {
   .sidebar, .sidebar-overlay, .top-header,
   .toolbar, .actions-cell, .panel-actions,
@@ -1374,10 +1448,10 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    ADDITIONAL ORIENTATION FIXES
    Ensures smooth transitions between orientations
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* General orientation change handling */
 @media (orientation: portrait) {
@@ -1398,9 +1472,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    ACCESSIBILITY & TOUCH ENHANCEMENTS
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* Ensure minimum touch target size (44x44px per WCAG) */
 @media (max-width: 768px) {
@@ -1449,9 +1523,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    FOLDING / DUAL-SCREEN DEVICES
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* Surface Duo and similar dual-screen devices */
 @media (horizontal-viewport-segments: 2) {
@@ -1469,9 +1543,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    REDUCED MOTION
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1484,9 +1558,9 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    HIGH CONTRAST MODE
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-contrast: high) {
   .btn {
@@ -1504,17 +1578,17 @@ img {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    DARK MODE PREPARATION (if needed in future)
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 @media (prefers-color-scheme: dark) {
   /* Dark mode styles can be added here if needed */
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    OVERFLOW FIX - CRITICAL FOR ALL DEVICES
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 html {
   overflow-x: clip;
@@ -1561,15 +1635,15 @@ body {
   max-width: min(95vw, 720px);
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    END OF RESPONSIVE.CSS
-───────────────────────────────────────────────────────────── */
+------------------------------------------------------------- */
 
 /* ============================================================
-   SPACE MAXIMIZATION — admin & super-admin dashboards
+   SPACE MAXIMIZATION � admin & super-admin dashboards
    Applied via the `.dashboard-page` class on .page-content so the
    board spans the full main-content width and the KPI grid fills
-   every row regardless of card count (currently 9–10 cards).
+   every row regardless of card count (currently 9�10 cards).
    ============================================================ */
 
 /* Full-width content area, edge-to-edge with modest side insets. */
@@ -1614,14 +1688,41 @@ body {
 @media (max-width: 1280px) {
   .dashboard-page .metrics-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 }
-@media (max-width: 768px) {
-  .page-content.dashboard-page { padding: 16px; }
+@media (max-width: 1376px) {
+  .page-content.dashboard-page { padding: 14px; gap: 14px; }
   .dashboard-page .report-nav-btn { flex: 0 0 auto; }
+  /* Report nav becomes horizontally scrollable instead of wrapping awkwardly */
+  .dashboard-page .report-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+  .dashboard-page .report-nav::-webkit-scrollbar { display: none; }
+  /* Right sidebar cards stack below left — same as mobile portrait */
+  .dashboard-page .f-body { grid-template-columns: 1fr; }
+  .dashboard-page .f-right { flex-direction: column; }
+  .dashboard-page .f-right > .card { flex: unset; min-width: 0; }
+  /* Charts stay proportional */
+  .dashboard-page .chart-box    { min-height: 200px; }
+  .dashboard-page .chart-box-lg { min-height: 240px; }
+  /* Card padding reduction */
+  .dashboard-page .card { padding: 14px; }
+}
+@media (max-width: 768px) {
+  .page-content.dashboard-page { padding: 16px; gap: 14px; }
 }
 @media (max-width: 480px) {
+  .dashboard-page .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .dashboard-page .chart-box    { min-height: 180px; }
+  .dashboard-page .chart-box-lg { min-height: 200px; }
+  .page-content.dashboard-page { padding: 12px; gap: 12px; }
+}
+@media (max-width: 360px) {
   .dashboard-page .metrics-grid { grid-template-columns: 1fr; }
 }
 
-/* ── Desktop Collapsed State ──────────────────────────────── */
+/* -- Desktop Collapsed State -------------------------------- */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }

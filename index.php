@@ -10,9 +10,9 @@ redirect_if_logged_in();
 
     <title>Login — Calamba General Merchandise Inc. Inc.</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    
+    <link rel="stylesheet" href="<?= app_url('/assets/fonts/montserrat.css') ?>">
 
     <!-- Root file for the design -->
     <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">

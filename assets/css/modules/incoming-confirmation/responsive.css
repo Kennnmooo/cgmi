@@ -26,8 +26,8 @@ body { overflow-x: clip; width: 100%; position: relative; }
   .stat-icon { width: 40px; height: 40px; font-size: 18px; }
 }
 
-/* ── Tablet landscape ≤ 1024px ────────────────────────────── */
-@media (max-width: 1024px) {
+/* ── Tablet landscape ≤ 1376px ────────────────────────────── */
+@media (max-width: 1376px) {
   :root { --sidebar-width: 220px; --header-height: 60px; }
   .page-content { padding: 18px; gap: 16px; }
   .stats-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -58,6 +58,23 @@ body { overflow-x: clip; width: 100%; position: relative; }
   .panel-actions { width: 100%; justify-content: flex-end; }
 
   #toast-container { bottom: 14px; right: 14px; left: 14px; max-width: 100%; width: auto; }
+
+  /* ── Mobile table: hide Date, Items, Checker columns ── */
+  /* These are surfaced in the Details modal instead.      */
+  .col-hide-mobile { display: none; }
+
+  /* ── Show hidden-column data inside the details modal ── */
+  .modal-meta-mobile { display: flex; }
+
+  /* ── Row action buttons (Details / Delete) spacing ────── */
+  .row-actions { display: flex; flex-direction: column; gap: 6px; }
+}
+
+/* ── Mobile landscape orientation ────────────────────────── */
+@media (max-width: 900px) and (orientation: landscape) {
+  /* Column-hiding still applies in landscape; keep buttons stacked with gap */
+  .col-hide-mobile { display: none; }
+  .row-actions { display: flex; flex-direction: column; gap: 6px; }
 }
 
 /* ── Tabs mobile ≤ 480px ───────────────────────────────────── */
@@ -71,7 +88,7 @@ body { overflow-x: clip; width: 100%; position: relative; }
   :root { --header-height: 54px; }
   .top-header { padding: 0 12px; }
   .page-content { padding: 10px; gap: 12px; width: 100%; }
-  .stats-row { gap: 8px; }
+  .stats-row { grid-template-columns: 1fr; gap: 8px; }
   .stat-card { padding: 12px; gap: 10px; border-radius: var(--radius-md); }
   .stat-icon { width: 36px; height: 36px; font-size: 15px; }
   .stat-value { font-size: clamp(1.1rem, 4vw, 1.4rem); }
@@ -80,6 +97,26 @@ body { overflow-x: clip; width: 100%; position: relative; }
   .confirm-btn, .reject-btn { justify-content: center; min-height: 44px; }
 
   input, select, textarea { font-size: 16px !important; }
+
+  /* ── Status badges: icon-only dot on mobile ── */
+  /* Show only the ::before dot — hide the text label.            */
+  /* ::before already renders as a coloured circle via main.css.  */
+  tbody td .badge {
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0;
+    gap: 0;
+  }
+  tbody td .badge::before {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+  /* Hide the text node — font-size: 0 collapses it without affecting ::before */
+  tbody td .badge {
+    font-size: 0;
+  }
 }
 
 /* ── Reduced motion ───────────────────────────────────────── */
@@ -94,3 +131,10 @@ body { overflow-x: clip; width: 100%; position: relative; }
 /* ── Desktop Collapsed State ──────────────────────────────── */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}

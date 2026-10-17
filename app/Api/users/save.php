@@ -16,6 +16,15 @@ try {
 
     $data = $validation['data'];
 
+    // Editing user information is restricted to super-admins only.
+    // Plain admin accounts may create new users but cannot edit existing ones.
+    if ($editingId !== null) {
+        $actorRoleCheck = strtolower((string)((current_user()['role']) ?? ''));
+        if ($actorRoleCheck !== 'super-admin') {
+            json_response(['success' => false, 'message' => 'You are not allowed to edit user information.'], 403);
+        }
+    }
+
     if ($editingId === null) {
         $stmt = $pdo->prepare('INSERT INTO users (first_name, last_name, username, password_hash, role, is_active, failed_attempts, locked_until, last_login_at) VALUES (?, ?, ?, ?, ?, 1, 0, NULL, NULL)');
         $stmt->execute([

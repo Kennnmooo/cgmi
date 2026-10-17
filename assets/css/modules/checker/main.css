@@ -1,14 +1,13 @@
-﻿/* ============================================================
-   MAIN.CSS — Base, Variables, Layout, Typography
+/* ============================================================
+   MAIN.CSS � Base, Variables, Layout, Typography
    Palette: #081F44 #0D0058 #1F3F74 #4569AD #8EA2D7 #B7C3E8 #FFF
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
 
-/* ── Custom Properties ────────────────────────────────────── */
+/* -- Custom Properties -------------------------------------- */
 
 
-/* ── Reset ────────────────────────────────────────────────── */
+/* -- Reset -------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
@@ -24,16 +23,16 @@ img { max-width: 100%; display: block; }
 a   { text-decoration: none; color: inherit; }
 button { cursor: pointer; font-family: var(--font); }
 
-/* ── Scrollbar ────────────────────────────────────────────── */
+/* -- Scrollbar ---------------------------------------------- */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--blue-pale); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--blue-light); }
 
-/* ── App Layout ───────────────────────────────────────────── */
+/* -- App Layout --------------------------------------------- */
 .app-wrapper { display: flex; min-height: 100vh; }
 
-/* ── Sidebar ──────────────────────────────────────────────── */
+/* -- Sidebar ------------------------------------------------ */
 .sidebar {
   width: var(--sidebar-width);
   background: var(--navy-deepest);
@@ -127,7 +126,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .user-role { font-size: var(--fs-xs); color: var(--blue-pale); margin-top: 1px; }
 
-/* ── Sidebar Overlay ──────────────────────────────────────── */
+/* -- Sidebar Overlay ---------------------------------------- */
 .sidebar-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.65); z-index: 199;
@@ -138,7 +137,7 @@ button { cursor: pointer; font-family: var(--font); }
 @keyframes sidebarOverlayIn  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sidebarOverlayOut { from { opacity: 1; } to { opacity: 0; } }
 
-/* ── Sidebar Dropdown ──────────────────────────────────────── */
+/* -- Sidebar Dropdown ---------------------------------------- */
 .nav-dropdown-toggle {
   cursor: pointer;
   user-select: none;
@@ -179,7 +178,7 @@ button { cursor: pointer; font-family: var(--font); }
 .nav-sub-item:hover {
   opacity: 1;
 }
-/* ── Main Content ─────────────────────────────────────────── */
+/* -- Main Content ------------------------------------------- */
 .main-content {
   flex: 1; margin-left: var(--sidebar-width);
   display: flex; flex-direction: column;
@@ -187,7 +186,7 @@ button { cursor: pointer; font-family: var(--font); }
   transition: margin-left var(--transition-slow);
 }
 
-/* ── Top Header ───────────────────────────────────────────── */
+/* -- Top Header --------------------------------------------- */
 .top-header {
   height: var(--header-height);
   background: var(--navy-mid);
@@ -238,7 +237,7 @@ button { cursor: pointer; font-family: var(--font); }
   letter-spacing: 0.8px; text-transform: uppercase; margin-top: 2px;
 }
 
-/* ── Page Content ─────────────────────────────────────────── */
+/* -- Page Content ------------------------------------------- */
 .page-content {
   flex: 1;
   /* Minimal horizontal padding so panel cards span the full available width */
@@ -249,7 +248,7 @@ button { cursor: pointer; font-family: var(--font); }
 /* Panel cards fill the entire content width */
 .panel-card { width: 100%; }
 
-/* ── Stats Cards ──────────────────────────────────────────── */
+/* -- Stats Cards -------------------------------------------- */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -289,7 +288,7 @@ button { cursor: pointer; font-family: var(--font); }
 .stat-change.down    { color: var(--accent-danger); }
 .stat-change.neutral { color: var(--text-muted); }
 
-/* ── Panel Card ───────────────────────────────────────────── */
+/* -- Panel Card --------------------------------------------- */
 .panel-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -315,7 +314,7 @@ button { cursor: pointer; font-family: var(--font); }
 }
 .panel-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
-/* ── Buttons ──────────────────────────────────────────────── */
+/* -- Buttons ------------------------------------------------ */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 16px; border-radius: var(--radius-md);
@@ -336,10 +335,10 @@ button { cursor: pointer; font-family: var(--font); }
 .btn-primary:active { transform: none; box-shadow: none; }
 
 .btn-secondary {
-  background: transparent; color: var(--navy-mid);
-  border: 1px solid var(--border-color);
+  background: rgba(69,105,173,0.08); color: var(--blue-medium);
+  border: 1px solid rgba(69,105,173,0.22);
 }
-.btn-secondary:hover { background: var(--bg-elevated); border-color: var(--blue-medium); }
+.btn-secondary:hover { background: var(--blue-medium); color: white; border-color: var(--blue-medium); }
 
 .btn-ghost {
   background: transparent; color: var(--text-secondary);
@@ -357,7 +356,7 @@ button { cursor: pointer; font-family: var(--font); }
 .btn-xs  { padding: 4px 10px;  font-size: var(--fs-xs); }
 .btn-icon{ padding: 8px; border-radius: var(--radius-sm); }
 
-/* ── Forms ────────────────────────────────────────────────── */
+/* -- Forms -------------------------------------------------- */
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-label {
   font-size: var(--fs-xs); font-weight: 600;
@@ -386,7 +385,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 
 .hint-text { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
 
-/* ── Badges ───────────────────────────────────────────────── */
+/* -- Badges ------------------------------------------------- */
 .badge {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 3px 10px; border-radius: 99px;
@@ -396,7 +395,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .badge-active   { background: rgba(22,163,74,0.1);  color: var(--accent-success); border: 1px solid rgba(22,163,74,0.22); }
 .badge-inactive { background: rgba(220,38,38,0.08); color: var(--accent-danger);  border: 1px solid rgba(220,38,38,0.18); }
 
-/* ── Toast ────────────────────────────────────────────────── */
+/* -- Toast -------------------------------------------------- */
 #toast-container {
   position: fixed; bottom: 24px; right: 24px;
   z-index: 9999; display: flex; flex-direction: column; gap: 10px;
@@ -404,22 +403,22 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 .toast {
   background: var(--white); border: 1px solid var(--border-color);
-  border-left: 3px solid var(--toast-color, var(--blue-medium));
-  border-radius: var(--radius-md); padding: 13px 15px;
-  display: flex; align-items: flex-start; gap: 10px;
-  box-shadow: var(--shadow-elevated);
+  border-left: 4px solid var(--toast-color, var(--blue-medium));
+  border-radius: var(--radius-md); padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 11px;
+  box-shadow: 0 2px 12px rgba(8,31,68,0.10);
   animation: slideInToast 0.28s cubic-bezier(0.34,1.4,0.64,1);
-  pointer-events: all; cursor: pointer;
+  pointer-events: all; cursor: pointer; min-width: 260px;
 }
 @keyframes slideInToast { from { opacity:0; transform:translateX(80px); } to { opacity:1; transform:translateX(0); } }
 .toast.hide { animation: slideOutToast 0.25s ease forwards; }
 @keyframes slideOutToast { to { opacity:0; transform:translateX(80px); } }
-.toast-icon  { font-size: 17px; flex-shrink: 0; }
+.toast-icon  { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 .toast-body  { flex: 1; min-width: 0; }
 .toast-title { font-size: var(--fs-sm); font-weight: 700; color: var(--navy-deepest); }
-.toast-msg   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+.toast-msg   { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 3px; line-height: 1.45; }
 
-/* ── Confirm Dialog ───────────────────────────────────────── */
+/* -- Confirm Dialog ----------------------------------------- */
 .confirm-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.6); z-index: 9000;
@@ -456,7 +455,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 .reject-btn:hover { background: #b91c1c; transform: translateY(-1px); }
 .reject-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-/* ── Loading ──────────────────────────────────────────────── */
+/* -- Loading ------------------------------------------------ */
 .loading-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(8,31,68,0.55); z-index: 8888;
@@ -472,7 +471,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Empty State ──────────────────────────────────────────── */
+/* -- Empty State -------------------------------------------- */
 .empty-state { text-align: center; padding: 56px 20px; }
 .empty-state-icon  { font-size: 44px; margin-bottom: 14px; opacity: 0.4; }
 .empty-state-title { font-family: var(--font); font-size: var(--fs-lg); font-weight: 700; color: var(--text-secondary); }
@@ -510,7 +509,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
    Tabs, forms, multi-item rows, outgoing modal
    ============================================================ */
 
-/* ── Checker Tabs ─────────────────────────────────────────── */
+/* -- Checker Tabs ------------------------------------------- */
 .checker-tabs {
   display: flex; gap: 8px; margin-bottom: 4px;
 }
@@ -529,12 +528,12 @@ select.form-control option { background: var(--white); color: var(--text-primary
   box-shadow: 0 2px 8px rgba(31,63,116,0.28);
 }
 
-/* ── Incoming Filter Tabs ─────────────────────────────────── */
+/* -- Incoming Filter Tabs ----------------------------------- */
 .incoming-filter-tabs {
   display: flex; gap: 6px; padding: 12px 20px; margin-bottom: 12px;
 }
 
-/* ── Compact Incoming Form ────────────────────────────────── */
+/* -- Compact Incoming Form ---------------------------------- */
 .incoming-form-wrap {
   padding: 16px 20px;
   border-bottom: 1px solid var(--border-color);
@@ -566,7 +565,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
   display: flex; gap: 8px; align-items: center;
 }
 .filter-tab {
-  display: inline-flex; align-items: center;
+  display: inline-flex; align-items: center; gap: 6px;
   padding: 6px 14px; border-radius: var(--radius-md);
   font-family: var(--font); font-size: var(--fs-xs); font-weight: 600;
   border: 1px solid var(--border-color);
@@ -578,8 +577,22 @@ select.form-control option { background: var(--white); color: var(--text-primary
   background: var(--navy-mid); color: var(--white);
   border-color: var(--navy-mid);
 }
+.tab-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 99px;
+  font-size: 10px; font-weight: 700; line-height: 1;
+  background: var(--border-color);
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+.tab-count:empty { display: none; }
+.filter-tab.active .tab-count {
+  background: rgba(255,255,255,0.25);
+  color: var(--white);
+}
 
-/* ── Tab Panels ───────────────────────────────────────────── */
+/* -- Tab Panels --------------------------------------------- */
 .tab-panel { display: none; }
 .tab-panel.active {
   display: flex;
@@ -594,7 +607,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
   overflow: auto;
 }
 
-/* ── Panel card inner padding ─────────────────────────────── */
+/* -- Panel card inner padding ------------------------------- */
 .panel-card > .panel-header {
   padding: 15px 20px;
   border-bottom: 1px solid var(--border-color);
@@ -609,7 +622,7 @@ select.form-control option { background: var(--white); color: var(--text-primary
   font-size: var(--fs-xs); color: var(--text-muted); margin: 4px 0 0;
 }
 
-/* ── Checker Form ─────────────────────────────────────────── */
+/* -- Checker Form ------------------------------------------- */
 .checker-form {
   display: grid;
   grid-template-columns: 1fr 180px;
@@ -645,7 +658,7 @@ textarea { resize: vertical; }
 
 .form-actions { text-align: right; }
 
-/* ── Multi-item boxes ─────────────────────────────────────── */
+/* -- Multi-item boxes --------------------------------------- */
 .multi-items {
   grid-column: 1 / -1;
   background: var(--bg-card);
@@ -689,7 +702,7 @@ textarea { resize: vertical; }
 }
 .remove-row:hover { background: var(--accent-danger); color: white; }
 
-/* ── Table ────────────────────────────────────────────────── */
+/* -- Table -------------------------------------------------- */
 .table-wrap {
   overflow-x: auto; -webkit-overflow-scrolling: touch;
   border-top: 1px solid var(--border-color);
@@ -714,7 +727,7 @@ tbody td {
 .muted { color: var(--text-muted); font-size: var(--fs-xs); }
 .empty { text-align: center; color: var(--text-muted); padding: 32px !important; }
 
-/* ── Badges ───────────────────────────────────────────────── */
+/* -- Badges ------------------------------------------------- */
 .badge {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 3px 10px; border-radius: 99px;
@@ -764,11 +777,11 @@ tbody td {
   border: 1px solid rgba(217,119,6,0.22);
 }
 
-/* ── POS/Manual toggle ────────────────────────────────────── */
+/* -- POS/Manual toggle -------------------------------------- */
 .manual-only { display: none; }
 .pos-only { display: flex; }
 
-/* ── Outgoing Modal ───────────────────────────────────────── */
+/* -- Outgoing Modal ----------------------------------------- */
 .modal-backdrop {
   position: fixed; inset: 0;
   background: rgba(8,31,68,0.65); z-index: 1000;
@@ -806,7 +819,7 @@ tbody td {
 .modal-header p {
   margin: 4px 0 0; color: var(--text-muted); font-size: var(--fs-xs);
 }
-/* Default close (X) button for every modal — any button directly inside a
+/* Default close (X) button for every modal � any button directly inside a
    .modal-header inherits this look, so new modals need no extra styling. */
 .modal-header > button {
   width: 32px; height: 32px; border-radius: var(--radius-sm);
@@ -827,7 +840,7 @@ tbody td {
 .modal:has(.manual-only[style*="block"]) {
   width: min(1100px, 96vw); max-height: 90vh;
 }
-/* Outgoing review modal — per-item confirm/reject list */
+/* Outgoing review modal � per-item confirm/reject list */
 .review-items-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; max-height: 60vh; }
 .review-item {
   display: flex; align-items: flex-start; justify-content: space-between;
@@ -843,14 +856,13 @@ tbody td {
 .review-item-action { flex-shrink: 0; }
 .review-item-action .confirm-actions { display: flex; gap: 8px; }
 
-/* Outgoing action modal — item summary block */
+/* Outgoing action modal � item summary block */
 .action-item-summary {
   background: var(--gray-50); border: 1px solid var(--border-color);
   border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 14px;
   display: flex; flex-direction: column; gap: 3px;
 }
-.btn-danger { background: var(--accent-danger); color: #fff; border: none; }
-.btn-danger:hover { filter: brightness(0.94); }
+
 
 /* Record-level Purpose select (chosen once per outgoing entry) */
 .modal .manual-only.form-group { max-width: 320px; }
@@ -900,7 +912,7 @@ tbody td {
 }
 .modal .item-row .remove-row:hover { background: rgba(220,38,38,0.08); }
 
-/* ── Checker outgoing wide modal override ─────────────────── */
+/* -- Checker outgoing wide modal override ------------------- */
 .checker-modal, .checker-modal-content,
 .modal-content.checker-modal-content,
 #manualOutgoingModal .modal-content,
@@ -937,22 +949,34 @@ tbody td {
   gap: 14px !important; margin-top: 28px !important; flex-wrap: wrap !important;
 }
 
-/* ── Responsive ───────────────────────────────────────────── */
+/* -- Responsive --------------------------------------------- */
 @media (max-width: 1100px) {
   .item-row, .incoming-item-row, .modal .item-row {
     grid-template-columns: 1fr 1fr;
   }
   .remove-row { grid-column: 1 / -1; width: 100%; }
 }
+@media (max-width: 768px) {
+  /* Tabs scroll horizontally instead of wrapping / stacking */
+  .checker-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    gap: 6px;
+  }
+  .checker-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { flex-shrink: 0; white-space: nowrap; }
+}
+
 @media (max-width: 640px) {
   .multi-form { grid-template-columns: 1fr; }
   .item-row, .incoming-item-row, .modal .item-row { grid-template-columns: 1fr; }
   .checker-form { grid-template-columns: 1fr; }
-  .checker-tabs { flex-direction: column; }
-  .tab-btn { justify-content: center; }
 }
 
-/* ── Table pagination ─────────────────────────────────────── */
+/* -- Table pagination --------------------------------------- */
 .table-pagination {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; flex-wrap: wrap;
@@ -974,6 +998,48 @@ tbody td {
 /* "+N more items" indicator in the outgoing Items column */
 .item-line.more-items { color: var(--blue-medium); font-weight: 600; font-size: var(--fs-xs); margin-top: 2px; }
 
-/* ── Desktop Collapsed State ──────────────────────────────── */
+/* -- Desktop Collapsed State -------------------------------- */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}
+
+/* ── Action-cell row actions (Trash tab: Details / Delete / Restore) ───────── */
+.row-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* ── Confirmation pop-up (replaces native window.confirm) ─── */
+.confirm-modal { max-width: 440px; gap: 14px; }
+.confirm-modal .confirm-modal-body {
+  font-size: var(--fs-sm); color: var(--text-secondary, #475569); line-height: 1.55;
+}
+.confirm-modal .confirm-modal-x {
+  background: transparent; border: none; cursor: pointer;
+  font-size: 1.15rem; line-height: 1; color: var(--text-muted); padding: 4px;
+}
+.confirm-modal .confirm-modal-x:hover { color: var(--text-primary); }
+
+/* ── Incoming/Outgoing details modal subtitle ── */
+#incoming-details-subtitle,
+#outgoing-review-subtitle {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 4px 6px; margin: 4px 0 0;
+  color: var(--text-muted); font-size: var(--fs-xs);
+}
+#incoming-details-subtitle .detail-sep,
+#outgoing-review-subtitle .detail-sep {
+  color: var(--border-color); user-select: none;
+}
+#incoming-details-subtitle strong,
+#outgoing-review-subtitle strong {
+  color: var(--text-primary); font-weight: 600;
+}

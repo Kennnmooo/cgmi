@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../../includes/auth.php';
 require_login(['admin']);
 ?>
@@ -12,7 +12,7 @@ require_login(['admin']);
     <meta name="description" content="Hardware & Construction Supply Inventory Management Panel">
 
     <!-- Google Fonts -->
-     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+     
 
     <!-- jQuery -->
     <script src="<?= app_url('/assets/lib/jquery/jquery-3.7.1.min.js') ?>"></script>
@@ -22,7 +22,8 @@ require_login(['admin']);
     <script src="<?= app_url('/assets/lib/dataTables/dataTables.js') ?>"></script>
 
     <!-- App CSS -->
-    <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
+      <link rel="stylesheet" href="<?= app_url('/assets/fonts/montserrat.css') ?>">
+  <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
     <link rel="stylesheet" href="<?= app_url('/assets/css/admin/inventory.css') ?>">
 <!-- Root Files for constant design -->
     
@@ -169,12 +170,12 @@ require_login(['admin']);
                     <span class="btn-inline-icon ui-icon icon-reports" aria-hidden="true"></span><span class="sort-label">Sort By</span>
                   </button>
                   <div class="sort-dropdown" id="sort-dropdown" role="menu">
-                    <button class="sort-option" data-col="name"  data-dir="asc"  data-label="A â†’ Z"         role="menuitem"><span class="sort-icon ui-icon icon-reports" aria-hidden="true"></span> A to Z (Name)</button>
-                    <button class="sort-option" data-col="name"  data-dir="desc" data-label="Z â†’ A"         role="menuitem"><span class="sort-icon ui-icon icon-reports" aria-hidden="true"></span> Z to A (Name)</button>
-                    <button class="sort-option" data-col="price" data-dir="asc"  data-label="Lowest Price"  role="menuitem"><span class="sort-icon ui-icon icon-sales" aria-hidden="true"></span> Lowest â†’ Highest Price</button>
-                    <button class="sort-option" data-col="price" data-dir="desc" data-label="Highest Price" role="menuitem"><span class="sort-icon ui-icon icon-sales" aria-hidden="true"></span> Highest â†’ Lowest Price</button>
-                    <button class="sort-option" data-col="stock" data-dir="asc"  data-label="Lowest Stock"  role="menuitem"><span class="sort-icon ui-icon icon-inventory" aria-hidden="true"></span> Lowest â†’ Highest Stock</button>
-                    <button class="sort-option" data-col="stock" data-dir="desc" data-label="Highest Stock" role="menuitem"><span class="sort-icon ui-icon icon-inventory" aria-hidden="true"></span> Highest â†’ Lowest Stock</button>
+                    <button class="sort-option" data-col="name"  data-dir="asc"  data-label="A → Z"         role="menuitem"><span class="sort-icon ui-icon icon-reports" aria-hidden="true"></span> A to Z (Name)</button>
+                    <button class="sort-option" data-col="name"  data-dir="desc" data-label="Z → A"         role="menuitem"><span class="sort-icon ui-icon icon-reports" aria-hidden="true"></span> Z to A (Name)</button>
+                    <button class="sort-option" data-col="price" data-dir="asc"  data-label="Lowest Price"  role="menuitem"><span class="sort-icon ui-icon icon-sales" aria-hidden="true"></span> Lowest → Highest Price</button>
+                    <button class="sort-option" data-col="price" data-dir="desc" data-label="Highest Price" role="menuitem"><span class="sort-icon ui-icon icon-sales" aria-hidden="true"></span> Highest → Lowest Price</button>
+                    <button class="sort-option" data-col="stock" data-dir="asc"  data-label="Lowest Stock"  role="menuitem"><span class="sort-icon ui-icon icon-inventory" aria-hidden="true"></span> Lowest → Highest Stock</button>
+                    <button class="sort-option" data-col="stock" data-dir="desc" data-label="Highest Stock" role="menuitem"><span class="sort-icon ui-icon icon-inventory" aria-hidden="true"></span> Highest → Lowest Stock</button>
                   </div>
                 </div>
               </div>
@@ -277,7 +278,7 @@ require_login(['admin']);
                 <label class="form-label required" for="item-price">Unit Price  </label>
                 <div class="price-input-wrap">
                   <span class="currency-prefix" aria-hidden="true"> </span>
-                  <input type="number" id="item-price" class="form-control" placeholder="₱0.00" min="0" step="0.01" required aria-required="true">
+                  <input type="number" id="item-price" class="form-control" placeholder="?0.00" min="0" step="0.01" required aria-required="true">
                 </div>
               </div>
             </div>
@@ -386,7 +387,8 @@ require_login(['admin']);
         <!-- Panel Footer -->
         <div class="details-footer">
           <button class="btn btn-ghost details-cancel-btn" id="details-close-btn-2" onclick="DetailsPanelManager.close()">Close</button>
-          <button class="btn btn-primary details-update-btn" id="details-update-btn">Update Item</button>
+          <button class="btn btn-danger details-toggle-btn" id="details-toggle-btn" style="display:none;">Deactivate</button>
+          <button class="btn btn-secondary details-update-btn" id="details-update-btn"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Update Item</button>
         </div>
 
       </div>

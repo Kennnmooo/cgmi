@@ -184,3 +184,140 @@
 [2026-10-12 00:03] - Fixed save.php to send outgoing pending notifications for Store Replenishment and IoT Shelves Replenishment purposes, which were previously skipped despite still requiring per-item admin/inventory confirmation.
 [2026-10-12 00:04] - Fixed confirm-outgoing.php notification messages to describe the actual stock movement (deducted from source, added to Store or IoT Shelves) for replenishment purposes, and enabled the admin/inventory broadcast for replenishment approvals which was previously suppressed.
 [2026-10-12 00:00] - Removed duplicate menu-toggle click listener in checker.js that was cancelling the sidebar.js toggle on mobile, preventing the sidebar from opening on smaller screens.
+[2026-10-13 00:00] - Skipped incident report approval/rejection notifications for inventory-role reporters in app/Api/incidents/review.php since inventory users only submit reports.
+[2026-10-13 00:00] - Added `canEdit: false` to CGMI_USERS_CONTEXT in admin user-management view to restrict user info editing to super-admins only.
+[2026-10-13 00:01] - Restricted user info editing to super-admin only: hid Edit button in admin view (JS canEdit flag + view context), and added 403 guard in save.php for admin edit attempts.
+[2026-10-13 00:02] - Changed Deactivate button style from btn-ghost to btn-danger with a warning icon to visually distinguish it as a destructive action.
+[2026-10-13 00:03] - Updated Deactivate button in suppliers JS from btn-ghost to btn-danger with warning icon to match the new destructive action style.
+[2026-10-13 00:00] - Removed "Inactive Suppliers" stat card from admin suppliers view as part of hiding inactive supplier UI elements.
+[2026-10-13 00:00] - Removed inactive suppliers tab buttons and inactive table panel from admin suppliers view.
+[2026-10-13 00:00] - Removed inactive suppliers list, tabs, deactivate button, and inactive stat card from admin suppliers page.
+[2026-10-13 00:00] - Added icon-add icon span to Add Shelf and Add Report buttons across admin, superadmin, and inventory views for visual consistency.
+[2026-10-13 00:00] - Added Refresh button to incident reports panel in admin and superadmin views, wired to loadActiveReports() in the shared JS module.
+[2026-10-13 00:00] - Added icon-refresh SVG to root.css icon set to fix missing refresh icon on incident reports page.
+[2026-10-13 00:00] - Created assets/fonts/montserrat.css with @font-face declarations for Montserrat weights 400–800 to fix missing font file referenced by all views.
+[2026-10-13 00:01] - Removed hardcoded @import url('/cgmi/assets/fonts/syne-dmsans.css') from 17 CSS files (admin/, inventory-staff/, modules/) to fix broken font imports on Hostinger deployment.
+
+[2026-10-13 00:00] - Fixed dashboard.css mobile breakpoint: replaced incorrect --sidebar-width:0px with 280px and added page-breadcrumb:hide to match responsive.css behavior.
+[2026-10-13 00:01] - Enhanced dashboard.css mobile breakpoints: added scrollable report-nav, proper f-right stacking, proportional chart heights, and tighter padding for 768px/480px/360px viewports.
+[2026-10-13 00:02] - Fixed incidents.css: added reports-stats-row 2-col collapse at 480px to prevent overflow on small phones.
+[2026-10-13 00:03] - Expanded inventory-report.php inline styles: replaced single minified line with full responsive breakpoints for 980px, 768px, 480px, and 360px viewports.
+[2026-10-13 00:04] - Improved checker/main.css: replaced vertical tab stacking with horizontal scroll at 768px for better mobile usability.
+[2026-10-13 00:05] - Added 480px and 360px breakpoints to index.css (login page) for better small-phone padding and iOS zoom prevention.
+[2026-10-13 00:06] - Added global overflow-x:clip and min-width:320px to root.css so all pages are protected from horizontal scroll on mobile.
+[2026-10-13 00:07] - Applied same responsive inline style expansion to superadmin/inventory-report.php (980px/768px/480px/360px breakpoints) matching the admin version fix.
+[2026-10-13 00:08] - Merged separate Details and Update columns into a single Actions column in compact table mode (≤680px) in datatable-init.js; desktop full-table mode unchanged.
+[2026-10-13 00:09] - Adjusted compact action button sizes in inventory.css: equalized Details (68px) and Edit (50px) min-widths so both fit side-by-side in the merged Actions column.
+[2026-10-13 00:10] - Stacked compact inventory action buttons vertically (Edit on top, Details below) in inventory.css by setting flex-direction:column on .actions-cell--compact.
+[2026-10-13 00:11] - Swapped render order in compact Actions cell so Edit button appears on top and Details below, matching the vertical stacking layout.
+[2026-10-13 00:12] - Added hidden Deactivate/Reactivate toggle button to Details panel footer in admin/inventory-admin.php; shown/hidden and wired by JS.
+[2026-10-13 00:13] - Wired details-toggle-btn in DetailsPanelManager.open(): shows Deactivate/Reactivate for super-admin, calls InventoryManager.toggleStatus with confirm dialog, hidden for other roles.
+[2026-10-13 00:14] - Removed standalone Status (Deactivate/Reactivate) column from compact table mode; functionality moved into Details panel modal.
+[2026-10-13 00:15] - Added .btn.btn-danger and .btn.btn-success CSS classes to inventory.css for the Details panel Deactivate/Reactivate toggle button styling.
+[2026-10-13 00:16] - Reduced inventory full-table column widths: Warehouse/Store/Overall Total 20px narrower, Shelves Total 30px narrower, Weight Check 20px narrower to reduce horizontal scroll.
+[2026-10-13 00:17] - Trimmed Unit Price to 95px, Status to 84px, Actions to 155px, and reduced tbody td horizontal padding from 14px to 10px to further reduce inventory table width.
+[2026-10-13 00:00] - Updated dashboard.css tablet breakpoint (≤1024px) to mirror mobile portrait design: sidebar becomes a drawer, layout stacks vertically, and landscape orientation no longer reverts to a wide 4-column grid.
+[2026-10-13 00:01] - Updated dashboard.css mobile landscape (≤768px) breakpoint to use 2-column grid instead of 4-column, matching mobile portrait layout.
+[2026-10-13 00:02] - Updated all landscape/tablet breakpoints in dashboard.css (≤1024px, ≤768px, ≤680px, ≤480px, ≤360px) to match mobile portrait layout instead of reverting to 4-column grids; desktop (>1024px) untouched.
+[2026-10-13 00:03] - Updated responsive.css ≤1024px breakpoint to mirror mobile portrait: sidebar becomes a drawer, layout stacks vertically, and landscape no longer reverts to a 4-column grid.
+[2026-10-13 00:10] - Rewrote all tablet and mobile landscape breakpoints in both responsive.css and dashboard.css so sidebar becomes a drawer, layout stacks vertically, and stats/charts match mobile portrait — no 4-column grids in landscape; desktop (>1024px) untouched.
+[2026-10-13 00:20] - Fixed inventory.css (admin & inventory-staff pages): updated all tablet/landscape breakpoints (≤1024px, ≤768px, ≤680px, ≤480px, ≤360px) to mirror mobile portrait — sidebar becomes a drawer, toolbar stacks, no 4-column landscape grids.
+[2026-10-13 00:00] - Updated .actions-cell--compact in responsive.css to stack Edit/Details buttons vertically with full-width stretch to match tablet/mobile inventory table layout.
+[2026-10-13 17:49] - Added TABLET_BREAKPOINT constant (1024px) to datatable-init.js to support tablet-mode inventory table layout switching.
+[2026-10-13 00:00] - Added TABLET_BREAKPOINT constant (1024px) to datatable-init.js to support tablet-mode inventory table layout switching.
+
+[2026-10-13 00:01] - Added getTabletColumns() to datatable-init.js defining a 3-column tablet layout (Image, Name, Overall Qty, Actions) for the 681px–1024px breakpoint.
+
+[2026-10-13 00:02] - Added tablet mode (681px-1024px) to inventory table showing only Image, Name, Overall Qty, and Actions columns, mirroring mobile compact layout.
+
+[2026-10-13 00:03] - Bumped MOBILE_BREAKPOINT from 768 to 1024 in sidebar.js so tablets use the mobile drawer+overlay behavior instead of the desktop collapse toggle.
+
+[2026-10-13 00:04] - Bumped MOBILE_BREAKPOINT from 1024 to 1376 in sidebar.js to extend mobile drawer+overlay behavior to larger tablets (up to 1376px wide).
+
+[2026-10-13 00:05] - Bumped TABLET_BREAKPOINT from 1024 to 1376 in datatable-init.js and responsive.css to match the new 1376px tablet threshold.
+
+[2026-10-13 00:10] - Added @media (max-width: 1376px) block to main.css to hide the sidebar by default and reset main-content margin, enabling mobile drawer behavior on landscape tablets up to 1376px wide.
+
+[2026-10-13 00:15] - Added @media (max-width: 1376px) sidebar drawer block to incidents.css, incident-reports.css, modal.css, suppliers.css, table.css, reports.css, users.css, user-management.css, and shelves.css so all pages hide the sidebar by default and use mobile drawer behavior at tablet landscape width.
+
+[2026-10-13 00:20] - Added @media (max-width: 1376px) sidebar drawer block to all inventory-staff CSS files (main, modal, responsive, inventory, incidents, shelves) to fix mobile drawer behavior on tablet landscape.
+
+[2026-10-13 00:25] - Added @media (max-width: 1376px) sidebar drawer block to all remaining modules CSS files (checker, dashboard, incoming-confirmation, incident-report-admin, incident-report-inventory, inventory, shelves, user-management) to complete the tablet sidebar fix across all pages.
+
+[2026-10-13 00:30] - Added @media (max-width: 1376px) sidebar drawer block to root.css, inventory/dashboard.css, checker/checker.css, global/base.css, global/layout.css, and global/components.css to complete full sidebar tablet fix across all CSS files.
+[2026-10-13 00:00] - Added col-hide-mobile class to Date, Items, and Checker td cells in deliveryRow() to hide those columns on mobile screens in incoming confirmation.
+[2026-10-13 00:01] - Added col-hide-mobile class to Date, Items, and Checker th headers in shared incoming-confirmation view for mobile responsive column hiding.
+[2026-10-13 00:02] - Added col-hide-mobile class to Date, Items, and Checker th headers in superadmin incoming-confirmation view (all 4 tab tables) for mobile responsive column hiding.
+[2026-10-13 00:03] - Added .col-hide-mobile { display: none } rule inside the ≤768px breakpoint in incoming-confirmation responsive.css to hide Date, Items, and Checker columns on mobile.
+[2026-10-13 00:04] - Added mobile-only modal-meta-mobile summary strip in openDetails() to display Date and Checker fields hidden from the table on small screens.
+[2026-10-13 00:00] - Added "Details" button to supplier table action column (mobile-only) in suppliers.js to support mobile portrait view feature.
+[2026-10-13 00:01] - Wired click handler for new Details button in supplier table to open details modal on mobile.
+[2026-10-13 00:02] - Added mobile portrait CSS rules to suppliers.css to hide address/phone columns and show Details button only on small portrait viewports.
+[2026-10-13 00:03] - Added supplier details modal HTML to superadmin suppliers view to fix null element error when clicking Details button.
+[2026-10-13 00:04] - Updated openDetailsModal in suppliers.js to also set data-id on the new Deactivate button.
+[2026-10-13 00:05] - Added Deactivate button to the details modal footer in admin and superadmin supplier views, and wired its click handler in suppliers.js.
+[2026-10-13 00:06] - Restored full suppliers.js with inactive table, tab switching, and Deactivate button in active table rows; added Details (mobile-only) button and details modal functions.
+[2026-10-14 00:00] - Updated toast CSS in assets/css/admin/main.css to use 4px left border, improved padding/shadow, and larger icon for new card-style toast design.
+[2026-10-14 00:01] - Restyled all toast notifications system-wide to match new card design: 4px left color border, bold title, message subtext, white card with soft shadow; updated 20+ CSS files and upgraded plain-text JS toast functions in suppliers, shelves, and user-management to render the card HTML structure.
+[2026-10-13 00:07] - Added desktop-only-btn class to Deactivate button in active table row and CSS rules to hide it on mobile portrait, since it moves into the Details modal instead.
+[2026-10-13 00:08] - Mobile portrait: set table to full width and stacked action buttons vertically (Details above Update) in suppliers.css.
+[2026-10-13 00:09] - Mobile portrait: fixed excess right-side space by making name column auto-width and shrinking actions column to fit its content.
+[2026-10-13 00:10] - Mobile portrait: fixed right-side whitespace by disabling horizontal scroll on the DataTables wrapper and capping panel-card width to 100%.
+[2026-10-14 00:00] - Set explicit column widths (30%/35%/15%) on active and inactive supplier DataTables so the Supplier Name column fills available horizontal space instead of wrapping.
+[2026-10-14 00:01] - Fixed mobile portrait supplier table column widths by resetting DataTables inline col widths (table-layout: auto, colgroup col width: auto) so CSS nth-child rules can stretch the name column to fill available space.
+[2026-10-14 00:02] - Extended mobile portrait supplier table CSS rules to cover inactive table: hide address/phone columns, stretch name column, shrink actions column, and stack action buttons vertically.
+[2026-10-14 00:03] - Removed the Update button from the inactive suppliers table action column.
+[2026-10-14 00:00] - Changed suppliers active-table Deactivate button from btn-ghost to btn-danger with icon-incident icon for consistent danger styling.
+[2026-10-14 00:01] - Added icon-empty icon to suppliers inactive-table Delete button for visual consistency.
+[2026-10-14 00:02] - Swapped icon-off to icon-incident on Deactivate button in admin and superadmin supplier detail modals for consistent warning styling.
+[2026-10-14 00:03] - Added icon-empty icon to Delete and Delete Permanently buttons in incoming-confirmation.js for consistent danger button styling.
+[2026-10-14 00:04] - Added icon-empty icon to Delete and Delete Permanently buttons in incident-reports.js for consistent danger button styling.
+[2026-10-14 00:05] - Switched inventory details panel toggle button from textContent to innerHTML to inject icon-incident/icon-check icons on Deactivate/Reactivate.
+[2026-10-14 00:06] - Standardized Details buttons to btn-secondary with icon-info across checker.js, incoming-confirmation.js, and shelves-admin.js.
+[2026-10-14 00:07] - Updated btn-secondary style to blue tint (rgba 69,105,173) across all 18 module CSS files to match the target Details button design.
+[2026-10-14 00:08] - Changed shelf card Update button from btn-primary to btn-secondary with icon-edit to match the Details button style.
+[2026-10-14 00:09] - Changed inventory-admin.php Update Item button from btn-primary to btn-secondary with icon-edit icon.
+[2026-10-14 00:10] - Changed Update Item button from btn-primary to btn-secondary with icon-edit in superadmin/inventory-admin.php and inventory/inventory.php.
+[2026-10-14 00:11] - Updated btn-details to blue tint in admin/inventory.css and admin/table.css; added btn-secondary definition to incoming-confirmation/main.css.
+[2026-10-14 00:12] - Updated btn-details in modules/inventory/table.css from dark navy to blue tint to match btn-secondary style.
+[2026-10-14 00:13] - Fixed btn-details duplicate comment in admin/inventory.css; updated user-card-actions overrides to blue tint in users.css, user-management.css; fixed mobile action-details color in suppliers.css.
+[2026-10-14 00:14] - Changed "Edit" button label to "Update" in datatable-init.js (all instances) and user-management.js.
+[2026-10-14 00:15] - Improved mobile compact action buttons in inventory DataTable to use proper padding, font-size, and full-width stacked layout matching the btn-secondary design.
+[2026-10-14 00:16] - Fixed mobile inventory DataTable action buttons not stacking vertically by overriding conflicting flex-direction and min-height rules from broader breakpoints with !important.
+[2026-10-14 00:17] - Fixed mobile inventory action button border-radius from radius-sm to radius-md to match the rounded corners of other Details/Update buttons.
+[2026-10-14 00:00] - Added `grid-template-columns: 1fr` to `.stats-row` at ≤480px breakpoint in incoming-confirmation/responsive.css so KPI cards stack vertically on mobile.
+[2026-10-14 00:01] - Collapsed status badges to icon-only colored dots on mobile (≤480px) in incoming-confirmation/responsive.css by zeroing font-size and stripping badge padding/background.
+[2026-10-14 00:02] - Renamed "Total Qty" column header to "Quantity" across all three tabs in incoming-confirmation.php.
+[2026-10-14 00:03] - Renamed "Total Qty" column header to "Quantity" in superadmin incoming-confirmation.php (all 4 tab tables).
+[2026-10-14 00:00] - Added mobile (≤768px) column-hiding CSS to checker/responsive.css to show only Date, Supplier, Items, Status, and Action in the Incoming Deliveries table on mobile viewports.
+[2026-10-14 00:01] - Added phone (≤480px) CSS to checker/responsive.css to show only Supplier, No. of Items, dot-only Status, and Action in the Incoming Deliveries table on phone viewports.
+[2026-10-14 00:02] - Updated checker.js and checker/responsive.css so the Items column shows only the total item count on phone viewports (≤480px) instead of the full item list preview.
+[2026-10-14 00:03] - Fixed horizontal scroll in checker/responsive.css by overriding table min-width and disabling overflow-x on the incoming panel at ≤480px.
+[2026-10-14 00:00] - Added data-checker-trash-enabled="1" to body tag in superadmin checker view to enable trash tab feature flag.
+[2026-10-14 00:01] - Added Trash filter tab and trash tbody to the incoming deliveries panel in superadmin checker view.
+[2026-10-14 00:02] - Added load_ingoing_records_deleted() to common.php to fetch soft-deleted (trashed) ingoing header records grouped with their items for the super-admin Trash tab.
+[2026-10-14 00:03] - Updated checker.js to add Trash tab, delete/restore/purge buttons, and trash action functions for super-admin incoming deliveries.
+[2026-10-14 00:04] - Added pill-shaped action button styles (.action-pill, .action-pill-info, .action-pill-danger, .action-pill-success) to checker main.css for the trash tab row actions.
+[2026-10-14 00:05] - Replaced custom action-pill button styles with the standard btn/btn-secondary/btn-ghost/btn-danger small-btn classes to match the incoming-confirmation mobile viewport reference design.
+[2026-10-14 00:06] - Removed duplicate .btn-danger override in checker/main.css that was making delete buttons solid red instead of the tinted style matching incoming-confirmation.
+[2026-10-14 00:07] - Added .tab-count badge style to checker/main.css so the Trash tab count renders as a pill badge instead of plain text.
+[2026-10-14 00:08] - Added gap: 6px to .filter-tab in checker/main.css to add spacing between the label text and the count badge.
+[2026-10-14 00:09] - Added .tab-count:empty { display: none } to checker/main.css so the Trash badge hides when the count is zero.
+[2026-10-14 00:07] - Renamed "Delete Permanently" button to "Delete" in the Trash tab of incoming-confirmation.js for brevity.
+[2026-10-14 00:10] - Replaced showConfirmModal with a dynamic confirmModal() in checker.js to show a styled "Delete Permanently" dialog matching the incoming-confirmation page design.
+[2026-10-14 00:11] - Added confirm-modal styles to checker/main.css so the dynamically-injected delete confirmation dialog renders correctly on the checker page.
+[2026-10-14 00:00] - Created app/Api/checker/delete-outgoing.php to support soft-delete (trash), restore, and hard-delete (purge) actions for outgoing warehouse records (super-admin only).
+[2026-10-14 00:01] - Created api/checker/delete-outgoing.php public stub that proxies to the app implementation.
+[2026-10-14 00:10] - Added delete button and Trash tab to outgoing warehouse items in super-admin: new delete-outgoing.php API endpoint (trash/restore/purge), outgoing.php updated to exclude soft-deleted records and return trashed list, superadmin checker view updated with Trash tab and second tbody, checker.js updated with buildOutgoingRow, renderOutgoingTrashTable, trashOutgoing, restoreOutgoing, purgeOutgoing, and click handler wiring.
+[2026-10-14 00:15] - Renamed "Review" button to "Details" on outgoing warehouse transaction rows (both Checked and Pending states).
+[2026-10-14 00:18] - Restyled outgoing Details button to match incoming deliveries style (btn-secondary + icon-info icon) on both Checked and Pending rows.
+[2026-10-14 00:22] - Added count badges to All, Pending, Checked, and Trash outgoing filter tabs in superadmin checker view.
+[2026-10-14 00:25] - Added count badges to All, Pending, Checked, and Trash incoming deliveries filter tabs in superadmin checker view, matching the outgoing tab badge pattern.
+[2026-10-14 00:30] - Improved incoming delivery details modal subtitle readability: structured with dot separators, labeled fields, bold checker name, and status badge; added flex CSS for the subtitle row.
+[2026-10-14 00:35] - Improved outgoing review modal header readability: em dash title, dot-separated subtitle with date, item count, pending/confirmed status in color, creator name, and status badge.
+[2026-10-14 00:42] - Added delete button to For Re-checking tab (super-admin only): new delete-recheck-item.php endpoint for hard-deleting individual ingoing_items rows, deleteRecheckItem JS function with confirm modal, and click handler wiring.
+[2026-10-14 00:48] - Restricted recheck modal condition options to "Choose Condition" (blank default) and "Accepted / Good" only, removing Damaged and Incomplete/Missing options.
+[2026-10-14 00:55] - Added All/Trash tabs to For Re-checking panel: soft-delete support on ingoing_items, updated delete-recheck-item.php with trash/restore/purge actions, rechecking.php returns trashed items separately, JS updated with filter tabs, buildRecheckRow, renderRecheckingTrashTable, restoreRecheckItem, purgeRecheckItem, and click handlers.
+[2026-10-14 01:00] - Added "Move to Trash" confirm modal to trashIncoming and trashOutgoing actions, matching the re-check item trash confirmation pattern.
+[2026-10-14 01:05] - Added "Move to Trash" confirm modal to trashDelivery in incoming-confirmation.js, matching the checker module trash confirmation pattern.
+[2026-10-14 01:10] - Added filemtime cache-busting to incoming-confirmation.js script tags in superadmin and shared views to force browsers to load the updated JS.

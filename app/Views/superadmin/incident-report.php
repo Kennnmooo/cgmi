@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/Helpers.php';
 require_login(['super-admin']);
@@ -15,7 +15,7 @@ $sidebarActive = 'incidents';
   <meta name="description" content="Hardware & Construction Supply Incident Reports Panel">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
 
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/admin/incidents.css') ?>">
@@ -33,7 +33,7 @@ $sidebarActive = 'incidents';
     <!--  MAIN CONTENT  -->
     <main class="main-content">
 
-      <!-- â”€â”€ Top Header â”€â”€ -->
+      <!-- ── Top Header ── -->
       <header class="top-header">
         <div class="header-left">
           <button class="menu-toggle" id="menu-toggle" aria-label="Toggle sidebar"><span class="ui-icon icon-menu" aria-hidden="true"></span></button>
@@ -47,7 +47,7 @@ $sidebarActive = 'incidents';
 
       <div class="page-content">
 
-        <!--    STATISTICS ROW   -->
+        <!--  � STATISTICS ROW   -->
         <div class="reports-stats-row" role="region" aria-label="Report Status Summary">
 
           <div class="stat-card" style="--stat-accent:#1F3F74;--stat-bg:rgba(31,63,116,0.1)">
@@ -89,7 +89,7 @@ $sidebarActive = 'incidents';
         </div>
         <!-- /STATISTICS ROW -->
 
-        <!--  ¡ REPORTS DISPLAY PANEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+        <!--  � REPORTS DISPLAY PANEL ──────────────────────── -->
         <div class="panel-card" role="region" aria-label="Incident Reports Panel">
 
           <!-- Panel Header -->
@@ -105,9 +105,14 @@ $sidebarActive = 'incidents';
                 <button class="btn btn-ghost btn-sm" id="clear-date-filter" style="display:none;">Clear</button>
               </div>
 
-              <!--  ¢ SORT TOGGLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+              <!--  � SORT TOGGLE ─────────────────────────── -->
+                            <!-- REFRESH -->
+              <button class="btn btn-ghost" id="refresh-btn" type="button" aria-label="Refresh reports">
+                <span class="btn-inline-icon ui-icon icon-refresh" aria-hidden="true"></span>Refresh
+              </button>
+
               <button class="sort-btn" id="sort-btn" type="button" aria-label="Toggle sort order">
-                Sort <span id="sort-label">Latest First</span> ▾
+                Sort <span id="sort-label">Latest First</span> ?
               </button>
               <!-- /SORT TOGGLE -->
             </div>
@@ -144,7 +149,7 @@ $sidebarActive = 'incidents';
   </div>
   <!-- /APP WRAPPER -->
 
-  <!--  £ DETAIL MODAL -->
+  <!--  � DETAIL MODAL -->
   <div class="modal-backdrop" id="modal-backdrop" role="dialog"
        aria-modal="true" aria-label="Incident Report Details" aria-hidden="true">
     <div id="modal-content"><!-- JS-rendered --></div>

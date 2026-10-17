@@ -81,17 +81,18 @@
       ...commonConfig,
       language: { ...commonConfig.language, emptyTable: 'No active suppliers.' },
       columns: [
-        { data: 'name' },
-        { data: 'address', defaultContent: '—' },
-        { data: 'phone', defaultContent: '—' },
+        { data: 'name', width: '30%' },
+        { data: 'address', defaultContent: '—', width: '35%' },
+        { data: 'phone', defaultContent: '—', width: '15%' },
         {
           data: null,
           orderable: false,
           searchable: false,
           render: function (data) {
             return `<div class="action-btns">
+              <button class="btn btn-secondary small-btn action-details mobile-only-btn" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button>
               <button class="btn btn-secondary small-btn action-edit" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Update</button>
-              <button class="btn btn-ghost small-btn action-toggle" data-id="${data.id}" data-action="deactivate">Deactivate</button>
+              <button class="btn btn-danger small-btn action-toggle desktop-only-btn" data-id="${data.id}" data-action="deactivate"><span class="btn-inline-icon ui-icon icon-incident" aria-hidden="true"></span>Deactivate</button>
             </div>`;
           }
         }
@@ -102,18 +103,17 @@
       ...commonConfig,
       language: { ...commonConfig.language, emptyTable: 'No inactive suppliers.' },
       columns: [
-        { data: 'name' },
-        { data: 'address', defaultContent: '—' },
-        { data: 'phone', defaultContent: '—' },
+        { data: 'name', width: '30%' },
+        { data: 'address', defaultContent: '—', width: '35%' },
+        { data: 'phone', defaultContent: '—', width: '15%' },
         {
           data: null,
           orderable: false,
           searchable: false,
           render: function (data) {
             return `<div class="action-btns">
-              <button class="btn btn-secondary small-btn action-edit" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-edit" aria-hidden="true"></span>Update</button>
               <button class="btn btn-primary small-btn action-toggle" data-id="${data.id}" data-action="activate">Activate</button>
-              <button class="btn btn-danger small-btn action-remove" data-id="${data.id}">Delete</button>
+              <button class="btn btn-danger small-btn action-remove" data-id="${data.id}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>
             </div>`;
           }
         }
@@ -126,10 +126,17 @@
       const supplier = suppliers.find(s => s.id === id);
       if (supplier) openModal(supplier);
     });
+
     $('#supplier-table-active tbody').on('click', '.action-toggle', function () {
       const id = Number($(this).data('id'));
       const action = $(this).data('action');
       toggleSupplier(id, action);
+    });
+
+    $('#supplier-table-active tbody').on('click', '.action-details', function () {
+      const id = Number($(this).data('id'));
+      const supplier = suppliers.find(s => s.id === id);
+      if (supplier) openDetailsModal(supplier);
     });
 
     // Delegate action clicks on inactive table
@@ -138,11 +145,13 @@
       const supplier = suppliers.find(s => s.id === id);
       if (supplier) openModal(supplier);
     });
+
     $('#supplier-table-inactive tbody').on('click', '.action-toggle', function () {
       const id = Number($(this).data('id'));
       const action = $(this).data('action');
       toggleSupplier(id, action);
     });
+
     $('#supplier-table-inactive tbody').on('click', '.action-remove', function () {
       const id = Number($(this).data('id'));
       const supplier = suppliers.find(s => s.id === id);
@@ -151,27 +160,29 @@
   }
 
   function refreshTables() {
-    const active = suppliers.filter(s => s.isActive);
+    const active   = suppliers.filter(s =>  s.isActive);
     const inactive = suppliers.filter(s => !s.isActive);
 
     activeTable.clear();
     activeTable.rows.add(active);
     activeTable.draw();
 
-    inactiveTable.clear();
-    inactiveTable.rows.add(inactive);
-    inactiveTable.draw();
+    if (inactiveTable) {
+      inactiveTable.clear();
+      inactiveTable.rows.add(inactive);
+      inactiveTable.draw();
+    }
 
     updateStats();
   }
 
   function updateStats() {
-    const total = suppliers.length;
-    const active = suppliers.filter(s => s.isActive).length;
+    const total    = suppliers.length;
+    const active   = suppliers.filter(s => s.isActive).length;
     const inactive = total - active;
-    el('stat-total').textContent = total;
+    el('stat-total').textContent  = total;
     el('stat-active').textContent = active;
-    el('stat-inactive').textContent = inactive;
+    if (el('stat-inactive')) el('stat-inactive').textContent = inactive;
     el('supplier-count-badge').textContent = `${total} supplier${total === 1 ? '' : 's'}`;
   }
 
@@ -183,11 +194,9 @@
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
         el(`${btn.dataset.tab}-panel`).classList.add('active');
-
         // Recalculate columns when switching tabs (DataTables needs this for hidden tables)
         if (btn.dataset.tab === 'inactive') {
           inactiveTable.columns.adjust();
-          // Sync search input value to the now-visible table
           const q = el('supplier-search-input')?.value || '';
           inactiveTable.search(q).draw();
         } else {
@@ -255,6 +264,20 @@
     suppliers = suppliers.filter(s => s.id !== supplier.id);
     refreshTables();
     toast(`"${supplier.name}" removed .`);
+  }
+
+  // ─── Details Modal (mobile portrait) ─────────────────────────
+  function openDetailsModal(supplier) {
+    el('details-modal-name').textContent          = supplier.name    || '—';
+    el('details-modal-address').textContent       = supplier.address || '—';
+    el('details-modal-phone').textContent         = supplier.phone   || '—';
+    el('details-modal-edit-btn').dataset.id       = supplier.id;
+    el('details-modal-deactivate-btn').dataset.id = supplier.id;
+    el('supplier-details-modal').classList.add('active');
+  }
+
+  function closeDetailsModal() {
+    el('supplier-details-modal').classList.remove('active');
   }
 
   // ─── Modal ──────────────────────────────────────────────────
@@ -328,14 +351,33 @@
     return stack;
   }
 
+  const TOAST_META = {
+    success: { color: 'var(--accent-success, #16a34a)', icon: '✓', title: 'Success' },
+    error:   { color: 'var(--accent-danger, #dc2626)',  icon: '✕', title: 'Error' },
+    warning: { color: 'var(--accent-warning, #d97706)', icon: '⚠', title: 'Warning' },
+    info:    { color: 'var(--blue-medium, #4569AD)',     icon: 'ℹ', title: 'Notice' },
+  };
+
   function toast(message, type = 'success') {
     const container = toastStackFor(type);
     if (!container) { alert(message); return; }
+    const meta = TOAST_META[type] || TOAST_META.success;
     const n = document.createElement('div');
-    n.className = 'toast show';
-    n.textContent = message;
+    n.className = 'toast';
+    n.style.setProperty('--toast-color', meta.color);
+    n.innerHTML = `
+      <div class="toast-icon" style="color:${meta.color}" aria-hidden="true">${meta.icon}</div>
+      <div class="toast-body">
+        <div class="toast-title">${meta.title}</div>
+        <div class="toast-msg">${message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+      </div>`;
+    const dismiss = () => {
+      n.classList.add('hide');
+      n.addEventListener('animationend', () => n.remove(), { once: true });
+    };
+    n.addEventListener('click', dismiss);
     container.appendChild(n);
-    setTimeout(() => { n.classList.remove('show'); setTimeout(() => n.remove(), 300); }, 2400);
+    setTimeout(dismiss, type === 'error' ? 6000 : 4000);
   }
 
   // ─── Init ───────────────────────────────────────────────────
@@ -358,6 +400,21 @@
     el('modal-cancel-btn')?.addEventListener('click', closeModal);
     el('supplier-modal')?.addEventListener('click', (e) => { if (e.target.id === 'supplier-modal') closeModal(); });
     el('modal-save-btn')?.addEventListener('click', () => saveSupplier().catch(err => toast(err.message, 'error')));
+
+    // Details modal events
+    el('details-modal-close-btn')?.addEventListener('click', closeDetailsModal);
+    el('supplier-details-modal')?.addEventListener('click', (e) => { if (e.target.id === 'supplier-details-modal') closeDetailsModal(); });
+    el('details-modal-edit-btn')?.addEventListener('click', function () {
+      const id = Number(this.dataset.id);
+      const supplier = suppliers.find(s => s.id === id);
+      closeDetailsModal();
+      if (supplier) openModal(supplier);
+    });
+    el('details-modal-deactivate-btn')?.addEventListener('click', function () {
+      const id = Number(this.dataset.id);
+      closeDetailsModal();
+      toggleSupplier(id, 'deactivate').catch(err => toast(err.message, 'error'));
+    });
 
     // Confirm events
     el('confirm-cancel-btn')?.addEventListener('click', closeConfirm);

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/Helpers.php';
 require_login(['super-admin']);
@@ -13,10 +13,14 @@ $sidebarActive = 'dashboard';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CGMI.IMS   Dashboard</title>
   <meta name="description" content="Hardware & Construction Supply Dashboard">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  
+  
+  
+  
+    <link rel="stylesheet" href="<?= app_url('/assets/fonts/montserrat.css') ?>">
+  <script src="<?= app_url('/assets/lib/highCharts/scripts/vendor/highcharts.js') ?>"></script>
+  <script src="<?= app_url('/assets/lib/highCharts/scripts/vendor/accessibility.js') ?>"></script>
+  <script src="<?= app_url('/assets/lib/highCharts/scripts/vendor/exporting.js') ?>"></script>
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/admin/dashboard.css') ?>">
 </head>
@@ -69,7 +73,7 @@ $sidebarActive = 'dashboard';
             <div class="card">
               <div class="card-header">
                 <span class="card-title">Stock Distribution by Location</span>
-                <span class="pill blue">Warehouse Â· Store Â· Shelf</span>
+                <span class="pill blue">Warehouse · Store · Shelf</span>
               </div>
               <div class="chart-box" id="ch-distribution"></div>
             </div>

@@ -218,7 +218,7 @@
     ).join('')
       + (moreCount > 0 ? `<div class="item-line more-items">+${moreCount} more item${moreCount > 1 ? 's' : ''}</div>` : '');
     const totalQty = items.reduce((sum, i) => sum + (i.quantity || 0), 0);
-    const detailsBtn = `<button type="button" class="btn btn-primary small-btn" data-txn-details="${group.ingoingId}">Details</button>`;
+    const detailsBtn = `<button type="button" class="btn btn-secondary small-btn" data-txn-details="${group.ingoingId}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button>`;
 
     let action = detailsBtn;
     if (trashEnabled && mode === 'trash') {
@@ -226,23 +226,23 @@
       action = `<div class="row-actions">
         ${detailsBtn}
         <button type="button" class="btn btn-ghost small-btn" data-txn-restore="${group.ingoingId}">Restore</button>
-        <button type="button" class="btn btn-danger small-btn" data-txn-purge="${group.ingoingId}">Delete Permanently</button>
+        <button type="button" class="btn btn-danger small-btn" data-txn-purge="${group.ingoingId}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>
       </div>`;
     } else if (trashEnabled && String(group.deliveryStatus).toLowerCase() === 'checked') {
       // Reviewed (Checked) deliveries can be moved to Trash. Pending ones cannot.
       action = `<div class="row-actions">
         ${detailsBtn}
-        <button type="button" class="btn btn-danger small-btn" data-txn-delete="${group.ingoingId}">Delete</button>
+        <button type="button" class="btn btn-danger small-btn" data-txn-delete="${group.ingoingId}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>
       </div>`;
     }
 
     return `<tr>
-      <td>${fmtDate(group.createdDate)}</td>
+      <td class="col-hide-mobile">${fmtDate(group.createdDate)}</td>
       <td>${escapeHtml(group.supplierName || '—')}</td>
-      <td><div class="items-cell">${itemsList || '—'}</div></td>
+      <td class="col-hide-mobile"><div class="items-cell">${itemsList || '—'}</div></td>
       <td>${totalQty}</td>
       <td>${badge(group.deliveryStatus)}</td>
-      <td>${escapeHtml(actorName || '—')}</td>
+      <td class="col-hide-mobile">${escapeHtml(actorName || '—')}</td>
       <td>${action}</td>
     </tr>`;
   }
@@ -391,7 +391,12 @@
       `${fmtDate(group.createdDate)}    ${items.length} item(s)    ${totalQty} total qty    ${group.createdByName || 'Checker'}`;
 
     const body = $('confirm-details-body');
-    body.innerHTML = items.map(it => {
+    // Mobile-only summary strip: shows the columns hidden from the table on small screens.
+    const mobileMeta = `<div class="modal-meta-mobile">
+      <div class="modal-meta-row"><span class="modal-meta-label">Date</span><span class="modal-meta-value">${fmtDate(group.createdDate)}</span></div>
+      <div class="modal-meta-row"><span class="modal-meta-label">Checker</span><span class="modal-meta-value">${escapeHtml(group.createdByName || '—')}</span></div>
+    </div>`;
+    body.innerHTML = mobileMeta + (items.map(it => {
       const isPending = String(it.status).toLowerCase() === 'pending';
       const note = it.notes ? `<div class="muted review-item-note"><span class="note-label">Note:</span> ${escapeHtml(it.notes)}</div>` : '';
       const confNote = it.confirmationNotes ? `<div class="muted review-conf-note"><span class="note-label">Review note:</span> ${escapeHtml(it.confirmationNotes)}</div>` : '';
@@ -410,7 +415,7 @@
         </div>
         <div class="review-item-action">${rightSide}</div>
       </div>`;
-    }).join('') || '<p class="empty">No items in this delivery.</p>';
+    }).join('') || '<p class="empty">No items in this delivery.</p>');
 
     $('confirm-details-modal').classList.add('show');
   }
@@ -495,6 +500,14 @@
   async function trashDelivery(ingoingId) {
     if (!trashEnabled) return;
     const group = findGroup(ingoingId) || groupByTransaction(trashedItems).find(g => String(g.ingoingId) === String(ingoingId));
+    const confirmed = await confirmModal({
+      title: 'Move to Trash',
+      message: 'Move this delivery to Trash? You can restore it later from the Trash tab.',
+      confirmText: 'Move to Trash',
+      cancelText: 'Cancel',
+      danger: true,
+    });
+    if (!confirmed) return;
     try {
       await getJson(api('/api/checker/delete-incoming.php'), {
         method: 'POST',

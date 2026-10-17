@@ -419,40 +419,78 @@
     return true;
   }
 
+  // Feature flag: trash actions only available when the view opts-in via data attribute.
+  const checkerTrashEnabled = !!document.body.getAttribute('data-checker-trash-enabled');
+
   let incomingFilter = 'all';
   // Pagination state for the incoming deliveries table (mirrors the outgoing table).
   let incomingPage = 1;
   let incomingPageSize = 10;
+  // Trash pagination (separate state so switching tabs doesn't reset the other).
+  let incomingTrashPage = 1;
+  let incomingTrashPageSize = 10;
+
+  function buildIncomingRow(r, isTrash = false) {
+    const items = r.items || [];
+    const MAX_PREVIEW = 2;
+    const shownItems = items.slice(0, MAX_PREVIEW);
+    const moreCount = items.length - shownItems.length;
+    const itemsList = shownItems.map(i =>
+      `<div class="item-line">${escapeHtml(i.itemName)} — ${i.quantity} ${escapeHtml(i.unit)}</div>`
+    ).join('') + (moreCount > 0 ? `<div class="item-line more-items">+${moreCount} more item${moreCount > 1 ? 's' : ''}</div>` : '');
+    const totalQty = items.reduce((sum, i) => sum + (i.quantity || 0), 0);
+    const detailsBtn = `<button type="button" class="btn btn-secondary small-btn" data-incoming-details="${r.ingoingId}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button>`;
+
+    let action;
+    if (isTrash) {
+      // Trash row: restore or permanently delete.
+      action = `<div class="row-actions">
+        ${detailsBtn}
+        <button type="button" class="btn btn-ghost small-btn" data-incoming-restore="${r.ingoingId}">Restore</button>
+        <button type="button" class="btn btn-danger small-btn" data-incoming-purge="${r.ingoingId}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>
+      </div>`;
+    } else if (checkerTrashEnabled && r.status === 'Checked') {
+      // Checked row: allow moving to trash (super-admin only).
+      action = `<div class="row-actions">
+        ${detailsBtn}
+        <button type="button" class="btn btn-danger small-btn" data-incoming-trash="${r.ingoingId}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>
+      </div>`;
+    } else {
+      action = detailsBtn;
+    }
+
+    return `<tr>
+      <td>${fmtDate(r.createdDate)}</td>
+      <td>${escapeHtml(r.supplierName || '—')}</td>
+      <td><div class="items-cell">${itemsList || '—'}</div><span class="items-count-mobile">${items.length}</span></td>
+      <td>${totalQty}</td>
+      <td>${badge(r.status)}</td>
+      <td>${escapeHtml(r.createdByName || 'Checker')}</td>
+      <td>${action}</td>
+    </tr>`;
+  }
 
   function renderIncomingTable(records) {
-    const filtered = incomingFilter === 'all' ? records : records.filter(r => r.status === incomingFilter);
+    const isTrashTab = incomingFilter === 'Trash';
 
-    // Build the full list of row-HTML strings for the active filter, then paginate.
-    const rowsHtml = filtered.map(r => {
-      const items = r.items || [];
-      // Show only the first 2 items, with a "+N more" indicator when the delivery has more.
-      const MAX_PREVIEW = 2;
-      const shownItems = items.slice(0, MAX_PREVIEW);
-      const moreCount = items.length - shownItems.length;
-      const itemsList = shownItems.map(i =>
-        `<div class="item-line">${escapeHtml(i.itemName)} — ${i.quantity} ${escapeHtml(i.unit)}</div>`
-      ).join('')
-        + (moreCount > 0 ? `<div class="item-line more-items">+${moreCount} more item${moreCount > 1 ? 's' : ''}</div>` : '');
-      const totalQty = items.reduce((sum, i) => sum + (i.quantity || 0), 0);
-      const action = `<button type="button" class="btn btn-primary small-btn" data-incoming-details="${r.ingoingId}">Details</button>`;
-      return `<tr>
-        <td>${fmtDate(r.createdDate)}</td>
-        <td>${escapeHtml(r.supplierName || '—')}</td>
-        <td><div class="items-cell">${itemsList || '—'}</div></td>
-        <td>${totalQty}</td>
-        <td>${badge(r.status)}</td>
-        <td>${escapeHtml(r.createdByName || 'Checker')}</td>
-        <td>${action}</td>
-      </tr>`;
-    });
+    if (isTrashTab) {
+      // Render the trash tbody, hide the normal tbody.
+      const trashRecords = window.__incomingTrashedRecords || [];
+      renderIncomingTrashTable(trashRecords);
+      return;
+    }
+
+    // Show normal tbody, hide trash tbody.
+    const normalTbody = $('incoming-table');
+    const trashTbody  = $('incoming-trash-table');
+    if (normalTbody) normalTbody.style.display = '';
+    if (trashTbody)  trashTbody.style.display  = 'none';
+
+    const filtered = incomingFilter === 'all' ? records : records.filter(r => r.status === incomingFilter);
+    const rowsHtml = filtered.map(r => buildIncomingRow(r, false));
 
     const total = rowsHtml.length;
-    const tbody = $('incoming-table');
+    const tbody = normalTbody;
 
     if (!total) {
       const label = incomingFilter === 'all' ? '' : incomingFilter.toLowerCase() + ' ';
@@ -471,37 +509,66 @@
     renderIncomingPagination(start + 1, end, total);
   }
 
-  function renderIncomingPagination(from, to, total) {
+  function renderIncomingTrashTable(trashRecords) {
+    const normalTbody = $('incoming-table');
+    const trashTbody  = $('incoming-trash-table');
+    if (normalTbody) normalTbody.style.display = 'none';
+    if (trashTbody)  trashTbody.style.display  = '';
+
+    const rowsHtml = trashRecords.map(r => buildIncomingRow(r, true));
+    const total = rowsHtml.length;
+
+    if (!total) {
+      trashTbody.innerHTML = `<tr><td colspan="7" class="empty">Trash is empty.</td></tr>`;
+      renderIncomingPagination(0, 0, 0);
+      return;
+    }
+
+    const pageCount = Math.max(1, Math.ceil(total / incomingTrashPageSize));
+    if (incomingTrashPage > pageCount) incomingTrashPage = pageCount;
+    if (incomingTrashPage < 1) incomingTrashPage = 1;
+
+    const start = (incomingTrashPage - 1) * incomingTrashPageSize;
+    const end = Math.min(start + incomingTrashPageSize, total);
+    trashTbody.innerHTML = rowsHtml.slice(start, end).join('');
+    renderIncomingPagination(start + 1, end, total, true);
+  }
+
+  function renderIncomingPagination(from, to, total, isTrash = false) {
     const controls = $('incoming-pagination');
     if (!controls) return;
     if (!total) {
       controls.innerHTML = '';
       return;
     }
-    const pageCount = Math.max(1, Math.ceil(total / incomingPageSize));
+    const pageSize = isTrash ? incomingTrashPageSize : incomingPageSize;
+    const pageCount = Math.max(1, Math.ceil(total / pageSize));
+    const currentPage = isTrash ? incomingTrashPage : incomingPage;
     controls.innerHTML = `
       <div class="pagination-info">Showing ${from}–${to} of ${total}</div>
       <div class="pagination-controls">
         <label class="page-size-label">Rows:
           <select id="incoming-page-size">
-            ${[10, 25, 50, 100].map(n => `<option value="${n}" ${n === incomingPageSize ? 'selected' : ''}>${n}</option>`).join('')}
+            ${[10, 25, 50, 100].map(n => `<option value="${n}" ${n === pageSize ? 'selected' : ''}>${n}</option>`).join('')}
           </select>
         </label>
-        <button type="button" class="btn btn-ghost small-btn" id="incoming-prev-page" ${incomingPage <= 1 ? 'disabled' : ''}>Prev</button>
-        <span class="page-indicator">Page ${incomingPage} / ${pageCount}</span>
-        <button type="button" class="btn btn-ghost small-btn" id="incoming-next-page" ${incomingPage >= pageCount ? 'disabled' : ''}>Next</button>
+        <button type="button" class="btn btn-ghost small-btn" id="incoming-prev-page" ${currentPage <= 1 ? 'disabled' : ''}>Prev</button>
+        <span class="page-indicator">Page ${currentPage} / ${pageCount}</span>
+        <button type="button" class="btn btn-ghost small-btn" id="incoming-next-page" ${currentPage >= pageCount ? 'disabled' : ''}>Next</button>
       </div>`;
 
     $('incoming-page-size').addEventListener('change', (e) => {
-      incomingPageSize = parseInt(e.target.value, 10) || 10;
-      incomingPage = 1;
-      renderIncomingTable(window.__incomingRecords || []);
+      const val = parseInt(e.target.value, 10) || 10;
+      if (isTrash) { incomingTrashPageSize = val; incomingTrashPage = 1; renderIncomingTrashTable(window.__incomingTrashedRecords || []); }
+      else         { incomingPageSize = val; incomingPage = 1; renderIncomingTable(window.__incomingRecords || []); }
     });
     $('incoming-prev-page').addEventListener('click', () => {
-      if (incomingPage > 1) { incomingPage--; renderIncomingTable(window.__incomingRecords || []); }
+      if (isTrash) { if (incomingTrashPage > 1) { incomingTrashPage--; renderIncomingTrashTable(window.__incomingTrashedRecords || []); } }
+      else         { if (incomingPage > 1)       { incomingPage--;       renderIncomingTable(window.__incomingRecords || []); } }
     });
     $('incoming-next-page').addEventListener('click', () => {
-      if (incomingPage < pageCount) { incomingPage++; renderIncomingTable(window.__incomingRecords || []); }
+      if (isTrash) { if (incomingTrashPage < pageCount) { incomingTrashPage++; renderIncomingTrashTable(window.__incomingTrashedRecords || []); } }
+      else         { if (incomingPage < pageCount)       { incomingPage++;       renderIncomingTable(window.__incomingRecords || []); } }
     });
   }
 
@@ -509,19 +576,36 @@
     const data = await getJson(api('/api/checker/incoming.php'));
     const records = data.records || [];
     window.__incomingRecords = records;
+    window.__incomingTrashedRecords = data.trashed || [];
+    // Update all tab count badges.
+    const inAllCount     = records.length;
+    const inPendingCount = records.filter(r => String(r.status).toLowerCase() === 'pending').length;
+    const inCheckedCount = records.filter(r => String(r.status).toLowerCase() === 'checked').length;
+    const inTrashCount   = window.__incomingTrashedRecords.length;
+    const setInCount = (id, n) => { const el = $(id); if (el) el.textContent = n || ''; };
+    setInCount('incoming-all-count',          inAllCount);
+    setInCount('incoming-pending-tab-count',  inPendingCount);
+    setInCount('incoming-checked-count',      inCheckedCount);
+    setInCount('incoming-trash-count',        inTrashCount);
     renderIncomingTable(records);
     setCounts(records, outgoingCache);
   }
 
   // ── Incoming delivery details modal (read-only) ──
   function openIncomingDetails(ingoingId) {
-    const rec = (window.__incomingRecords || []).find(r => String(r.ingoingId) === String(ingoingId));
+    // Check both live and trashed records caches.
+    const allRecords = [...(window.__incomingRecords || []), ...(window.__incomingTrashedRecords || [])];
+    const rec = allRecords.find(r => String(r.ingoingId) === String(ingoingId));
     if (!rec) return;
     const items = rec.items || [];
     const totalQty = items.reduce((sum, i) => sum + (i.quantity || 0), 0);
 
-    $('incoming-details-title').textContent = `Delivery    ${rec.supplierName || 'Unknown supplier'}`;
-    $('incoming-details-subtitle').textContent = `${fmtDate(rec.createdDate)}    ${items.length} item(s)    ${totalQty} total qty    ${escapeHtml(rec.createdByName || 'Checker')}`;
+    $('incoming-details-title').textContent = `Delivery — ${rec.supplierName || 'Unknown supplier'}`;
+    $('incoming-details-subtitle').innerHTML =
+      `<span>${fmtDate(rec.createdDate)}</span>` +
+      `<span class="detail-sep">·</span><span>${items.length} item(s) &nbsp;·&nbsp; ${totalQty} total qty</span>` +
+      `<span class="detail-sep">·</span><span>Checked by: <strong>${escapeHtml(rec.createdByName || 'Checker')}</strong></span>` +
+      `<span class="detail-sep">·</span>${badge(rec.status)}`;
 
     const body = $('incoming-details-body');
     body.innerHTML = items.map(it => {
@@ -544,11 +628,128 @@
     $('incoming-details-modal').classList.remove('show');
   }
 
+  // ── Trash / Restore / Purge actions (super-admin only) ──
+  async function trashIncoming(ingoingId) {
+    const confirmed = await confirmModal({
+      title: 'Move to Trash',
+      message: 'Move this delivery to Trash? You can restore it later from the Trash tab.',
+      confirmText: 'Move to Trash',
+      cancelText: 'Cancel',
+      danger: true,
+    });
+    if (!confirmed) return;
+    try {
+      await getJson(api('/api/checker/delete-incoming.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'trash', ingoingId: Number(ingoingId) })
+      });
+      showToast('Delivery moved to Trash.', 'success');
+      await loadIncoming();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function restoreIncoming(ingoingId) {
+    try {
+      await getJson(api('/api/checker/delete-incoming.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'restore', ingoingId: Number(ingoingId) })
+      });
+      showToast('Delivery restored.', 'success');
+      await loadIncoming();
+      // Stay on trash tab after restore so user can see the updated list.
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function purgeIncoming(ingoingId) {
+    const confirmed = await confirmModal({
+      title: 'Delete Permanently',
+      message: 'Permanently delete this delivery and all its line-items from the database? This cannot be undone.',
+      confirmText: 'Delete Permanently',
+      cancelText: 'Cancel',
+      danger: true,
+    });
+    if (!confirmed) return;
+    try {
+      await getJson(api('/api/checker/delete-incoming.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'purge', ingoingId: Number(ingoingId) })
+      });
+      showToast('Delivery permanently deleted.', 'success');
+      await loadIncoming();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  // Promise-based confirmation modal — dynamically injected into the DOM, matching
+  // the incoming-confirmation page pattern.
+  function confirmModal({ title = 'Are you sure?', message = '', confirmText = 'Confirm', cancelText = 'Cancel', danger = true } = {}) {
+    return new Promise((resolve) => {
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop show confirm-modal-backdrop';
+
+      backdrop.innerHTML = `
+        <div class="modal confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+          <div class="modal-header">
+            <div>
+              <h3 id="confirm-modal-title">${escapeHtml(title)}</h3>
+            </div>
+            <button type="button" class="confirm-modal-x" aria-label="Close">&#x2715;</button>
+          </div>
+          <div class="confirm-modal-body">${escapeHtml(message)}</div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-ghost" data-confirm-cancel>${escapeHtml(cancelText)}</button>
+            <button type="button" class="btn ${danger ? 'btn-danger' : 'btn-primary'}" data-confirm-ok>${escapeHtml(confirmText)}</button>
+          </div>
+        </div>`;
+
+      const close = (result) => {
+        backdrop.removeEventListener('click', onBackdrop);
+        document.removeEventListener('keydown', onKey);
+        backdrop.remove();
+        resolve(result);
+      };
+
+      const onBackdrop = (e) => { if (e.target === backdrop) close(false); };
+      const onKey = (e) => { if (e.key === 'Escape') close(false); };
+
+      backdrop.querySelector('[data-confirm-ok]').addEventListener('click', () => close(true));
+      backdrop.querySelector('[data-confirm-cancel]').addEventListener('click', () => close(false));
+      backdrop.querySelector('.confirm-modal-x').addEventListener('click', () => close(false));
+      backdrop.addEventListener('click', onBackdrop);
+      document.addEventListener('keydown', onKey);
+
+      document.body.appendChild(backdrop);
+      backdrop.querySelector('[data-confirm-ok]').focus();
+    });
+  }
+
   let outgoingFilter = 'all';
+  // Separate pagination state for the outgoing trash tab.
+  let outgoingTrashPage = 1;
+  let outgoingTrashPageSize = 10;
 
   async function loadOutgoing() {
     const data = await getJson(api('/api/checker/outgoing.php'));
     outgoingCache = data.items || [];
+    window.__outgoingTrashedRecords = data.trashed || [];
+    // Update all tab count badges.
+    const allCount     = outgoingCache.length;
+    const pendingCount = outgoingCache.filter(i => String(i.status).toLowerCase() === 'pending').length;
+    const checkedCount = outgoingCache.filter(i => String(i.status).toLowerCase() === 'checked').length;
+    const trashCount   = window.__outgoingTrashedRecords.length;
+    const setCount = (id, n) => { const el = $(id); if (el) el.textContent = n || ''; };
+    setCount('outgoing-all-count',     allCount);
+    setCount('outgoing-pending-count', pendingCount);
+    setCount('outgoing-checked-count', checkedCount);
+    setCount('outgoing-trash-count',   trashCount);
     renderOutgoingTable();
     setCounts(window.__incomingRecords || [], outgoingCache);
   }
@@ -558,9 +759,43 @@
   let outgoingPageSize = 10;
 
   function renderOutgoingTable() {
+    if (outgoingFilter === 'Trash') {
+      renderOutgoingTrashTable(window.__outgoingTrashedRecords || []);
+      return;
+    }
+    // Show normal tbody, hide trash tbody.
+    const normalTbody = $('outgoing-table');
+    const trashTbody  = $('outgoing-trash-table');
+    if (normalTbody) normalTbody.style.display = '';
+    if (trashTbody)  trashTbody.style.display  = 'none';
     // Build the full list of row-HTML strings for the active filter, then paginate.
     const rowsHtml = buildOutgoingTransactionRows();
     paintOutgoing(rowsHtml);
+  }
+
+  function renderOutgoingTrashTable(trashRecords) {
+    const normalTbody = $('outgoing-table');
+    const trashTbody  = $('outgoing-trash-table');
+    if (normalTbody) normalTbody.style.display = 'none';
+    if (trashTbody)  trashTbody.style.display  = '';
+
+    const rowsHtml = trashRecords.map(i => buildOutgoingRow(i, true));
+    const total = rowsHtml.length;
+
+    if (!total) {
+      trashTbody.innerHTML = `<tr><td colspan="7" class="empty">Trash is empty.</td></tr>`;
+      renderOutgoingPagination(0, 0, 0, true);
+      return;
+    }
+
+    const pageCount = Math.max(1, Math.ceil(total / outgoingTrashPageSize));
+    if (outgoingTrashPage > pageCount) outgoingTrashPage = pageCount;
+    if (outgoingTrashPage < 1) outgoingTrashPage = 1;
+
+    const start = (outgoingTrashPage - 1) * outgoingTrashPageSize;
+    const end = Math.min(start + outgoingTrashPageSize, total);
+    trashTbody.innerHTML = rowsHtml.slice(start, end).join('');
+    renderOutgoingPagination(start + 1, end, total, true);
   }
 
   // Slices the row list to the current page and renders it plus the pagination controls.
@@ -585,76 +820,84 @@
     renderOutgoingPagination(start + 1, end, total);
   }
 
-  function renderOutgoingPagination(from, to, total) {
+  function renderOutgoingPagination(from, to, total, isTrash = false) {
     const controls = $('outgoing-pagination');
     if (!controls) return;
     if (!total) {
       controls.innerHTML = '';
       return;
     }
-    const pageCount = Math.max(1, Math.ceil(total / outgoingPageSize));
+    const pageSize = isTrash ? outgoingTrashPageSize : outgoingPageSize;
+    const pageCount = Math.max(1, Math.ceil(total / pageSize));
+    const currentPage = isTrash ? outgoingTrashPage : outgoingPage;
     controls.innerHTML = `
       <div class="pagination-info">Showing ${from}–${to} of ${total}</div>
       <div class="pagination-controls">
         <label class="page-size-label">Rows:
           <select id="outgoing-page-size">
-            ${[10, 25, 50, 100].map(n => `<option value="${n}" ${n === outgoingPageSize ? 'selected' : ''}>${n}</option>`).join('')}
+            ${[10, 25, 50, 100].map(n => `<option value="${n}" ${n === pageSize ? 'selected' : ''}>${n}</option>`).join('')}
           </select>
         </label>
-        <button type="button" class="btn btn-ghost small-btn" id="outgoing-prev-page" ${outgoingPage <= 1 ? 'disabled' : ''}>Prev</button>
-        <span class="page-indicator">Page ${outgoingPage} / ${pageCount}</span>
-        <button type="button" class="btn btn-ghost small-btn" id="outgoing-next-page" ${outgoingPage >= pageCount ? 'disabled' : ''}>Next</button>
+        <button type="button" class="btn btn-ghost small-btn" id="outgoing-prev-page" ${currentPage <= 1 ? 'disabled' : ''}>Prev</button>
+        <span class="page-indicator">Page ${currentPage} / ${pageCount}</span>
+        <button type="button" class="btn btn-ghost small-btn" id="outgoing-next-page" ${currentPage >= pageCount ? 'disabled' : ''}>Next</button>
       </div>`;
 
     $('outgoing-page-size').addEventListener('change', (e) => {
-      outgoingPageSize = parseInt(e.target.value, 10) || 10;
-      outgoingPage = 1;
-      renderOutgoingTable();
+      const val = parseInt(e.target.value, 10) || 10;
+      if (isTrash) { outgoingTrashPageSize = val; outgoingTrashPage = 1; renderOutgoingTrashTable(window.__outgoingTrashedRecords || []); }
+      else         { outgoingPageSize = val; outgoingPage = 1; renderOutgoingTable(); }
     });
     $('outgoing-prev-page').addEventListener('click', () => {
-      if (outgoingPage > 1) { outgoingPage--; renderOutgoingTable(); }
+      if (isTrash) { if (outgoingTrashPage > 1) { outgoingTrashPage--; renderOutgoingTrashTable(window.__outgoingTrashedRecords || []); } }
+      else         { if (outgoingPage > 1)       { outgoingPage--;       renderOutgoingTable(); } }
     });
     $('outgoing-next-page').addEventListener('click', () => {
-      if (outgoingPage < pageCount) { outgoingPage++; renderOutgoingTable(); }
+      if (isTrash) { if (outgoingTrashPage < pageCount) { outgoingTrashPage++; renderOutgoingTrashTable(window.__outgoingTrashedRecords || []); } }
+      else         { if (outgoingPage < pageCount)       { outgoingPage++;       renderOutgoingTable(); } }
     });
   }
 
-  // All/Pending tabs: per-TRANSACTION rows. Returns an array of <tr> strings.
-  function buildOutgoingTransactionRows() {
-    const list = outgoingFilter === 'all'
-      ? outgoingCache
-      : outgoingCache.filter(i => String(i.status) === outgoingFilter);
-    return list.map((i) => {
-      // Legacy flat POS rows (from checker_records / sale_items) render as a single
-      // read-only line. Grouped outgoing transactions (which have an outgoingId) are
-      // handled below even when their source is 'pos'.
-      if (i.source === 'pos' && !i.outgoingId) {
-        const sourceInfo = `<strong>${escapeHtml(i.saleNumber || ('Sale #' + i.saleId))}</strong><br>${sourceBadge('pos')}`;
-        const itemsCell = `<div class="items-cell"><div class="item-line">${escapeHtml(i.itemName)}${i.sku ? ` <span class="muted">(${escapeHtml(i.sku)})</span>` : ''}</div></div>`;
-        return `<tr>
-          <td>${sourceInfo}</td>
-          <td>${fmtDate(i.date || i.soldAt || i.checkedAt)}</td>
-          <td>${escapeHtml(purposeText(i.purpose))}</td>
-          <td>${escapeHtml(i.sku || '—')}</td>
-          <td>${itemsCell}</td>
-          <td>${badge(i.status)}</td>
-          <td>${badge(i.status)}</td>
-        </tr>`;
-      }
-      const items = i.items || [];
-      // Show only the first 2 items, with a "+N more" indicator when the transaction has more.
-      const MAX_PREVIEW = 2;
-      const shownItems = items.slice(0, MAX_PREVIEW);
-      const moreCount = items.length - shownItems.length;
-      const itemsList = shownItems.map(it => `<div class="item-line">${escapeHtml(it.itemName)} — ${it.quantity} ${escapeHtml(it.unit)} <span class="muted">(${escapeHtml(it.sourceLocation)})</span></div>`).join('')
-        + (moreCount > 0 ? `<div class="item-line more-items">+${moreCount} more item${moreCount > 1 ? 's' : ''}</div>` : '');
-      const skuList = shownItems.map(it => `<div class="item-line">${escapeHtml(it.sku || '—')}</div>`).join('')
-        + (moreCount > 0 ? `<div class="item-line more-items">&nbsp;</div>` : '');
-      // Status column shows the header status (Pending until every item is checked, then Checked).
-      const statusCell = i.pendingCount > 0
-        ? `${badge('Pending')} <span class="muted">${i.pendingCount}/${i.itemCount} pending</span>`
-        : `${badge('Checked')}`;
-      const action = `<button type="button" class="btn btn-primary small-btn" data-outgoing-review="${i.outgoingId}">Review</button>`;
+  // Builds a single outgoing transaction <tr>. isTrash=true renders restore/purge actions.
+  function buildOutgoingRow(i, isTrash = false) {
+    // Legacy flat POS rows (from checker_records / sale_items) — read-only, no delete.
+    if (i.source === 'pos' && !i.outgoingId) {
+      const sourceInfo = `<strong>${escapeHtml(i.saleNumber || ('Sale #' + i.saleId))}</strong><br>${sourceBadge('pos')}`;
+      const itemsCell = `<div class="items-cell"><div class="item-line">${escapeHtml(i.itemName)}${i.sku ? ` <span class="muted">(${escapeHtml(i.sku)})</span>` : ''}</div></div>`;
+      return `<tr>
+        <td>${sourceInfo}</td>
+        <td>${fmtDate(i.date || i.soldAt || i.checkedAt)}</td>
+        <td>${escapeHtml(purposeText(i.purpose))}</td>
+        <td>${escapeHtml(i.sku || '—')}</td>
+        <td>${itemsCell}</td>
+        <td>${badge(i.status)}</td>
+        <td>${badge(i.status)}</td>
+      </tr>`;
+    }
+
+    const items = i.items || [];
+    const MAX_PREVIEW = 2;
+    const shownItems = items.slice(0, MAX_PREVIEW);
+    const moreCount = items.length - shownItems.length;
+    const itemsList = shownItems.map(it => `<div class="item-line">${escapeHtml(it.itemName)} — ${it.quantity} ${escapeHtml(it.unit)} <span class="muted">(${escapeHtml(it.sourceLocation)})</span></div>`).join('')
+      + (moreCount > 0 ? `<div class="item-line more-items">+${moreCount} more item${moreCount > 1 ? 's' : ''}</div>` : '');
+    const skuList = shownItems.map(it => `<div class="item-line">${escapeHtml(it.sku || '—')}</div>`).join('')
+      + (moreCount > 0 ? `<div class="item-line more-items">&nbsp;</div>` : '');
+
+    let action;
+    if (isTrash) {
+      // Trash row: restore or permanently delete.
+      action = `<div class="row-actions">
+        <button type="button" class="btn btn-ghost small-btn" data-outgoing-restore="${i.outgoingId}">Restore</button>
+        <button type="button" class="btn btn-danger small-btn" data-outgoing-purge="${i.outgoingId}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>
+      </div>`;
+    } else if (checkerTrashEnabled && i.status === 'Checked') {
+      // Checked row: Review + Delete (move to trash).
+      const statusCell = `${badge('Checked')}`;
+      action = `<div class="row-actions">
+        <button type="button" class="btn btn-secondary small-btn" data-outgoing-review="${i.outgoingId}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button>
+        <button type="button" class="btn btn-danger small-btn" data-outgoing-trash="${i.outgoingId}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>
+      </div>`;
       return `<tr>
         <td>${sourceBadge(i.source === 'pos' ? 'pos' : 'manual')}</td>
         <td>${fmtDate(i.date)}</td>
@@ -664,7 +907,101 @@
         <td>${statusCell}</td>
         <td>${action}</td>
       </tr>`;
+    } else {
+      // Pending row: Review only.
+      const statusCell = (i.pendingCount ?? 0) > 0
+        ? `${badge('Pending')} <span class="muted">${i.pendingCount}/${i.itemCount} pending</span>`
+        : `${badge('Checked')}`;
+      action = `<button type="button" class="btn btn-secondary small-btn" data-outgoing-review="${i.outgoingId}"><span class="btn-inline-icon ui-icon icon-info" aria-hidden="true"></span>Details</button>`;
+      return `<tr>
+        <td>${sourceBadge(i.source === 'pos' ? 'pos' : 'manual')}</td>
+        <td>${fmtDate(i.date)}</td>
+        <td>${escapeHtml(purposeText(i.purpose))}</td>
+        <td><div class="items-cell">${skuList || '—'}</div></td>
+        <td><div class="items-cell">${itemsList || '—'}</div></td>
+        <td>${statusCell}</td>
+        <td>${action}</td>
+      </tr>`;
+    }
+
+    // Trash row rendering (falls through from the isTrash branch above).
+    const statusCell = badge(i.status || 'Checked');
+    return `<tr>
+      <td>${sourceBadge(i.source === 'pos' ? 'pos' : 'manual')}</td>
+      <td>${fmtDate(i.date)}</td>
+      <td>${escapeHtml(purposeText(i.purpose))}</td>
+      <td><div class="items-cell">${skuList || '—'}</div></td>
+      <td><div class="items-cell">${itemsList || '—'}</div></td>
+      <td>${statusCell}</td>
+      <td>${action}</td>
+    </tr>`;
+  }
+
+  // All/Pending/Checked tabs: per-TRANSACTION rows. Returns an array of <tr> strings.
+  function buildOutgoingTransactionRows() {
+    const list = outgoingFilter === 'all'
+      ? outgoingCache
+      : outgoingCache.filter(i => String(i.status) === outgoingFilter);
+    return list.map(i => buildOutgoingRow(i, false));
+  }
+
+  // ── Trash / Restore / Purge actions for outgoing (super-admin only) ──
+  async function trashOutgoing(outgoingId) {
+    const confirmed = await confirmModal({
+      title: 'Move to Trash',
+      message: 'Move this outgoing record to Trash? You can restore it later from the Trash tab.',
+      confirmText: 'Move to Trash',
+      cancelText: 'Cancel',
+      danger: true,
     });
+    if (!confirmed) return;
+    try {
+      await getJson(api('/api/checker/delete-outgoing.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'trash', outgoingId: Number(outgoingId) })
+      });
+      showToast('Outgoing record moved to Trash.', 'success');
+      await loadOutgoing();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function restoreOutgoing(outgoingId) {
+    try {
+      await getJson(api('/api/checker/delete-outgoing.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'restore', outgoingId: Number(outgoingId) })
+      });
+      showToast('Outgoing record restored.', 'success');
+      await loadOutgoing();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function purgeOutgoing(outgoingId) {
+    const confirmed = await confirmModal({
+      title: 'Delete Permanently',
+      message: 'Permanently delete this outgoing record and all its line-items? This cannot be undone.',
+      confirmText: 'Delete Permanently',
+      cancelText: 'Cancel',
+      danger: true,
+    });
+    if (!confirmed) return;
+    try {
+      await getJson(api('/api/checker/delete-outgoing.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'purge', outgoingId: Number(outgoingId) })
+      });
+      showToast('Outgoing record permanently deleted.', 'success');
+      await loadOutgoing();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
   }
 
   async function saveRecord(payload) {
@@ -746,6 +1083,7 @@
       outgoingFilterTab.classList.add('active');
       outgoingFilter = outgoingFilterTab.dataset.outgoingFilter;
       outgoingPage = 1; // reset to first page when the filter changes
+      outgoingTrashPage = 1;
       renderOutgoingTable();
     } else {
       const filterTab = e.target.closest('.filter-tab');
@@ -772,6 +1110,20 @@
     if (detailsBtn) {
       openIncomingDetails(detailsBtn.dataset.incomingDetails);
     }
+    // Trash / restore / purge buttons (super-admin only, checker page).
+    const trashBtn = e.target.closest('[data-incoming-trash]');
+    if (trashBtn) { trashIncoming(trashBtn.dataset.incomingTrash); return; }
+    const restoreBtn = e.target.closest('[data-incoming-restore]');
+    if (restoreBtn) { restoreIncoming(restoreBtn.dataset.incomingRestore); return; }
+    const purgeBtn = e.target.closest('[data-incoming-purge]');
+    if (purgeBtn) { purgeIncoming(purgeBtn.dataset.incomingPurge); return; }
+    // Outgoing trash / restore / purge (super-admin only).
+    const outTrashBtn = e.target.closest('[data-outgoing-trash]');
+    if (outTrashBtn) { trashOutgoing(outTrashBtn.dataset.outgoingTrash); return; }
+    const outRestoreBtn = e.target.closest('[data-outgoing-restore]');
+    if (outRestoreBtn) { restoreOutgoing(outRestoreBtn.dataset.outgoingRestore); return; }
+    const outPurgeBtn = e.target.closest('[data-outgoing-purge]');
+    if (outPurgeBtn) { purgeOutgoing(outPurgeBtn.dataset.outgoingPurge); return; }
     const reviewActionBtn = e.target.closest('[data-review-action][data-review-item-id]');
     if (reviewActionBtn) {
       confirmOutgoing(reviewActionBtn.dataset.reviewItemId, reviewActionBtn.dataset.reviewAction);
@@ -912,8 +1264,15 @@
     const body = $('outgoing-review-body');
     if (!txn) { closeOutgoingReview(); return; }
 
-    $('outgoing-review-title').textContent = `Outgoing    ${purposeText(txn.purpose)}`;
-    $('outgoing-review-subtitle').textContent = `${fmtDate(txn.date)}    ${txn.itemCount} item(s)    ${txn.pendingCount} pending`;
+    $('outgoing-review-title').textContent = `Outgoing — ${purposeText(txn.purpose)}`;
+    $('outgoing-review-subtitle').innerHTML =
+      `<span>${fmtDate(txn.date)}</span>` +
+      `<span class="detail-sep">·</span><span>${txn.itemCount} item(s)</span>` +
+      (txn.pendingCount > 0
+        ? `<span class="detail-sep">·</span><span style="color:var(--accent-warning)">${txn.pendingCount} pending</span>`
+        : `<span class="detail-sep">·</span><span style="color:var(--accent-success,#16a34a)">All confirmed</span>`) +
+      (txn.createdBy ? `<span class="detail-sep">·</span><span>By: <strong>${escapeHtml(txn.createdBy)}</strong></span>` : '') +
+      `<span class="detail-sep">·</span>${badge(txn.status)}`;
 
     body.innerHTML = (txn.items || []).map(it => {
       const statusRow = `<div class="review-item-status">${badge(it.status)}${it.confirmedBy ? ` <span class="muted">by ${escapeHtml(it.confirmedBy)}</span>` : ''}</div>`;
@@ -1017,24 +1376,35 @@
     }
   }
 
+  let recheckingFilter = 'all';
+
   async function loadRechecking() {
     try {
       const data = await getJson(api('/api/checker/rechecking.php'));
       recheckingCache = data.items || [];
+      window.__recheckingTrashedRecords = data.trashed || [];
+      // Update tab count badges.
+      const setRC = (id, n) => { const el = $(id); if (el) el.textContent = n || ''; };
+      setRC('recheck-all-count',   recheckingCache.length);
+      setRC('recheck-trash-count', window.__recheckingTrashedRecords.length);
       renderRecheckingTable();
       setCounts(window.__incomingRecords || [], outgoingCache);
     } catch (err) {
-      $('rechecking-table').innerHTML = `<tr><td colspan="7" class="empty">Error loading: ${escapeHtml(err.message)}</td></tr>`;
+      $('rechecking-table').innerHTML = `<tr><td colspan="8" class="empty">Error loading: ${escapeHtml(err.message)}</td></tr>`;
     }
   }
 
-  function renderRecheckingTable() {
-    const tbody = $('rechecking-table');
-    if (!recheckingCache.length) {
-      tbody.innerHTML = '<tr><td colspan="8" class="empty">No items for re-checking.</td></tr>';
-      return;
-    }
-    tbody.innerHTML = recheckingCache.map(item => `<tr>
+  function buildRecheckRow(item, isTrash = false) {
+    const actions = isTrash
+      ? `<div class="row-actions">
+           <button class="btn btn-ghost small-btn" data-restore-recheck-id="${item.ingoingItemId}">Restore</button>
+           <button class="btn btn-danger small-btn" data-purge-recheck-id="${item.ingoingItemId}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>
+         </div>`
+      : `<div class="row-actions">
+           <button class="btn btn-secondary small-btn recheck-btn" data-recheck-id="${item.ingoingItemId}"><span class="btn-inline-icon ui-icon icon-refresh" aria-hidden="true"></span>Re-check</button>
+           ${checkerTrashEnabled ? `<button class="btn btn-danger small-btn" data-delete-recheck-id="${item.ingoingItemId}"><span class="btn-inline-icon ui-icon icon-empty" aria-hidden="true"></span>Delete</button>` : ''}
+         </div>`;
+    return `<tr>
       <td>${fmtDate(item.confirmedDate)}</td>
       <td>${escapeHtml(item.supplierName || '—')}</td>
       <td><strong>${escapeHtml(item.itemName)}</strong>${item.sku ? `<br><span class="muted">${escapeHtml(item.sku)}</span>` : ''}</td>
@@ -1042,14 +1412,102 @@
       <td>${badge(item.condition)}</td>
       <td>${escapeHtml(item.confirmedByName || '—')}</td>
       <td class="note-cell">${escapeHtml(item.notes || item.confirmationNotes || '—')}</td>
-      <td><button class="btn btn-primary btn-sm recheck-btn" data-recheck-id="${item.ingoingItemId}">Re-check</button></td>
-    </tr>`).join('');
+      <td>${actions}</td>
+    </tr>`;
+  }
+
+  function renderRecheckingTable() {
+    if (recheckingFilter === 'Trash') {
+      renderRecheckingTrashTable(window.__recheckingTrashedRecords || []);
+      return;
+    }
+    const normalTbody = $('rechecking-table');
+    const trashTbody  = $('rechecking-trash-table');
+    if (normalTbody) normalTbody.style.display = '';
+    if (trashTbody)  trashTbody.style.display  = 'none';
+
+    if (!recheckingCache.length) {
+      normalTbody.innerHTML = '<tr><td colspan="8" class="empty">No items for re-checking.</td></tr>';
+      return;
+    }
+    normalTbody.innerHTML = recheckingCache.map(item => buildRecheckRow(item, false)).join('');
+  }
+
+  function renderRecheckingTrashTable(trashRecords) {
+    const normalTbody = $('rechecking-table');
+    const trashTbody  = $('rechecking-trash-table');
+    if (normalTbody) normalTbody.style.display = 'none';
+    if (trashTbody)  trashTbody.style.display  = '';
+
+    if (!trashRecords.length) {
+      trashTbody.innerHTML = '<tr><td colspan="8" class="empty">Trash is empty.</td></tr>';
+      return;
+    }
+    trashTbody.innerHTML = trashRecords.map(item => buildRecheckRow(item, true)).join('');
+  }
+
+  async function deleteRecheckItem(ingoingItemId) {
+    const confirmed = await confirmModal({
+      title: 'Move to Trash',
+      message: 'Move this re-check item to Trash? You can restore it later from the Trash tab.',
+      confirmText: 'Move to Trash',
+      cancelText: 'Cancel',
+      danger: true,
+    });
+    if (!confirmed) return;
+    try {
+      await getJson(api('/api/checker/delete-recheck-item.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'trash', ingoingItemId: Number(ingoingItemId) })
+      });
+      showToast('Re-check item moved to Trash.', 'success');
+      await loadRechecking();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function restoreRecheckItem(ingoingItemId) {
+    try {
+      await getJson(api('/api/checker/delete-recheck-item.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'restore', ingoingItemId: Number(ingoingItemId) })
+      });
+      showToast('Re-check item restored.', 'success');
+      await loadRechecking();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function purgeRecheckItem(ingoingItemId) {
+    const confirmed = await confirmModal({
+      title: 'Delete Permanently',
+      message: 'Permanently delete this re-check item? This cannot be undone.',
+      confirmText: 'Delete Permanently',
+      cancelText: 'Cancel',
+      danger: true,
+    });
+    if (!confirmed) return;
+    try {
+      await getJson(api('/api/checker/delete-recheck-item.php'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ action: 'purge', ingoingItemId: Number(ingoingItemId) })
+      });
+      showToast('Re-check item permanently deleted.', 'success');
+      await loadRechecking();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
   }
 
   // --- Re-check modal logic ---
   function openRecheckModal(item) {
     $('recheck-item-id').value = item.ingoingItemId;
-    $('recheck-condition').value = item.condition || 'Accepted / Good';
+    $('recheck-condition').value = '';
     $('recheck-notes').value = '';
     $('recheck-modal-subtitle').textContent = `${item.itemName} — ${item.quantity} ${item.unit} — Current: ${item.condition}`;
     $('recheck-modal').classList.add('show');
@@ -1069,6 +1527,21 @@
       const itemId = recheckBtn.dataset.recheckId;
       const item = recheckingCache.find(i => String(i.ingoingItemId) === String(itemId));
       if (item) openRecheckModal(item);
+    }
+    const deleteRecheckBtn = e.target.closest('[data-delete-recheck-id]');
+    if (deleteRecheckBtn) { deleteRecheckItem(deleteRecheckBtn.dataset.deleteRecheckId); return; }
+    const restoreRecheckBtn = e.target.closest('[data-restore-recheck-id]');
+    if (restoreRecheckBtn) { restoreRecheckItem(restoreRecheckBtn.dataset.restoreRecheckId); return; }
+    const purgeRecheckBtn = e.target.closest('[data-purge-recheck-id]');
+    if (purgeRecheckBtn) { purgeRecheckItem(purgeRecheckBtn.dataset.purgeRecheckId); return; }
+    // Recheck filter tabs
+    const recheckFilterTab = e.target.closest('.recheck-filter-tab');
+    if (recheckFilterTab) {
+      document.querySelectorAll('.recheck-filter-tab').forEach(b => b.classList.remove('active'));
+      recheckFilterTab.classList.add('active');
+      recheckingFilter = recheckFilterTab.dataset.recheckFilter;
+      renderRecheckingTable();
+      return;
     }
   });
 

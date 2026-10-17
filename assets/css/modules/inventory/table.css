@@ -220,12 +220,12 @@
 }
 .btn-update:hover { background: var(--blue-medium); color: white; }
 
-/* Details button — teal-ish accent to distinguish from Update */
+/* Details button — matches btn-secondary blue tint */
 .btn-details {
-  background: rgba(31,63,116,0.08); color: var(--navy-mid);
-  border: 1px solid rgba(31,63,116,0.2);
+  background: rgba(69,105,173,0.08); color: var(--blue-medium);
+  border: 1px solid rgba(69,105,173,0.22);
 }
-.btn-details:hover { background: var(--navy-mid); color: white; }
+.btn-details:hover { background: var(--blue-medium); color: white; }
 
 /* Footer row */
 .dt-footer-row {
@@ -236,3 +236,10 @@
 /* ── Desktop Collapsed State ──────────────────────────────── */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}

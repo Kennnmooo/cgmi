@@ -1,4 +1,4 @@
-ï»¿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/Helpers.php';
 require_login(['admin']);
@@ -11,7 +11,7 @@ $user = current_user();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CGMI.IMS   User Management</title>
   <meta name="description" content="Hardware & Construction Supply User Management Panel">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/admin/users.css') ?>">
 </head>
@@ -138,6 +138,9 @@ $user = current_user();
       'manageableRoles' => strtolower($user['role'] ?? '') === 'super-admin'
         ? ['admin', 'super-admin', 'inventory', 'checker']
         : ['inventory', 'checker'],
+      // Admins may activate/deactivate accounts but cannot edit user information —
+      // that privilege is reserved for Super Admins only.
+      'canEdit' => strtolower($user['role'] ?? '') === 'super-admin',
     ]); ?>;</script>
   <script src="<?= app_url('/assets/js/components/sidebar.js') ?>"></script>
   <script src="<?= app_url('/assets/js/modules/user-management/user-management.js') ?>"></script>

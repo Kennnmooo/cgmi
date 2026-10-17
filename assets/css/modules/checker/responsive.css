@@ -78,10 +78,10 @@ img {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   TABLET LANDSCAPE ≤ 1024px
+   TABLET LANDSCAPE ≤ 1376px
    Better handling for landscape tablets and small laptops
 ───────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
+@media (max-width: 1376px) {
   :root { --sidebar-width: 220px; --header-height: 60px; }
 
   .page-content { padding: 18px; gap: 16px; }
@@ -98,12 +98,97 @@ img {
 }
 
 /* Tablet Landscape Orientation Specific */
-@media (max-width: 1024px) and (orientation: landscape) {
+@media (max-width: 1376px) and (orientation: landscape) {
   .stats-row { grid-template-columns: repeat(4,1fr); gap: 10px; }
   .stat-card { padding: 12px; }
   .stat-icon { width: 36px; height: 36px; font-size: 16px; }
   .stat-label { font-size: var(--fs-xs); }
   .toolbar { padding: 10px 14px; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   INCOMING DELIVERIES TABLE — MOBILE COLUMN VISIBILITY
+   On mobile (≤ 768px) show only: Date, Supplier, No. of Items,
+   Status, Action. Hide: Total Qty (col 4) and Checker (col 6).
+   Scoped to #incoming-panel to avoid touching other tables.
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Hide "Total Qty" header (4th th) and cells (4th td) */
+  #incoming-panel .table-wrap table thead tr th:nth-child(4),
+  #incoming-panel .table-wrap table tbody tr td:nth-child(4) {
+    display: none;
+  }
+
+  /* Hide "Checker" header (6th th) and cells (6th td) */
+  #incoming-panel .table-wrap table thead tr th:nth-child(6),
+  #incoming-panel .table-wrap table tbody tr td:nth-child(6) {
+    display: none;
+  }
+
+  /* Adjust colspan on the "Loading / empty" row */
+  #incoming-panel .table-wrap table tbody tr td[colspan="7"] {
+    display: table-cell;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   INCOMING DELIVERIES TABLE — PHONE COLUMN VISIBILITY
+   On phone (≤ 480px) show only: Supplier, No. of Items,
+   Status (dot only), Action. Hide: Date (col 1) as well.
+   Scoped to #incoming-panel to avoid touching other tables.
+───────────────────────────────────────────────────────────── */
+
+/* items-count-mobile: hidden by default, shown only on phone */
+#incoming-panel .items-count-mobile {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  /* Hide "Date" header (1st th) and cells (1st td) */
+  #incoming-panel .table-wrap table thead tr th:nth-child(1),
+  #incoming-panel .table-wrap table tbody tr td:nth-child(1) {
+    display: none;
+  }
+
+  /* Items cell: hide the full item list, show the count only */
+  #incoming-panel .items-cell          { display: none; }
+  #incoming-panel .items-count-mobile  {
+    display: inline;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Remove the forced min-width so the table fits the viewport */
+  #incoming-panel .table-wrap table {
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Disable horizontal scroll now that columns fit */
+  #incoming-panel .table-wrap {
+    overflow-x: visible;
+  }
+
+  /* Status badge: show only the colored dot, collapse text */
+  #incoming-panel .table-wrap table tbody td .badge {
+    padding: 0;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0;
+    gap: 0;
+    font-size: 0; /* collapses text label without affecting ::before dot */
+  }
+  #incoming-panel .table-wrap table tbody td .badge::before {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+
+  /* Dot colors per status */
+  #incoming-panel .table-wrap table tbody td .badge.pending::before  { background: var(--accent-warning); }
+  #incoming-panel .table-wrap table tbody td .badge.checked::before  { background: var(--accent-success); }
+  #incoming-panel .table-wrap table tbody td .badge.rejected::before { background: var(--accent-danger);  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1038,3 +1123,10 @@ body {
 /* ── Desktop Collapsed State ──────────────────────────────── */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}

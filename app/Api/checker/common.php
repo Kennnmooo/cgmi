@@ -480,6 +480,64 @@ function load_ingoing_items_flat(PDO $pdo, ?string $itemStatusFilter = null, int
 }
 
 /**
+ * Load soft-deleted ingoing header records (Trash) grouped with their items.
+ * Mirrors load_ingoing_records() but queries WHERE ig.deleted_at IS NOT NULL.
+ * Only super-admin should call this.
+ */
+function load_ingoing_records_deleted(PDO $pdo, int $limit = 300): array {
+    $sql = "SELECT ig.*,
+                   s.supplierName,
+                   CONCAT(creator.first_name, ' ', creator.last_name)   AS created_by_name,
+                   CONCAT(modifier.first_name, ' ', modifier.last_name) AS modified_by_name,
+                   CONCAT(deleter.first_name, ' ', deleter.last_name)   AS deleted_by_name
+            FROM ingoing ig
+            LEFT JOIN supplier s       ON s.supplierId  = ig.supplier_id
+            LEFT JOIN users creator    ON creator.id    = ig.created_by
+            LEFT JOIN users modifier   ON modifier.id   = ig.modified_by
+            LEFT JOIN users deleter    ON deleter.id    = ig.deleted_by
+            WHERE ig.deleted_at IS NOT NULL
+            ORDER BY ig.deleted_at DESC
+            LIMIT {$limit}";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $headers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($headers)) return [];
+
+    $ids = array_column($headers, 'ingoing_id');
+    $placeholders = implode(',', array_fill(0, count($ids), '?'));
+    $itemSql = "SELECT ii.*, inv.item_name, inv.sku, u.unit_name,
+                       COALESCE(wi.warehouse_item_quantity, 0) AS current_stock,
+                       CONCAT(confirmer.first_name, ' ', confirmer.last_name) AS confirmed_by_name
+                FROM ingoing_items ii
+                LEFT JOIN inventory_items inv ON inv.item_id = ii.item_id
+                LEFT JOIN units u             ON u.unit_id   = inv.unit_id
+                LEFT JOIN warehouse_items wi  ON wi.item_id  = ii.item_id
+                LEFT JOIN users confirmer     ON confirmer.id = ii.confirmed_by
+                WHERE ii.ingoing_id IN ({$placeholders})
+                ORDER BY ii.ingoing_item_id ASC";
+    $itemStmt = $pdo->prepare($itemSql);
+    $itemStmt->execute($ids);
+    $allItems = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $grouped = [];
+    foreach ($allItems as $item) {
+        $grouped[(int)$item['ingoing_id']][] = ingoing_item_to_frontend($item);
+    }
+
+    $result = [];
+    foreach ($headers as $header) {
+        $hId = (int)$header['ingoing_id'];
+        $rec = ingoing_to_frontend($header, $grouped[$hId] ?? []);
+        $rec['deletedAt']     = $header['deleted_at']    ?? null;
+        $rec['deletedByName'] = $header['deleted_by_name'] ?? '';
+        $result[] = $rec;
+    }
+    return $result;
+}
+
+/**
  * Load all soft-deleted ingoing records (Trash) as a flat item list.
  * Only super-admin should call this; returns records where ig.deleted_at IS NOT NULL.
  */

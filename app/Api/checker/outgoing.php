@@ -48,8 +48,15 @@ try {
         // sale_items table may not exist — skip POS records
     }
 
+    // Ensure soft-delete columns exist (self-heal for older databases).
+    try {
+        checker_add_column_if_missing($pdo, 'outgoing', 'deleted_at', "TIMESTAMP NULL DEFAULT NULL");
+        checker_add_column_if_missing($pdo, 'outgoing', 'deleted_by', "INT(10) UNSIGNED DEFAULT NULL");
+    } catch (Throwable $e) {}
+
     // Manual outgoing records (from outgoing + outgoing_items tables)
     // Purpose lives on the header; source_location + status + confirmation live per line-item.
+    // Only fetch non-deleted records for the main list.
     $manualSql = "SELECT o.outgoing_id, o.record_source, o.purpose, o.status AS header_status,
                          o.created_date, o.created_by,
                          oi.outgoing_item_id, oi.item_id, oi.quantity, oi.source_location, oi.outgoing_notes,
@@ -63,6 +70,7 @@ try {
                   LEFT JOIN units u_name ON u_name.unit_id = inv.unit_id
                   LEFT JOIN users creator ON creator.id = o.created_by
                   LEFT JOIN users confirmer ON confirmer.id = oi.confirmed_by
+                  WHERE o.deleted_at IS NULL
                   ORDER BY o.created_date DESC, oi.outgoing_item_id DESC
                   LIMIT 250";
     $manualRows = $pdo->query($manualSql)->fetchAll(PDO::FETCH_ASSOC);
@@ -133,7 +141,71 @@ try {
     usort($items, function($a, $b) {
         return strtotime($b['date'] ?? $b['soldAt'] ?? '1970-01-01') <=> strtotime($a['date'] ?? $a['soldAt'] ?? '1970-01-01');
     });
-    json_response(['success' => true, 'items' => $items]);
+
+    // Trashed outgoing records (soft-deleted; super-admin only; returned separately).
+    $trashed = [];
+    try {
+        $trashedSql = "SELECT o.outgoing_id, o.record_source, o.purpose, o.status AS header_status,
+                              o.created_date, o.created_by, o.deleted_at,
+                              oi.outgoing_item_id, oi.item_id, oi.quantity, oi.source_location,
+                              oi.outgoing_notes, oi.outgoing_item_status,
+                              oi.confirmed_by, oi.confirmed_date, oi.confirmed_notes,
+                              inv.item_name, inv.sku, u_name.unit_name,
+                              CONCAT(creator.first_name, ' ', creator.last_name) AS created_by_name,
+                              CONCAT(confirmer.first_name, ' ', confirmer.last_name) AS confirmed_by_name
+                       FROM outgoing o
+                       INNER JOIN outgoing_items oi ON oi.outgoing_id = o.outgoing_id
+                       LEFT JOIN inventory_items inv ON inv.item_id = oi.item_id
+                       LEFT JOIN units u_name ON u_name.unit_id = inv.unit_id
+                       LEFT JOIN users creator ON creator.id = o.created_by
+                       LEFT JOIN users confirmer ON confirmer.id = oi.confirmed_by
+                       WHERE o.deleted_at IS NOT NULL
+                       ORDER BY o.deleted_at DESC, oi.outgoing_item_id DESC
+                       LIMIT 250";
+        $trashedRows = $pdo->query($trashedSql)->fetchAll(PDO::FETCH_ASSOC);
+        $trashedTxns = [];
+        foreach ($trashedRows as $row) {
+            $outgoingId = (int)$row['outgoing_id'];
+            if (!isset($trashedTxns[$outgoingId])) {
+                $recordSource = strtolower(trim((string)($row['record_source'] ?? 'manual')));
+                $trashedTxns[$outgoingId] = [
+                    'source'       => $recordSource === 'pos' ? 'pos' : 'manual',
+                    'outgoingId'   => $outgoingId,
+                    'date'         => $row['created_date'],
+                    'deletedAt'    => $row['deleted_at'],
+                    'purpose'      => $row['purpose'] ?? 'Manual Entry',
+                    'createdBy'    => $row['created_by_name'] ?? '',
+                    'headerStatus' => $row['header_status'] ?? 'Checked',
+                    'status'       => $row['header_status'] ?? 'Checked',
+                    'items'        => [],
+                ];
+            }
+            $trashedTxns[$outgoingId]['items'][] = [
+                'outgoingItemId'   => (int)$row['outgoing_item_id'],
+                'itemId'           => (int)$row['item_id'],
+                'sku'              => $row['sku'] ?? '',
+                'itemName'         => $row['item_name'] ?? '',
+                'quantity'         => (int)$row['quantity'],
+                'unit'             => $row['unit_name'] ?? '',
+                'sourceLocation'   => $row['source_location'] ?? '',
+                'status'           => $row['outgoing_item_status'] ?? 'Approved',
+                'notes'            => $row['outgoing_notes'] ?? '',
+                'confirmationNotes'=> $row['confirmed_notes'] ?? '',
+                'confirmedBy'      => $row['confirmed_by_name'] ?? '',
+                'confirmedAt'      => $row['confirmed_date'] ?? null,
+            ];
+        }
+        foreach ($trashedTxns as &$txn) {
+            $txn['itemCount']     = count($txn['items']);
+            $txn['totalQuantity'] = array_sum(array_column($txn['items'], 'quantity'));
+        }
+        unset($txn);
+        $trashed = array_values($trashedTxns);
+    } catch (Throwable $e) {
+        // Trashed query fails gracefully (e.g. deleted_at column not yet added).
+    }
+
+    json_response(['success' => true, 'items' => $items, 'trashed' => $trashed]);
 } catch (Throwable $e) {
     json_response(['success' => false, 'message' => 'Unable to load warehouse outgoing checks: ' . $e->getMessage()], 500);
 }

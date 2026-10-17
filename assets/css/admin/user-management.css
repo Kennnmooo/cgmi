@@ -209,7 +209,7 @@
 }
 
 /* Override landscape tablet that resets to repeat(4) */
-@media (max-width: 1024px) and (orientation: landscape) {
+@media (max-width: 1376px) and (orientation: landscape) {
   .stats-row { grid-template-columns: repeat(3, 1fr) !important; }
 }
 
@@ -438,18 +438,17 @@
   box-shadow: none;
 }
 
-/* Button polish without changing behavior */
-.user-card-actions .btn-secondary,
-.user-card-actions .btn-ghost {
-  background: var(--white);
-  border: 1px solid rgba(69, 105, 173, 0.22);
-  color: var(--navy-mid);
+/* Button polish — keep btn-secondary blue tint in user cards */
+.user-card-actions .btn-secondary {
+  background: rgba(69,105,173,0.08);
+  border: 1px solid rgba(69,105,173,0.22);
+  color: var(--blue-medium);
 }
 
-.user-card-actions .btn-secondary:hover,
-.user-card-actions .btn-ghost:hover {
-  background: rgba(69, 105, 173, 0.06);
-  border-color: rgba(69, 105, 173, 0.35);
+.user-card-actions .btn-secondary:hover {
+  background: var(--blue-medium);
+  color: white;
+  border-color: var(--blue-medium);
 }
 
 .user-card-actions .btn-primary {
@@ -520,3 +519,10 @@
 /* ── Desktop Collapsed State ──────────────────────────────── */
 body.sidebar-collapsed .sidebar { transform: translateX(-100%); box-shadow: none; }
 body.sidebar-collapsed .main-content { margin-left: 0; }
+
+/* ── Tablet / mobile drawer mode (≤ 1376px) ─────────────── */
+@media (max-width: 1376px) {
+  .sidebar { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: 6px 0 32px rgba(8,31,68,0.3); }
+  .main-content { margin-left: 0; }
+}

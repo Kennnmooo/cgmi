@@ -104,7 +104,7 @@ const FilterManager = (() => {
          0=image 1=name 2=category 3=warehouseQty 4=storeQty 5=iotShelfQty
          6=overallQty 7=weightCheck 8=CatRaw 9=SubRaw 10=unitPrice 11=status 12=actions
        Compact-mode column indices:
-         0=image 1=name 2=overallQty 3=CatRaw 4=SubRaw 5=status 6=details 7=update 8=statusBtn
+         0=image 1=name 2=overallQty 3=CatRaw 4=SubRaw 5=status 6=actions(Details+Edit)
        Compact mode has no price column, so price falls back to name (index 1). */
     const colMap = isCompactMode
       ? { name: 1, price: 1, stock: 2 }

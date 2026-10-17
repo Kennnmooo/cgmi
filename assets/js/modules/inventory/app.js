@@ -152,13 +152,14 @@ document.addEventListener('DOMContentLoaded', async () => {
    with an "Update" button that opens the edit modal.
    ============================================================ */
 const DetailsPanelManager = (() => {
-  let backdrop, panel, closeBtn, updateBtn;
+  let backdrop, panel, closeBtn, updateBtn, toggleBtn;
 
   function init() {
-    backdrop  = document.getElementById('details-backdrop');
-    panel     = document.getElementById('details-panel');
-    closeBtn  = document.getElementById('details-close-btn');
-    updateBtn = document.getElementById('details-update-btn');
+    backdrop   = document.getElementById('details-backdrop');
+    panel      = document.getElementById('details-panel');
+    closeBtn   = document.getElementById('details-close-btn');
+    updateBtn  = document.getElementById('details-update-btn');
+    toggleBtn  = document.getElementById('details-toggle-btn');
 
     closeBtn?.addEventListener('click', close);
     backdrop?.addEventListener('click', (e) => { if (e.target === backdrop) close(); });
@@ -204,6 +205,43 @@ const DetailsPanelManager = (() => {
         close();
         setTimeout(() => ModalManager.openEdit(item), 220);
       };
+    }
+
+    /* Wire deactivate/reactivate toggle button — only for super-admin */
+    if (toggleBtn) {
+      if (canManageInventoryStatus()) {
+        const isActive = item.status === 'Active';
+        toggleBtn.style.display = '';
+        toggleBtn.innerHTML     = isActive
+          ? '<span class="btn-inline-icon ui-icon icon-incident" aria-hidden="true"></span>Deactivate'
+          : '<span class="btn-inline-icon ui-icon icon-check" aria-hidden="true"></span>Reactivate';
+        toggleBtn.className     = isActive
+          ? 'btn btn-danger details-toggle-btn'
+          : 'btn btn-success details-toggle-btn';
+        toggleBtn.onclick = async () => {
+          const action   = isActive ? 'Deactivate' : 'Reactivate';
+          const newStatus = isActive ? 'Inactive' : 'Active';
+          const confirmed = await showConfirm({
+            title:       `${action} Item`,
+            message:     `Are you sure you want to ${action.toLowerCase()} "${item.name}"?`,
+            confirmText: action,
+            iconClass:   isActive ? 'icon-incident' : 'icon-check',
+          });
+          if (!confirmed) return;
+          try {
+            showLoading();
+            await InventoryManager.toggleStatus(item.dbId || item.id, newStatus);
+            close();
+            showToast(`Item ${action}d`, `"${item.name}" has been ${action.toLowerCase()}d.`, 'success');
+          } catch (err) {
+            showToast('Error', err.message || `Unable to ${action.toLowerCase()} item.`, 'error', 5000);
+          } finally {
+            hideLoading();
+          }
+        };
+      } else {
+        toggleBtn.style.display = 'none';
+      }
     }
 
     backdrop.classList.add('active');

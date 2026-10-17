@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/../../Core/Auth.php';
 require_once __DIR__ . '/../../Core/Helpers.php';
 require_login(['inventory']);
@@ -19,10 +19,14 @@ if ($fullName !== '') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CGMI.IMS   Inventory Dashboard</title>
   <meta name="description" content="Hardware & Construction Supply Inventory Dashboard">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  
+  
+  
+  
+    <link rel="stylesheet" href="<?= app_url('/assets/fonts/montserrat.css') ?>">
+  <script src="<?= app_url('/assets/lib/highCharts/scripts/vendor/highcharts.js') ?>"></script>
+  <script src="<?= app_url('/assets/lib/highCharts/scripts/vendor/accessibility.js') ?>"></script>
+  <script src="<?= app_url('/assets/lib/highCharts/scripts/vendor/exporting.js') ?>"></script>
   <link rel="stylesheet" href="<?= app_url('/assets/css/root.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/admin/dashboard.css') ?>">
   <link rel="stylesheet" href="<?= app_url('/assets/css/inventory/dashboard.css') ?>">
@@ -86,7 +90,7 @@ if ($fullName !== '') {
         <button type="button" class="report-nav-btn" data-target="report-incidents">Incidents</button>
       </nav>
 
-      <!-- â”€â”€ INVENTORY  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <!-- ── INVENTORY  ─────────── -->
       <section class="report-panel active" id="report-inventory" role="tabpanel">
         <div class="section-title"><span class="section-icon ui-icon icon-inventory" aria-hidden="true"></span> Inventory Overview</div>
         <div class="f-body">
@@ -101,7 +105,7 @@ if ($fullName !== '') {
             <div class="card">
               <div class="card-header">
                 <span class="card-title">Stock Distribution by Location</span>
-                <span class="pill blue">Warehouse Â· Store Â· Shelf</span>
+                <span class="pill blue">Warehouse · Store · Shelf</span>
               </div>
               <div class="chart-box" id="ch-distribution"></div>
             </div>
@@ -128,7 +132,7 @@ if ($fullName !== '') {
         </div>
       </section>
 
-      <!-- â”€â”€ SHELVES  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <!-- ── SHELVES  ───────────── -->
       <section class="report-panel" id="report-shelves" role="tabpanel">
         <div class="section-title"><span class="section-icon ui-icon icon-shelves" aria-hidden="true"></span> Shelf Monitoring</div>
         <div class="f-body">
@@ -162,7 +166,7 @@ if ($fullName !== '') {
         </div>
       </section>
 
-      <!-- â”€â”€ INCOMING CONFIRMATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <!-- ── INCOMING CONFIRMATION ────────────────────────────── -->
       <section class="report-panel" id="report-incoming" role="tabpanel">
         <div class="section-title"><span class="section-icon ui-icon icon-check" aria-hidden="true"></span> Incoming Confirmation</div>
         <div class="chart-duo">
@@ -187,7 +191,7 @@ if ($fullName !== '') {
         </div>
       </section>
 
-      <!-- â”€â”€ INCIDENT REPORTS  â”€â”€â”€â”€ -->
+      <!-- ── INCIDENT REPORTS  ──── -->
       <section class="report-panel" id="report-incidents" role="tabpanel">
         <div class="section-title"><span class="section-icon ui-icon icon-incident" aria-hidden="true"></span> Incident Reports</div>
         <div class="f-body">
